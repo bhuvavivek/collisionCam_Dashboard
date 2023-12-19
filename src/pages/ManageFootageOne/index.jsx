@@ -1,8 +1,8 @@
 import React from "react";
 
 import { Button, Img, Input, List, SelectBox, Text } from "components";
-import Sidebar11 from "components/Sidebar11";
 
+import Sidebar1 from "components/Sidebar1";
 import { CloseSVG } from "../../assets/images";
 
 const buttonOptionsList = [
@@ -28,7 +28,7 @@ const ManageFootageOnePage = () => {
     <>
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full h-[100vh]">
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
-          <Sidebar11 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
+          <Sidebar1 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
           <div className="flex flex-1 flex-col md:gap-10 gap-20 justify-start md:px-5 w-full">
             <div className="flex flex-col md:gap-10 gap-[107px] items-center justify-start w-full">
               <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">

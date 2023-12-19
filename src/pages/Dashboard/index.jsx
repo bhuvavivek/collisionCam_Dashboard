@@ -1,10 +1,11 @@
 import React from "react";
 
-import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
+import { Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { useNavigate } from "react-router-dom";
 
 import { Button, Img, Input, Line, List, SelectBox, Text } from "components";
 
+import Sidebar1 from "components/Sidebar1";
 import { CloseSVG } from "../../assets/images";
 
 const buttonOptionsList = [
@@ -30,9 +31,12 @@ const DashboardPage = () => {
 
   return (
     <>
-      <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto pb-[125px] w-full">
+      <div
+        className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto  w-full
+      "
+      >
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
-          <Sidebar className="!sticky !w-[262px] flex h-screen md:hidden bg-sideblue  justify-start overflow-auto md:px-5 top-[0]">
+          <Sidebar1 className=" bottom-0 top-0 left-0 !sticky !w-[262px] flex h-[100vh] md:hidden bg-sideblue  justify-start overflow-hidden md:px-5">
             <Img
               className="h-[81px] md:h-auto ml-6 mr-[91px] mt-6 object-cover w-[57%]"
               src="images/img_image14.png"
@@ -114,7 +118,7 @@ const DashboardPage = () => {
               </div>
               <Line className="bg-white-A700 h-px mt-9 w-full" />
             </Menu>
-          </Sidebar>
+          </Sidebar1>
           <div className="flex flex-1 flex-col gap-[22px] items-center justify-start md:px-5 w-full">
             <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
               <Input
@@ -655,7 +659,7 @@ const DashboardPage = () => {
                       placeholder="Expand"
                     />
                   </div>
-                  <div className="bg-white-A700 border border-gray-500_7f border-solid flex flex-col items-center justify-end py-[21px] shadow-bs3 w-full">
+                  <div className="bg-white-A700 border border-gray-500_7f border-solid flex flex-col items-center justify-end mb-10 py-[21px] shadow-bs3 w-full">
                     <div className="flex flex-col gap-[29px] items-center justify-start mt-3 w-full">
                       <div className="flex md:flex-col flex-row md:gap-5 items-start justify-start w-[93%] md:w-full">
                         <div className="flex flex-row items-center justify-between w-[34%] md:w-full">

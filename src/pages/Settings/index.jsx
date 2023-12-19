@@ -8,52 +8,6 @@ import Sidebar1 from "components/Sidebar1";
 import { CloseSVG } from "../../assets/images";
 
 const SettingsPage = () => {
-  const sideBarMenu = [
-    {
-      icon: (
-        <Img
-          className="h-8 w-8"
-          src="images/img_icoutlinedashboard.svg"
-          alt="icoutlinedashbo"
-        />
-      ),
-      label: "Dashboard",
-      href: "/dashboard",
-      active: window.location.pathname === "/dashboard",
-    },
-    {
-      icon: (
-        <Img
-          className="h-8 w-8"
-          src="images/img_fluentvideo24regular.svg"
-          alt="fluentvideo24re"
-        />
-      ),
-      label: "Manage Footage",
-      href: "/managefootageone",
-      active: window.location.pathname === "/managefootageone",
-    },
-    {
-      icon: (
-        <Img
-          className="h-8 w-8"
-          src="images/img_edit_white_a700.svg"
-          alt="edit"
-        />
-      ),
-      label: "Review Requests",
-      href: "/reviewrequest",
-      active: window.location.pathname === "/reviewrequest",
-    },
-    {
-      icon: (
-        <Img className="h-6 w-6" src="images/img_arrowup.svg" alt="arrowup" />
-      ),
-      label: "Manage Affiliate",
-      href: "/manageaffiliate",
-      active: window.location.pathname === "/manageaffiliate",
-    },
-  ];
   const [frame348value, setFrame348value] = React.useState("");
 
   return (

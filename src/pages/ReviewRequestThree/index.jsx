@@ -1,10 +1,8 @@
 import React from "react";
 
-import { Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import { Button, Img, Input, SelectBox, Text } from "components";
 
-import { Button, Img, Input, Line, SelectBox, Text } from "components";
-import Sidebar2 from "components/Sidebar2";
-
+import Sidebar1 from "components/Sidebar1";
 import { CloseSVG } from "../../assets/images";
 
 const hideDocumentOptionsList = [
@@ -19,64 +17,13 @@ const languageOneOptionsList = [
 ];
 
 const ReviewRequestThreePage = () => {
-  const sideBarMenu = [
-    {
-      icon: (
-        <Img
-          className="h-8 w-8"
-          src="images/img_icoutlinedashboard.svg"
-          alt="icoutlinedashbo"
-        />
-      ),
-      label: <Text className="w-auto">Dashboard</Text>,
-      href: "/dashboard",
-      active: window.location.pathname === "/dashboard",
-    },
-    {
-      icon: (
-        <Img
-          className="h-8 w-8"
-          src="images/img_fluentvideo24regular.svg"
-          alt="fluentvideo24re"
-        />
-      ),
-      label: <Text className="mb-[3px] mt-2 w-auto">Manage Footage</Text>,
-      href: "/managefootageone",
-      active: window.location.pathname === "/managefootageone",
-    },
-    {
-      label: (
-        <div className="h-[50px] relative w-full">
-          <div className="flex flex-row gap-2 h-full items-center justify-start ml-2 my-auto w-auto">
-            <Img
-              className="h-8 w-8"
-              src="images/img_edit_white_a700.svg"
-              alt="edit"
-            />
-            <Text className="w-auto">Review Requests</Text>
-          </div>
-          <div className="absolute border border-blue-700 border-solid h-[50px] inset-[0] justify-center m-auto rounded-lg w-[88%]"></div>
-        </div>
-      ),
-      href: "/reviewrequest",
-      active: window.location.pathname === "/reviewrequest",
-    },
-    {
-      icon: (
-        <Img className="h-6 w-6" src="images/img_arrowup.svg" alt="arrowup" />
-      ),
-      label: <Text className="mt-1 w-auto">Manage Affiliate</Text>,
-      href: "/manageaffiliate",
-      active: window.location.pathname === "/manageaffiliate",
-    },
-  ];
   const [frame348value, setFrame348value] = React.useState("");
 
   return (
     <>
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full">
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
-          <Sidebar2 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
+          <Sidebar1 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
           <div className="flex flex-1 flex-col md:gap-10 gap-[159px] items-center justify-start md:px-5 w-full">
             <div className="flex flex-col gap-[43px] justify-start w-full">
               <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">

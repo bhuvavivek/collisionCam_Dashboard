@@ -1,4 +1,3 @@
-import React from "react";
 import { Link } from "react-router-dom";
 const Home = () => {
   return (
@@ -28,9 +27,7 @@ const Home = () => {
         <li>
           <Link to="/manageaffiliate">ManageAffiliate</Link>
         </li>
-        <li>
-          <Link to="/reviewrequestone">ReviewRequestOne</Link>
-        </li>
+
         <li>
           <Link to="/login">Login</Link>
         </li>
