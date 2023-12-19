@@ -3,6 +3,7 @@ import React from "react";
 import { Button, Img, Input, Line, Text, TextArea } from "components";
 import Sidebar1 from "components/Sidebar1";
 
+import { Link } from "react-router-dom";
 import { CloseSVG } from "../../assets/images";
 
 const SettingsTwoPage = () => {
@@ -15,35 +16,38 @@ const SettingsTwoPage = () => {
           <Sidebar1 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
           <div className="flex flex-1 flex-col items-center justify-start md:px-5 w-full">
             <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
-              <Input
-                name="frame348"
-                placeholder="Search "
-                value={frame348value}
-                onChange={(e) => setFrame348value(e)}
-                className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-center w-full"
-                wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
-                prefix={
-                  <Img
-                    className="cursor-pointer h-8 mr-2.5 my-auto"
-                    src="images/img_search_blue_gray_900_01.svg"
-                    alt="search"
-                  />
-                }
-                suffix={
-                  <CloseSVG
-                    fillColor="#30303090"
-                    className="cursor-pointer h-8 my-auto"
-                    onClick={() => setFrame348value("")}
-                    style={{
-                      visibility:
-                        frame348value?.length <= 0 ? "hidden" : "visible",
-                    }}
-                    height={32}
-                    width={32}
-                    viewBox="0 0 32 32"
-                  />
-                }
-              ></Input>
+              <div className="w-[43%]">
+                <Input
+                  name="frame348"
+                  placeholder="Search "
+                  value={frame348value}
+                  onChange={(e) => setFrame348value(e)}
+                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base  w-full"
+                  wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
+                  prefix={
+                    <Img
+                      className="cursor-pointer h-8 mr-2.5 my-auto"
+                      src="images/img_search_blue_gray_900_01.svg"
+                      alt="search"
+                    />
+                  }
+                  suffix={
+                    <CloseSVG
+                      fillColor="#30303090"
+                      className="cursor-pointer h-8 my-auto"
+                      onClick={() => setFrame348value("")}
+                      style={{
+                        visibility:
+                          frame348value?.length <= 0 ? "hidden" : "visible",
+                      }}
+                      height={32}
+                      width={32}
+                      viewBox="0 0 32 32"
+                    />
+                  }
+                ></Input>
+              </div>
+
               <Img
                 className="h-8 mr-[17px] w-8"
                 src="images/img_claritynotificationline.svg"
@@ -115,32 +119,39 @@ const SettingsTwoPage = () => {
                 >
                   Commission Rate
                 </Text>
-                <Input
-                  name="group161"
-                  placeholder="Input text here"
-                  className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 leading-[normal] p-0 text-base text-left w-full"
-                  wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
-                ></Input>
+                <div className="w-[43%]">
+                  {" "}
+                  <Input
+                    name="group161"
+                    placeholder="Input text here"
+                    className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 leading-[normal] p-0 text-base text-left w-full"
+                    wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
+                  ></Input>
+                </div>
               </div>
               <Line className="bg-blue_gray-100_01 h-px mt-[35px] w-full" />
               <div className="flex md:flex-col flex-row font-lato md:gap-10 items-start justify-between mt-6 w-full">
                 <div className="flex flex-col items-center justify-start md:mt-0 mt-2.5">
-                  <a
-                    href="javascript:"
+                  <Link
+                    to="/javascript:"
                     className="text-base text-blue_gray-900_01"
                   >
                     <Text size="txtLatoBold16">Terms and Conditions</Text>
-                  </a>
+                  </Link>
                 </div>
-                <TextArea
-                  className="bg-white-A700 border border-blue_gray-100_01 border-solid sm:flex-1 leading-[normal] pb-[35px] pl-4 sm:pr-5 pr-[35px] pt-3 rounded-lg shadow-bs1 text-base placeholder:text-blue_gray-900_87 text-blue_gray-900_87 text-left w-[47%] sm:w-full"
-                  name="group164"
-                  placeholder="Input text here"
-                ></TextArea>
+
+                <div className="w-[43%]">
+                  {" "}
+                  <TextArea
+                    className="bg-white-A700 border border-blue_gray-100_01 border-solid sm:flex-1 leading-[normal] pb-[35px] pl-4 sm:pr-5 pr-[35px] pt-3 rounded-lg shadow-bs1 text-base placeholder:text-blue_gray-900_87 text-blue_gray-900_87 text-left w-full sm:w-full"
+                    name="group164"
+                    placeholder="Input text here"
+                  ></TextArea>
+                </div>
               </div>
               <Line className="bg-blue_gray-100_01 h-px mt-[26px] w-full" />
             </div>
-            <div className="flex flex-col font-lato gap-[22px] items-start justify-start mt-[50px] w-[94%] md:w-full">
+            <div className="flex flex-col pb-14 font-lato gap-6 items-start justify-start mt-[50px] w-[94%] md:w-full">
               <div className="flex flex-col gap-[9px] items-start justify-start">
                 <Text
                   className="text-blue_gray-900_01 text-lg"
@@ -156,19 +167,22 @@ const SettingsTwoPage = () => {
                 </Text>
               </div>
               <div className="flex md:flex-col flex-row md:gap-10 items-start justify-between w-full">
-                <div className="flex flex-col items-center justify-start md:mt-0 mt-2.5">
-                  <a
-                    href="javascript:"
+                <div className="flex flex-col items-center justify-center md:mt-0 mt-2.5">
+                  <Text
                     className="text-base text-blue_gray-900_01"
+                    size="txtLatoBold16"
                   >
-                    <Text size="txtLatoBold16">Terms and Conditions</Text>
-                  </a>
+                    Terms and Conditions
+                  </Text>
                 </div>
-                <TextArea
-                  className="bg-white-A700 border border-blue_gray-100_01 border-solid sm:flex-1 leading-[normal] pb-[35px] pl-4 sm:pr-5 pr-[35px] pt-3 rounded-lg shadow-bs1 text-base placeholder:text-blue_gray-900_87 text-blue_gray-900_87 text-left w-[47%] sm:w-full"
-                  name="group164_One"
-                  placeholder="Input text here"
-                ></TextArea>
+                <div className="w-[43%]">
+                  {" "}
+                  <TextArea
+                    className="bg-white-A700  w-full border border-blue_gray-100_01 border-solid sm:flex-1 leading-[normal] pb-[35px] pl-4 sm:pr-5 pr-[35px] pt-3 rounded-lg shadow-bs1 text-base placeholder:text-blue_gray-900_87 text-blue_gray-900_87 text-left  sm:w-full"
+                    name="group164_One"
+                    placeholder="Input text here"
+                  ></TextArea>
+                </div>
               </div>
             </div>
           </div>

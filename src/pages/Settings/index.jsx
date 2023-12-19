@@ -1,7 +1,5 @@
 import React from "react";
 
-import { Menu, MenuItem, SubMenu } from "react-pro-sidebar";
-
 import { Button, Img, Input, Line, Text } from "components";
 import Sidebar1 from "components/Sidebar1";
 
@@ -17,35 +15,39 @@ const SettingsPage = () => {
           <Sidebar1 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
           <div className="flex flex-1 flex-col gap-[34px] items-center justify-start md:px-5 w-full">
             <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
-              <Input
-                name="frame348"
-                placeholder="Search "
-                value={frame348value}
-                onChange={(e) => setFrame348value(e)}
-                className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-center w-full"
-                wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
-                prefix={
-                  <Img
-                    className="cursor-pointer h-8 mr-2.5 my-auto"
-                    src="images/img_search_blue_gray_900_01.svg"
-                    alt="search"
-                  />
-                }
-                suffix={
-                  <CloseSVG
-                    fillColor="#30303090"
-                    className="cursor-pointer h-8 my-auto"
-                    onClick={() => setFrame348value("")}
-                    style={{
-                      visibility:
-                        frame348value?.length <= 0 ? "hidden" : "visible",
-                    }}
-                    height={32}
-                    width={32}
-                    viewBox="0 0 32 32"
-                  />
-                }
-              ></Input>
+              <div className="w-[43%]">
+                {" "}
+                <Input
+                  name="frame348"
+                  placeholder="Search"
+                  value={frame348value}
+                  onChange={(e) => setFrame348value(e)}
+                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base  w-full "
+                  wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
+                  prefix={
+                    <Img
+                      className="cursor-pointer h-8 mr-2.5 my-auto"
+                      src="images/img_search_blue_gray_900_01.svg"
+                      alt="search"
+                    />
+                  }
+                  suffix={
+                    <CloseSVG
+                      fillColor="#30303090"
+                      className="cursor-pointer h-8 my-auto"
+                      onClick={() => setFrame348value("")}
+                      style={{
+                        visibility:
+                          frame348value?.length <= 0 ? "hidden" : "visible",
+                      }}
+                      height={32}
+                      width={32}
+                      viewBox="0 0 32 32"
+                    />
+                  }
+                ></Input>
+              </div>
+
               <Img
                 className="h-8 mr-[17px] w-8"
                 src="images/img_claritynotificationline.svg"
@@ -117,13 +119,16 @@ const SettingsPage = () => {
                 >
                   Current Password
                 </Text>
-                <Input
-                  name="group161"
-                  placeholder="Input password"
-                  className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 leading-[normal] p-0 text-base text-left w-full"
-                  wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
-                  type="password"
-                ></Input>
+                <div className="w-[43%]">
+                  {" "}
+                  <Input
+                    name="group161"
+                    placeholder="Input password"
+                    className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 leading-[normal] p-0 text-base text-left w-full"
+                    wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
+                    type="password"
+                  ></Input>
+                </div>
               </div>
               <Line className="bg-blue_gray-100_01 h-px mt-6 w-full" />
               <div className="flex flex-col font-lato items-center justify-start mt-[23px] w-full">
@@ -134,13 +139,15 @@ const SettingsPage = () => {
                   >
                     New Password
                   </Text>
-                  <Input
-                    name="group162"
-                    placeholder="Input password"
-                    className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 leading-[normal] p-0 text-base text-left w-full"
-                    wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
-                    type="password"
-                  ></Input>
+                  <div className="w-[43%]">
+                    <Input
+                      name="group162"
+                      placeholder="Input password"
+                      className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 leading-[normal] p-0 text-base text-left w-full"
+                      wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
+                      type="password"
+                    ></Input>
+                  </div>
                 </div>
               </div>
             </div>

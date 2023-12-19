@@ -15,35 +15,39 @@ const SettingsOnePage = () => {
           <Sidebar1 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
           <div className="flex flex-1 flex-col items-center justify-start md:px-5 w-full">
             <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
-              <Input
-                name="frame348"
-                placeholder="Search "
-                value={frame348value}
-                onChange={(e) => setFrame348value(e)}
-                className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-center w-full"
-                wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
-                prefix={
-                  <Img
-                    className="cursor-pointer h-8 mr-2.5 my-auto"
-                    src="images/img_search_blue_gray_900_01.svg"
-                    alt="search"
-                  />
-                }
-                suffix={
-                  <CloseSVG
-                    fillColor="#30303090"
-                    className="cursor-pointer h-8 my-auto"
-                    onClick={() => setFrame348value("")}
-                    style={{
-                      visibility:
-                        frame348value?.length <= 0 ? "hidden" : "visible",
-                    }}
-                    height={32}
-                    width={32}
-                    viewBox="0 0 32 32"
-                  />
-                }
-              ></Input>
+              <div className="w-[43%]">
+                {" "}
+                <Input
+                  name="frame348"
+                  placeholder="Search "
+                  value={frame348value}
+                  onChange={(e) => setFrame348value(e)}
+                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base  w-full"
+                  wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
+                  prefix={
+                    <Img
+                      className="cursor-pointer h-8 mr-2.5 my-auto"
+                      src="images/img_search_blue_gray_900_01.svg"
+                      alt="search"
+                    />
+                  }
+                  suffix={
+                    <CloseSVG
+                      fillColor="#30303090"
+                      className="cursor-pointer h-8 my-auto"
+                      onClick={() => setFrame348value("")}
+                      style={{
+                        visibility:
+                          frame348value?.length <= 0 ? "hidden" : "visible",
+                      }}
+                      height={32}
+                      width={32}
+                      viewBox="0 0 32 32"
+                    />
+                  }
+                ></Input>
+              </div>
+
               <Img
                 className="h-8 mr-[17px] w-8"
                 src="images/img_claritynotificationline.svg"
@@ -115,12 +119,14 @@ const SettingsOnePage = () => {
                 >
                   Phone Number
                 </Text>
-                <Input
-                  name="group161"
-                  placeholder="(123) 456-7890"
-                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
-                  wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
-                ></Input>
+                <div className="w-[38%]">
+                  <Input
+                    name="group161"
+                    placeholder="(123) 456-7890"
+                    className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
+                    wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
+                  ></Input>
+                </div>
               </div>
               <Line className="bg-blue_gray-100_01 h-px mt-[19px] w-full" />
               <div className="flex sm:flex-col flex-row font-lato md:gap-10 items-center justify-between mt-[23px] w-full">
@@ -130,13 +136,16 @@ const SettingsOnePage = () => {
                 >
                   Email Address
                 </Text>
-                <Input
-                  name="email"
-                  placeholder="info@collisioncam.com"
-                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
-                  wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
-                  type="email"
-                ></Input>
+
+                <div className="w-[38%]">
+                  <Input
+                    name="email"
+                    placeholder="info@collisioncam.com"
+                    className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
+                    wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
+                    type="email"
+                  ></Input>
+                </div>
               </div>
               <Line className="bg-blue_gray-100_01 h-px mt-[23px] w-full" />
               <div className="flex sm:flex-col flex-row font-lato md:gap-10 items-center justify-between mt-6 w-full">
@@ -146,16 +155,19 @@ const SettingsOnePage = () => {
                 >
                   Address
                 </Text>
-                <Input
-                  name="timeZone"
-                  placeholder="City of St. George, East 200 North, Saint George, UT, USA"
-                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
-                  wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
-                ></Input>
+                <div className="w-[38%]">
+                  {" "}
+                  <Input
+                    name="timeZone"
+                    placeholder="City of St. George, East 200 North, Saint George, UT, USA"
+                    className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
+                    wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
+                  ></Input>
+                </div>
               </div>
               <Line className="bg-blue_gray-100_01 h-px mt-[26px] w-full" />
             </div>
-            <div className="flex flex-col font-lato items-start justify-start mt-[49px] w-[94%] md:w-full">
+            <div className="flex flex-col font-lato pb-14 items-start justify-start mt-[49px] w-[94%] md:w-full">
               <div className="flex flex-col gap-2.5 items-center justify-start">
                 <Text
                   className="text-blue_gray-900_01 text-lg"
