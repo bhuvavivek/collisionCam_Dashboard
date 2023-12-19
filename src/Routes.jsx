@@ -1,18 +1,18 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "pages/Home";
 import NotFound from "pages/NotFound";
+import React from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 const ManageAffiliateOne = React.lazy(() => import("pages/ManageAffiliateOne"));
 const ReviewRequestThree = React.lazy(() => import("pages/ReviewRequestThree"));
-const Affiliateperformance = React.lazy(
-  () => import("pages/Affiliateperformance"),
+const Affiliateperformance = React.lazy(() =>
+  import("pages/Affiliateperformance")
 );
 const ReviewRequestTwo = React.lazy(() => import("pages/ReviewRequestTwo"));
 const ReviewRequest = React.lazy(() => import("pages/ReviewRequest"));
 const ManageFootage = React.lazy(() => import("pages/ManageFootage"));
 const Settings = React.lazy(() => import("pages/Settings"));
 const Login = React.lazy(() => import("pages/Login"));
-const ReviewRequestOne = React.lazy(() => import("pages/ReviewRequestOne"));
+
 const ManageAffiliate = React.lazy(() => import("pages/ManageAffiliate"));
 const SettingsTwo = React.lazy(() => import("pages/SettingsTwo"));
 const SettingsOne = React.lazy(() => import("pages/SettingsOne"));
@@ -32,7 +32,7 @@ const ProjectRoutes = () => {
           <Route path="/settingsone" element={<SettingsOne />} />
           <Route path="/settingstwo" element={<SettingsTwo />} />
           <Route path="/manageaffiliate" element={<ManageAffiliate />} />
-          <Route path="/reviewrequestone" element={<ReviewRequestOne />} />
+
           <Route path="/login" element={<Login />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/managefootage" element={<ManageFootage />} />

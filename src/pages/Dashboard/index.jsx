@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { useNavigate } from "react-router-dom";
@@ -9,25 +9,27 @@ import Sidebar1 from "components/Sidebar1";
 import { CloseSVG } from "../../assets/images";
 
 const buttonOptionsList = [
-  { label: "Option1", value: "option1" },
-  { label: "Option2", value: "option2" },
-  { label: "Option3", value: "option3" },
+  { label: "All", value: "All" },
+  { label: "Total Footage Sales", value: "Total Footage Sales" },
+  { label: "Affiliate performance", value: "Affiliate performance" },
 ];
 const buttonOneOptionsList = [
-  { label: "Option1", value: "option1" },
-  { label: "Option2", value: "option2" },
-  { label: "Option3", value: "option3" },
-];
-const expandOptionsList = [
-  { label: "Option1", value: "option1" },
-  { label: "Option2", value: "option2" },
-  { label: "Option3", value: "option3" },
+  { label: "Month", value: "Month" },
+  { label: "Week", value: "Week" },
+  { label: "Day", value: "Day" },
 ];
 
 const DashboardPage = () => {
   const navigate = useNavigate();
 
   const [frame348value, setFrame348value] = React.useState("");
+
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleButtonClick = () => {
+    // Toggle the state when the button is clicked
+    setIsExpanded(!isExpanded);
+  };
 
   return (
     <>
@@ -156,20 +158,19 @@ const DashboardPage = () => {
                 alt="claritynotifica"
               />
             </div>
-            <div className="flex flex-col font-sourcesanspro gap-6 items-center justify-start w-[94%] md:w-full">
-              <div className="flex md:flex-col flex-row gap-[39px] items-start justify-between w-full">
-                <div className="flex md:flex-1 flex-col gap-[15px] items-start justify-start w-[70%] md:w-full">
-                  <Text
-                    className="md:text-3xl sm:text-[28px] text-[32px] text-blue_gray-900_01"
-                    size="txtSourceSansProRegular32"
-                  >
+            <div className="flex flex-col  gap-6 items-center justify-start w-[95%] md:w-full">
+              {/* Statstic full div start */}
+              <div className="flex md:flex-col flex-row gap-7 items-start justify-between w-full">
+                {/* Statastic left Div */}
+                <div className="flex md:flex-1 flex-col gap-[15px] items-start justify-start w-[65%] md:w-full">
+                  <Text className="md:text-3xl sm:text-[28px] text-[32px] text-blue_gray-900_01 source-sans ">
                     Statistics
                   </Text>
                   <List
                     className="sm:flex-col flex-row font-lato gap-8 grid md:grid-cols-1 grid-cols-2 justify-start w-auto md:w-full"
                     orientation="horizontal"
                   >
-                    <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid flex flex-col justify-center p-2 rounded-[16px] shadow-bs1 w-full">
+                    <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid flex flex-col justify-center p-2 rounded-2xl shadow-bs1 w-full">
                       <div className="flex flex-row gap-4 items-center justify-start mr-[91px] mt-2 w-[74%] md:w-full">
                         <Img
                           className="h-20 w-20"
@@ -177,30 +178,21 @@ const DashboardPage = () => {
                           alt="user"
                         />
                         <div className="flex flex-col gap-2 items-start justify-start w-[63%]">
-                          <div className="flex flex-col font-sourcesanspro items-center justify-start w-full">
-                            <Text
-                              className="sm:text-4xl md:text-[38px] text-[40px] text-blue_gray-900_01"
-                              size="txtSourceSansProSemiBold40Bluegray90001"
-                            >
+                          <div className="flex flex-col  items-center justify-start w-full">
+                            <Text className="sm:text-4xl md:text-[38px] text-[40px] text-blue_gray-900_01 source-sans font-semibold ">
                               2500 USD
                             </Text>
                           </div>
-                          <Text
-                            className="text-base text-blue_gray-900_01"
-                            size="txtLatoBold16"
-                          >
+                          <Text className="text-base text-blue_gray-900_01 font-bold">
                             Total Footage Sales
                           </Text>
                         </div>
                       </div>
-                      <Text
-                        className="mb-[7px] md:ml-[0] ml-[300px] mr-[9px] mt-[3px] text-base text-red-700"
-                        size="txtLatoBold16Red700"
-                      >
+                      <Text className="mb-[7px] md:ml-[0] ml-[300px] mr-[9px] mt-[3px] text-base font-bold text-red-700">
                         +28%
                       </Text>
                     </div>
-                    <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid flex flex-col justify-center p-2 rounded-[16px] shadow-bs1 w-full">
+                    <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid flex flex-col justify-center p-2 rounded-2xl shadow-bs1 w-full">
                       <div className="flex flex-row gap-4 items-center justify-start mr-[91px] mt-2 w-[74%] md:w-full">
                         <Img
                           className="h-20 w-20"
@@ -208,43 +200,34 @@ const DashboardPage = () => {
                           alt="profile"
                         />
                         <div className="flex flex-col gap-[7px] items-start justify-start w-[63%]">
-                          <div className="flex flex-col font-sourcesanspro items-center justify-start w-full">
-                            <Text
-                              className="sm:text-4xl md:text-[38px] text-[40px] text-blue_gray-900_01"
-                              size="txtSourceSansProSemiBold40Bluegray90001"
-                            >
+                          <div className="flex flex-col  items-center justify-start w-full">
+                            <Text className="sm:text-4xl md:text-[38px] text-[40px] text-blue_gray-900_01 source-sans font-semibold ">
                               1000 USD
                             </Text>
                           </div>
-                          <Text
-                            className="text-base text-blue_gray-900_01"
-                            size="txtLatoBold16"
-                          >
+                          <Text className="text-base text-blue_gray-900_01 font-bold ">
                             Total Affiliate Payout
                           </Text>
                         </div>
                       </div>
-                      <Text
-                        className="mb-[7px] md:ml-[0] ml-[300px] mr-[9px] mt-[3px] text-base text-indigo-900"
-                        size="txtLatoBold16Indigo900"
-                      >
+                      <Text className="mb-[7px] md:ml-[0] ml-[300px] mr-[9px] mt-[3px] text-base font-bold text-indigo-900">
                         +28%
                       </Text>
                     </div>
                   </List>
                 </div>
-                <div className="flex md:flex-1 flex-col items-center justify-start w-[27%] md:w-full">
+                {/* statastic left div end */}
+
+                {/* statstic right div */}
+                <div className="flex md:flex-1 flex-col items-center justify-start w-auto md:w-full">
                   <List
                     className="flex flex-col gap-4 items-start w-auto"
                     orientation="vertical"
                   >
-                    <div className="flex flex-col items-center justify-start my-0 pt-0.5 w-full">
+                    <div className="flex flex-col items-center justify-start  my-0 pt-0.5 w-full">
                       <div className="flex flex-col items-center justify-start w-full">
-                        <div className="flex flex-row items-center justify-between w-full">
-                          <Text
-                            className="text-[22px] text-blue_gray-900_01 sm:text-lg md:text-xl"
-                            size="txtSourceSansProSemiBold22"
-                          >
+                        <div className="flex flex-row items-center justify-between gap-1 w-full">
+                          <Text className=" text-blue_gray-900_01 sm:text-lg md:text-xl text-2xl source-sans font-semibold ">
                             Collisions Captured
                           </Text>
                           <Img
@@ -255,22 +238,16 @@ const DashboardPage = () => {
                         </div>
                         <div className="h-10 md:h-11 mt-1 relative w-full">
                           <div className="absolute bg-white-A700 border border-blue_gray-100_dd border-solid h-10 inset-[0] justify-center m-auto rounded-[5px] shadow-bs1 w-full"></div>
-                          <Text
-                            className="absolute h-full inset-y-[0] left-[8%] my-auto md:text-3xl sm:text-[28px] text-[32px] text-blue_gray-900_01"
-                            size="txtSourceSansProRegular32"
-                          >
+                          <Text className="absolute h-full inset-y-[0] left-[8%] my-auto md:text-3xl sm:text-[28px] text-3xl source-sans font-normal text-blue_gray-900_01">
                             100
                           </Text>
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-center justify-start my-0 pt-0.5 w-full">
+                    <div className="flex flex-col items-center justify-start  my-0 pt-0.5 w-full">
                       <div className="flex flex-col items-center justify-start w-full">
-                        <div className="flex flex-row items-center justify-between w-full">
-                          <Text
-                            className="text-[22px] text-blue_gray-900_01 sm:text-lg md:text-xl"
-                            size="txtSourceSansProSemiBold22"
-                          >
+                        <div className="flex flex-row items-center justify-between gap-4 w-full">
+                          <Text className="text-2xl source-sans font-semibold text-blue_gray-900_01 sm:text-lg  md:text-xl">
                             Hit-and-runs Captured
                           </Text>
                           <Img
@@ -281,22 +258,16 @@ const DashboardPage = () => {
                         </div>
                         <div className="h-10 md:h-11 mt-1 relative w-full">
                           <div className="absolute bg-white-A700 border border-blue_gray-100_dd border-solid h-10 inset-[0] justify-center m-auto rounded-[5px] shadow-bs1 w-full"></div>
-                          <Text
-                            className="absolute h-full inset-y-[0] left-[8%] my-auto md:text-3xl sm:text-[28px] text-[32px] text-blue_gray-900_01"
-                            size="txtSourceSansProRegular32"
-                          >
+                          <Text className="absolute h-full inset-y-[0] left-[8%] my-auto md:text-3xl sm:text-[28px] text-3xl source-sans font-normal text-blue_gray-900_01">
                             100
                           </Text>
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-col items-center justify-start my-0 pt-0.5 w-full">
+                    <div className="flex flex-col items-center justify-start  my-0 pt-0.5 w-full">
                       <div className="flex flex-col items-center justify-start w-full">
                         <div className="flex flex-row items-center justify-between w-full">
-                          <Text
-                            className="text-[22px] text-blue_gray-900_01 sm:text-lg md:text-xl"
-                            size="txtSourceSansProSemiBold22"
-                          >
+                          <Text className="text-2xl source-sans font-semibold text-blue_gray-900_01 sm:text-lg md:text-xl">
                             Hit-and-runs Captured
                           </Text>
                           <Img
@@ -307,10 +278,7 @@ const DashboardPage = () => {
                         </div>
                         <div className="h-10 md:h-11 mt-1 relative w-full">
                           <div className="absolute bg-white-A700 border border-blue_gray-100_dd border-solid h-10 inset-[0] justify-center m-auto rounded-[5px] shadow-bs1 w-full"></div>
-                          <Text
-                            className="absolute h-full inset-y-[0] left-[8%] my-auto md:text-3xl sm:text-[28px] text-[32px] text-blue_gray-900_01"
-                            size="txtSourceSansProRegular32"
-                          >
+                          <Text className="absolute h-full inset-y-[0] left-[8%] my-auto md:text-3xl sm:text-[28px] text-3xl source-sans font-normal text-blue_gray-900_01">
                             100
                           </Text>
                         </div>
@@ -318,18 +286,21 @@ const DashboardPage = () => {
                     </div>
                   </List>
                 </div>
+                {/* statstic right div end */}
               </div>
-              <div className="flex flex-col font-inter gap-8 items-start justify-start w-auto md:w-full">
+              {/* Statstic full div end */}
+
+              {/* Chart section start */}
+              <div className="flex flex-col font-inter gap-8 items-start justify-start w-full md:w-full">
+                {/* Filter section start */}
+
                 <div className="flex sm:flex-col flex-row md:gap-10 items-center justify-between w-full">
-                  <div className="flex flex-row gap-[11px] items-center justify-start w-auto">
-                    <Text
-                      className="text-base text-blue_gray-900_01 w-auto"
-                      size="txtLatoBold16"
-                    >
+                  <div className="flex flex-row gap-3   items-center justify-start w-3/12  ">
+                    <Text className="text-base text-blue_gray-900_01 font-bold w-auto">
                       Filter by
                     </Text>
                     <SelectBox
-                      className="border border-gray-500_7f border-solid font-inter font-semibold text-left text-sm w-3/4 sm:w-full"
+                      className="border border-gray-500_7f border-solid font-semibold text-left text-sm w-3/5 sm:w-full"
                       placeholderClassName="text-blue_gray-900_a2"
                       indicator={
                         <Img
@@ -370,16 +341,19 @@ const DashboardPage = () => {
                     variant="fill"
                   />
                 </div>
+                {/* Filter section end */}
+
+                {/* Chart start */}
                 <div className="bg-white-A700 border border-gray-500_7f border-solid flex flex-col font-lato gap-[25px] items-start justify-start pb-2.5 rounded-[12px] shadow-bs2 w-full">
                   <div className="bg-white-A700 flex flex-col items-start justify-start max-w-[1028px] w-full">
                     <Line className="bg-white-A700 h-px w-full" />
                   </div>
-                  <div className="flex flex-col items-center justify-start px-4 w-full">
+                  <div className="flex flex-col items-center justify-start  w-full">
                     <div className="flex flex-col gap-2 items-end justify-start w-full">
                       <div className="flex flex-row gap-1 items-center justify-center w-auto">
-                        <div className="bg-indigo-900 h-4 rounded w-4"></div>
+                        <div className="bg-indigo-900 h-4 rounded w-4 "></div>
                         <Text
-                          className="text-blue_gray-900_01 text-center text-xs w-auto"
+                          className="text-blue_gray-900_01 text-center pr-4 text-xs w-auto"
                           size="txtLatoRegular12"
                         >
                           Footage{" "}
@@ -397,9 +371,10 @@ const DashboardPage = () => {
                                   All
                                 </Text>
                               </div>
+
                               <div className="flex flex-1 flex-col font-lato h-full items-start justify-start w-full">
                                 <div className="md:h-[210px] h-full relative w-full">
-                                  <div className="flex flex-col h-full items-center justify-start m-auto w-full">
+                                  {/* <div className="flex flex-col h-full     items-center justify-start m-auto w-full">
                                     <div className="flex flex-col gap-[22px] items-center justify-start w-full">
                                       <div className="flex flex-col h-[22px] md:h-auto items-center justify-start w-full">
                                         <Text
@@ -455,7 +430,7 @@ const DashboardPage = () => {
                                         />
                                       </div>
                                     </div>
-                                  </div>
+                                  </div> */}
                                   <div className="absolute border-blue_gray-900_99 border-l border-solid flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[0] w-[95%] md:w-full">
                                     <div className="flex flex-col items-center justify-start px-0.5 w-full">
                                       <div className="flex flex-row items-start justify-between pr-[18px] w-[99%] md:w-full">
@@ -613,7 +588,7 @@ const DashboardPage = () => {
                             </div>
                           </div>
                           <Text
-                            className="ml-auto mr-[436px] mt-[-8.22px] text-blue_gray-900_01 text-center text-sm z-[1]"
+                            className="ml-auto mr-[436px] pt-5 text-blue_gray-900_01 text-center text-sm z-[1]"
                             size="txtPlusJakartaSansRomanSemiBold14"
                           >
                             Month
@@ -622,7 +597,7 @@ const DashboardPage = () => {
                         <div className="flex flex-row font-lato gap-1 items-center justify-center w-auto">
                           <div className="bg-red-700 h-4 rounded w-4"></div>
                           <Text
-                            className="text-blue_gray-900_01 text-center text-xs w-auto"
+                            className="text-blue_gray-900_01 text-center text-xs w-auto pr-4"
                             size="txtLatoRegular12"
                           >
                             Affiliate
@@ -632,69 +607,88 @@ const DashboardPage = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* chart end */}
               </div>
+              {/* Chart section end */}
+
               <div className="flex flex-col font-lato items-center justify-start w-full">
                 <div className="flex flex-col gap-3.5 items-center justify-start w-full">
-                  <div className="flex flex-row md:gap-10 items-start justify-between w-full">
+                  <div
+                    className={`flex flex-row md:gap-10 items-start ${
+                      isExpanded ? "mb-0" : "mb-10"
+                    } justify-between w-full`}
+                  >
                     <Text
                       className="text-[22px] text-blue_gray-900_01 sm:text-lg md:text-xl"
                       size="txtLatoSemiBold22"
                     >
                       Recent Activities
                     </Text>
-                    <SelectBox
-                      className="sm:flex-1 font-bold leading-[normal] text-base text-blue_gray-900_01 text-left w-[8%] sm:w-full"
-                      placeholderClassName="text-blue_gray-900_01"
-                      indicator={
-                        <Img
-                          className="h-6 w-6"
-                          src="images/img_arrowdown_black_900.svg"
-                          alt="arrow_down"
-                        />
-                      }
-                      isMulti={false}
-                      name="frame423"
-                      options={expandOptionsList}
-                      isSearchable={false}
-                      placeholder="Expand"
-                    />
+
+                    <Button
+                      className="flex justify-center  items-center gap-2 mr-3 text-blue_gray-900_01 text-base  font-bold"
+                      onClick={handleButtonClick}
+                    >
+                      {isExpanded ? "Expand" : "Collapse"}
+                      {isExpanded ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <g clip-path="url(#clip0_375_5220)">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M12.7073 15.707C12.5198 15.8945 12.2655 15.9998 12.0003 15.9998C11.7352 15.9998 11.4809 15.8945 11.2933 15.707L5.63634 10.05C5.54083 9.95775 5.46465 9.84741 5.41224 9.7254C5.35983 9.6034 5.33225 9.47218 5.33109 9.3394C5.32994 9.20662 5.35524 9.07494 5.40552 8.95205C5.4558 8.82915 5.53006 8.7175 5.62395 8.6236C5.71784 8.52971 5.82949 8.45546 5.95239 8.40518C6.07529 8.3549 6.20696 8.3296 6.33974 8.33075C6.47252 8.3319 6.60374 8.35949 6.72575 8.4119C6.84775 8.46431 6.9581 8.54049 7.05034 8.636L12.0003 13.586L16.9503 8.636C17.1389 8.45384 17.3915 8.35305 17.6537 8.35533C17.9159 8.3576 18.1668 8.46277 18.3522 8.64818C18.5376 8.83359 18.6427 9.0844 18.645 9.3466C18.6473 9.6088 18.5465 9.8614 18.3643 10.05L12.7073 15.707Z"
+                              fill="black"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_375_5220">
+                              <rect width="24" height="24" fill="white" />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                        >
+                          <g clip-path="url(#clip0_330_1366)">
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M12.7073 8.29302C12.5198 8.10555 12.2655 8.00024 12.0003 8.00024C11.7352 8.00024 11.4809 8.10555 11.2933 8.29302L5.63634 13.95C5.54083 14.0423 5.46465 14.1526 5.41224 14.2746C5.35983 14.3966 5.33225 14.5278 5.33109 14.6606C5.32994 14.7934 5.35524 14.9251 5.40552 15.048C5.4558 15.1709 5.53006 15.2825 5.62395 15.3764C5.71784 15.4703 5.82949 15.5446 5.95239 15.5948C6.07529 15.6451 6.20696 15.6704 6.33974 15.6693C6.47252 15.6681 6.60374 15.6405 6.72575 15.5881C6.84775 15.5357 6.9581 15.4595 7.05034 15.364L12.0003 10.414L16.9503 15.364C17.1389 15.5462 17.3915 15.647 17.6537 15.6447C17.9159 15.6424 18.1668 15.5373 18.3522 15.3518C18.5376 15.1664 18.6427 14.9156 18.645 14.6534C18.6473 14.3912 18.5465 14.1386 18.3643 13.95L12.7073 8.29302Z"
+                              fill="black"
+                            />
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_330_1366">
+                              <rect
+                                width="24"
+                                height="24"
+                                fill="white"
+                                transform="matrix(1 0 0 -1 0 24)"
+                              />
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      )}
+                    </Button>
                   </div>
-                  <div className="bg-white-A700 border border-gray-500_7f border-solid flex flex-col items-center justify-end mb-10 py-[21px] shadow-bs3 w-full">
+                  <div
+                    className={`bg-white-A700 border  border-gray-500_7f border-solid  ${
+                      isExpanded ? "flex" : "hidden"
+                    } flex-col items-center justify-end mb-10 py-[21px] shadow-bs3 w-full`}
+                  >
                     <div className="flex flex-col gap-[29px] items-center justify-start mt-3 w-full">
-                      <div className="flex md:flex-col flex-row md:gap-5 items-start justify-start w-[93%] md:w-full">
-                        <div className="flex flex-row items-center justify-between w-[34%] md:w-full">
-                          <Text
-                            className="text-base text-blue_gray-900_01"
-                            size="txtLatoRegular16Bluegray90001"
-                          >
-                            Jenny pauls
-                          </Text>
-                          <Text
-                            className="text-base text-blue_gray-900_01"
-                            size="txtLatoRegular16Bluegray90001"
-                          >
-                            jennypauls@gmail.com
-                          </Text>
-                        </div>
-                        <Text
-                          className="md:ml-[0] ml-[173px] text-base text-blue_gray-900_01"
-                          size="txtLatoBold16"
-                        >
-                          Submitted a Sell your Claim Request
-                        </Text>
-                        <Text
-                          className="md:ml-[0] ml-[73px] text-base text-blue_gray-900_01"
-                          size="txtLatoBold16"
-                        >
-                          10 mins ago
-                        </Text>
-                        <Text
-                          className="md:ml-[0] ml-[47px] text-base text-blue-700 underline"
-                          size="txtLatoBold16Blue700"
-                        >
-                          View
-                        </Text>
-                      </div>
                       <List
                         className="flex flex-col gap-[31.5px] items-center pt-[34px] sm:px-5 px-[34px] w-full"
                         orientation="vertical"
