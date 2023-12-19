@@ -29,8 +29,8 @@ const ManageFootageOnePage = () => {
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full h-[100vh]">
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
           <Sidebar1 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
-          <div className="flex flex-1 flex-col md:gap-10 gap-20 justify-start md:px-5 w-full">
-            <div className="flex flex-col md:gap-10 gap-[107px] items-center justify-start w-full">
+          <div className="flex flex-1 flex-col md:gap-10 gap-9 justify-start md:px-5 w-full">
+            <div className="flex flex-col md:gap-10 gap-9 items-center justify-start w-full">
               <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
                 <Input
                   name="frame348"
@@ -67,7 +67,7 @@ const ManageFootageOnePage = () => {
                   alt="claritynotifica"
                 />
               </div>
-              <div className="flex flex-col md:gap-10 gap-[76px] items-center justify-start w-[90%] md:w-full">
+              <div className="flex flex-col md:gap-10 gap-[30px] items-center justify-start w-[90%] md:w-full">
                 <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between w-full">
                   <Button
                     className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"
@@ -78,11 +78,8 @@ const ManageFootageOnePage = () => {
                   >
                     Upload New
                   </Button>
-                  <div className="flex md:flex-1 md:flex-col flex-row gap-[11px] items-center justify-start w-auto md:w-full">
-                    <Text
-                      className="text-base text-blue_gray-900_01 w-auto"
-                      size="txtLatoBold16"
-                    >
+                  <div className="flex md:flex-1 md:flex-col flex-row gap-[11px] items-center justify-start w-3/5 md:w-full">
+                    <Text className=" filter-text   text-base text-blue_gray-900_01 w-3/12 text-end font-bold">
                       Filter by
                     </Text>
                     <SelectBox
