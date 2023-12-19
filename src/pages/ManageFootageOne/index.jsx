@@ -144,363 +144,70 @@ const ManageFootageOnePage = () => {
                     />
                   </div>
                 </div>
+
+                {/* cards */}
+
                 <List
-                  className="flex flex-col gap-6 items-center w-[99%]"
+                  className="flex flex-col font-lato gap-6 items-start max-w-[1256px] mt-[35px] mx-auto md:px-5 w-full"
                   orientation="vertical"
                 >
-                  <div className="flex flex-col gap-2 items-center justify-start w-full">
+                  <div className="flex flex-1 flex-col gap-2 items-center justify-start w-full ">
                     <div className="gap-10 grid sm:grid-cols-1 md:grid-cols-3 grid-cols-5 items-center justify-between w-full">
-                      <Img
-                        className="flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
-                        src="images/img_rectangle39.png"
-                        alt="rectangleThirtyNine"
-                      />
-                      <Img
-                        className="flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
-                        src="images/img_rectangle35.png"
-                        alt="rectangleThirtyFive"
-                      />
-                      <Img
-                        className="flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
-                        src="images/img_rectangle36.png"
-                        alt="rectangleThirtySix"
-                      />
-                      <Img
-                        className="flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
-                        src="images/img_rectangle37.png"
-                        alt="rectangleThirtySeven"
-                      />
-                      <Img
-                        className="flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
-                        src="images/img_rectangle38.png"
-                        alt="rectangleThirtyEight"
-                      />
-                    </div>
-                    <div className="gap-10 grid sm:grid-cols-1 md:grid-cols-3 grid-cols-5 items-start justify-start w-auto md:w-full">
-                      <div className="flex flex-col items-center justify-start w-full">
-                        <Text
-                          className="leading-[24.00px] text-base text-gray-900"
-                          size="txtLatoMedium16Gray900"
-                        >
-                          <span className="text-gray-900 font-lato text-left font-normal">
-                            <>
-                              Car crash surveillance
-                              <br />
-                            </>
-                          </span>
-                          <span className="text-blue-700 font-lato text-left font-medium">
-                            $25.00
-                          </span>
-                          <span className="text-gray-900 font-lato text-left font-medium">
-                            <>
-                              {" "}
-                              <br />
-                            </>
-                          </span>
-                          <span className="text-gray-900 font-lato text-left text-sm font-medium">
-                            12/08/23
-                          </span>
-                          <span className="text-gray-900 font-lato text-left font-medium">
-                            <>
-                              <br />
-                            </>
-                          </span>
-                        </Text>
-                      </div>
-                      <Text
-                        className="leading-[24.00px] text-base text-gray-900 w-full"
-                        size="txtLatoMedium16Gray900"
-                      >
-                        <span className="text-gray-900 font-lato text-left font-normal">
-                          <>
-                            Car crash surveillance
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-blue-700 font-lato text-left font-medium">
-                          $25.00
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            {" "}
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-gray-900 font-lato text-left text-sm font-medium">
-                          12/08/23
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            <br />
-                          </>
-                        </span>
-                      </Text>
-                      <Text
-                        className="leading-[24.00px] text-base text-gray-900 w-full"
-                        size="txtLatoMedium16Gray900"
-                      >
-                        <span className="text-gray-900 font-lato text-left font-normal">
-                          <>
-                            Car crash surveillance
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-blue-700 font-lato text-left font-medium">
-                          $25.00
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            {" "}
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-gray-900 font-lato text-left text-sm font-medium">
-                          12/08/23
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            <br />
-                          </>
-                        </span>
-                      </Text>
-                      <Text
-                        className="leading-[24.00px] text-base text-gray-900 w-full"
-                        size="txtLatoMedium16Gray900"
-                      >
-                        <span className="text-gray-900 font-lato text-left font-normal">
-                          <>
-                            Car crash surveillance
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-blue-700 font-lato text-left font-medium">
-                          $25.00
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            {" "}
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-gray-900 font-lato text-left text-sm font-medium">
-                          12/08/23
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            <br />
-                          </>
-                        </span>
-                      </Text>
-                      <Text
-                        className="leading-[24.00px] text-base text-gray-900 w-full"
-                        size="txtLatoMedium16Gray900"
-                      >
-                        <span className="text-gray-900 font-lato text-left font-normal">
-                          <>
-                            Car crash surveillance
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-blue-700 font-lato text-left font-medium">
-                          $25.00
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            {" "}
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-gray-900 font-lato text-left text-sm font-medium">
-                          12/08/23
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            <br />
-                          </>
-                        </span>
-                      </Text>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-2 items-center justify-start w-full">
-                    <div className="gap-10 grid sm:grid-cols-1 md:grid-cols-3 grid-cols-5 items-center justify-between w-full">
-                      <Img
-                        className="flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
-                        src="images/img_rectangle39.png"
-                        alt="rectangleThirtyNine"
-                      />
-                      <Img
-                        className="flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
-                        src="images/img_rectangle35.png"
-                        alt="rectangleThirtyFive"
-                      />
-                      <Img
-                        className="flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
-                        src="images/img_rectangle36.png"
-                        alt="rectangleThirtySix"
-                      />
-                      <Img
-                        className="flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
-                        src="images/img_rectangle37.png"
-                        alt="rectangleThirtySeven"
-                      />
-                      <Img
-                        className="flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
-                        src="images/img_rectangle38.png"
-                        alt="rectangleThirtyEight"
-                      />
-                    </div>
-                    <div className="gap-10 grid sm:grid-cols-1 md:grid-cols-3 grid-cols-5 items-start justify-start w-auto md:w-full">
-                      <div className="flex flex-col items-center justify-start w-full">
-                        <Text
-                          className="leading-[24.00px] text-base text-gray-900"
-                          size="txtLatoMedium16Gray900"
-                        >
-                          <span className="text-gray-900 font-lato text-left font-normal">
-                            <>
-                              Car crash surveillance
-                              <br />
-                            </>
-                          </span>
-                          <span className="text-blue-700 font-lato text-left font-medium">
-                            $25.00
-                          </span>
-                          <span className="text-gray-900 font-lato text-left font-medium">
-                            <>
-                              {" "}
-                              <br />
-                            </>
-                          </span>
-                          <span className="text-gray-900 font-lato text-left text-sm font-medium">
-                            12/08/23
-                          </span>
-                          <span className="text-gray-900 font-lato text-left font-medium">
-                            <>
-                              <br />
-                            </>
-                          </span>
-                        </Text>
-                      </div>
-                      <Text
-                        className="leading-[24.00px] text-base text-gray-900 w-full"
-                        size="txtLatoMedium16Gray900"
-                      >
-                        <span className="text-gray-900 font-lato text-left font-normal">
-                          <>
-                            Car crash surveillance
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-blue-700 font-lato text-left font-medium">
-                          $25.00
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            {" "}
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-gray-900 font-lato text-left text-sm font-medium">
-                          12/08/23
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            <br />
-                          </>
-                        </span>
-                      </Text>
-                      <Text
-                        className="leading-[24.00px] text-base text-gray-900 w-full"
-                        size="txtLatoMedium16Gray900"
-                      >
-                        <span className="text-gray-900 font-lato text-left font-normal">
-                          <>
-                            Car crash surveillance
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-blue-700 font-lato text-left font-medium">
-                          $25.00
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            {" "}
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-gray-900 font-lato text-left text-sm font-medium">
-                          12/08/23
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            <br />
-                          </>
-                        </span>
-                      </Text>
-                      <Text
-                        className="leading-[24.00px] text-base text-gray-900 w-full"
-                        size="txtLatoMedium16Gray900"
-                      >
-                        <span className="text-gray-900 font-lato text-left font-normal">
-                          <>
-                            Car crash surveillance
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-blue-700 font-lato text-left font-medium">
-                          $25.00
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            {" "}
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-gray-900 font-lato text-left text-sm font-medium">
-                          12/08/23
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            <br />
-                          </>
-                        </span>
-                      </Text>
-                      <Text
-                        className="leading-[24.00px] text-base text-gray-900 w-full"
-                        size="txtLatoMedium16Gray900"
-                      >
-                        <span className="text-gray-900 font-lato text-left font-normal">
-                          <>
-                            Car crash surveillance
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-blue-700 font-lato text-left font-medium">
-                          $25.00
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            {" "}
-                            <br />
-                          </>
-                        </span>
-                        <span className="text-gray-900 font-lato text-left text-sm font-medium">
-                          12/08/23
-                        </span>
-                        <span className="text-gray-900 font-lato text-left font-medium">
-                          <>
-                            <br />
-                          </>
-                        </span>
-                      </Text>
+                      {Array.from({ length: 10 }).map((item, i) => (
+                        <div key={i}>
+                          <Img
+                            className="common-pointer flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
+                            src="images/img_rectangle39.png"
+                            alt="rectangleThirtyNine"
+                          />
+                          <Text
+                            className="leading-[24.00px] text-base text-gray-900_01 w-full mt-2"
+                            size="txtLatoMedium16Gray90001"
+                          >
+                            <span className="text-gray-900_01 font-lato text-left font-normal">
+                              <>
+                                Car crash surveillance
+                                <br />
+                              </>
+                            </span>
+                            <span className="text-blue-700 font-lato text-left font-medium">
+                              $25.00
+                            </span>
+                            <span className="text-gray-900_01 font-lato text-left font-medium">
+                              <span>
+                                {" "}
+                                <br />
+                              </span>
+                            </span>
+                            <span className="text-gray-900_01 font-lato text-left text-sm font-medium">
+                              12/08/23
+                            </span>
+                            <span className="text-gray-900_01 font-lato text-left font-medium">
+                              <>
+                                <br />
+                              </>
+                            </span>
+                          </Text>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </List>
+
+                {/* cards */}
               </div>
             </div>
-            <div className="flex flex-col items-center justify-start md:ml-[0] ml-[709px] w-[37%] md:w-full">
-              <div className="flex sm:flex-col flex-row sm:gap-14 items-center justify-between w-full">
+            <div className="flex flex-col items-center justify-start md:ml-[0] ml-[53%] w-[43%] md:w-full mb-10">
+              <div className="flex sm:flex-col gap-10 flex-row sm:gap-14 items-center justify-between w-full">
+                <div className="bg-white-A700 border-2 border-indigo-900 border-solid  flex flex-col items-center justify-start p-3 rounded-[16px] w-[30%] sm:w-full">
+                  <Img
+                    className="h-6 w-6"
+                    src="images/img_arrowdown.svg"
+                    alt="arrowdown"
+                  />
+                </div>
                 <Button
-                  className="cursor-pointer flex items-center justify-center min-w-[176px]"
+                  className="cursor-pointer flex items-center justify-center min-w-[150px]"
                   rightIcon={
                     <Img
                       className="h-6 ml-[5px]"
@@ -515,30 +222,22 @@ const ManageFootageOnePage = () => {
                 >
                   <div className="font-bold text-base text-left">Next page</div>
                 </Button>
-                <div className="flex flex-col items-center justify-start">
-                  <div className="flex flex-row items-center justify-between w-full">
-                    <Text
-                      className="text-base text-center text-gray-900"
-                      size="txtLatoMedium16Gray900"
-                    >
-                      page
-                    </Text>
-                    <Button
-                      className="!text-gray-900 border border-gray-500 border-solid cursor-pointer font-medium min-w-[94px] text-base text-center"
-                      shape="round"
-                      color="white_A700"
-                      size="sm"
-                      variant="fill"
-                    >
-                      1
-                    </Button>
-                    <Text
-                      className="text-base text-center text-gray-900"
-                      size="txtLatoMedium16Gray900"
-                    >
-                      of 300
-                    </Text>
-                  </div>
+                <div className="flex flex-row items-center justify-around w-full">
+                  <Text className="text-base text-center leading-6 font-lato  font-semibold text-[#212121] -mr-1">
+                    page
+                  </Text>
+                  <Button
+                    className="!text-[#212121] border font-semibold border-gray-500 border-solid cursor-pointer min-w-[94px] text-base text-center"
+                    shape="round"
+                    color="white_A700"
+                    size="sm"
+                    variant="fill"
+                  >
+                    1
+                  </Button>
+                  <Text className="text-base text-center font-semibold text-[#212121] -ml-5 ">
+                    <pre>of 300</pre>
+                  </Text>
                 </div>
               </div>
             </div>

@@ -3,7 +3,7 @@
 * {
   box-sizing: border-box;
   line-height: normal;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Lato', sans-serif !important;
 }
 
 .source-sans {
