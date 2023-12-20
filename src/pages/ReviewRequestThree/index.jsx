@@ -16,6 +16,11 @@ const buttonOneOptionsList = [
   { label: "Option3", value: "option3" },
 ];
 
+const ReviewRequestOptions = [
+  { label: "Option1", value: "option1" },
+  { label: "Option2", value: "option2" },
+  { label: "Option3", value: "option3" },
+];
 const ManageAffiliatePage = () => {
   const tableData = [
     [
@@ -160,18 +165,34 @@ const ManageAffiliatePage = () => {
               />
             </div>
             <div className="flex flex-col items-start justify-start w-[94%] md:w-full">
-              <div className="flex md:flex-col flex-row md:gap-10 ml-[60%] items-center justify-between w-full">
-                {/* <Button
-                  className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"
-                  shape="round"
-                  color="indigo_900"
-                  size="md"
-                  variant="fill"
-                >
-                  Affiliate Performance
-                </Button> */}
+              <div className="flex md:flex-col flex-row md:gap-10  items-center justify-between w-full">
+                <div className="flex w-[30%] ml-[3%]  items-center gap-3">
+                  <Text className="font-bold font-lato text-base text-[#303030]">
+                    Sort by
+                  </Text>
+                  <SelectBox
+                    className="border border-gray-500_7f border-solid font-semibold text-left text-sm w-[42%] sm:w-full"
+                    placeholderClassName="text-blue_gray-900_a2"
+                    indicator={
+                      <Img
+                        className="h-[5px] mr-[0] w-2.5"
+                        src="images/img_vector.svg"
+                        alt="Vector"
+                      />
+                    }
+                    isMulti={false}
+                    name="button_One"
+                    options={ReviewRequestOptions}
+                    isSearchable={false}
+                    placeholder="Newest-Oldest"
+                    shape="round"
+                    color="white_A700"
+                    size="xs"
+                    variant="fill"
+                  />
+                </div>
 
-                <div className="flex sm:flex-col gap-3 items-center justify-center w-[40%] sm:w-full">
+                <div className="flex sm:flex-col gap-3 items-center justify-center mr-[1.5%]  w-[40%] sm:w-full">
                   <Text
                     className="text-base text-blue_gray-900_01 w-[15%]"
                     size="txtLatoBold16"
@@ -220,7 +241,7 @@ const ManageAffiliatePage = () => {
                   />
                 </div>
               </div>
-              <div className="overflow-auto mt-12 w-[85%] mx-auto">
+              <div className="overflow-auto mt-12 w-[95%] mx-auto">
                 <ProductTable
                   columns={tableColumns}
                   data={tableData}
