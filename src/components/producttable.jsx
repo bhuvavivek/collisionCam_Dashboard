@@ -29,7 +29,7 @@ const ProductTable = ({ columns, data }) => {
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={`px-2 py-3 ${
+                  className={`px-2 py-3 text-center ${
                     cellIndex === row.length - 1 ? "text-[#1976D2]" : ""
                   }`}
                   style={{ border: "1px solid #B9B9B9" }}

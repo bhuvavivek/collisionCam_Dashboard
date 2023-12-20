@@ -99,15 +99,6 @@ const ManageAffiliatePage = () => {
       "Approved",
       "View Details",
     ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
   ];
 
   const tableColumns = [
