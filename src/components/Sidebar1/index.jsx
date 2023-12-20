@@ -1,4 +1,4 @@
-import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
+import { Menu, Sidebar } from "react-pro-sidebar";
 
 import { Img, Line, Text } from "components";
 import { Link, useNavigate } from "react-router-dom";
@@ -82,9 +82,17 @@ const Sidebar1 = (props) => {
         >
           <div className="flex flex-col gap-10 items-center justify-start w-full">
             {sideBarMenu?.map((menu, i) => (
-              <MenuItem key={`sideBarMenuItem${i}`} {...menu}>
-                {menu.label}
-              </MenuItem>
+              // <MenuItem key={`sideBarMenuItem${i}`} {...menu}>
+              //   {menu.label}
+              // </MenuItem>
+              <Link
+                to={menu?.href}
+                className="flex align-middle gap-4 w-full px-6"
+                style={{ alignItems: "center" }}
+              >
+                {menu.icon}
+                <p>{menu.label}</p>
+              </Link>
             ))}
           </div>
           <div className="flex flex-col items-center justify-start mt-[59%]  w-full">
