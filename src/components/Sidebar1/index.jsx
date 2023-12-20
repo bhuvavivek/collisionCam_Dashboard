@@ -87,11 +87,13 @@ const Sidebar1 = (props) => {
               // </MenuItem>
               <Link
                 to={menu?.href}
-                className="flex align-middle gap-4 w-full px-6"
+                className="flex align-middle gap-2 w-full px-6"
                 style={{ alignItems: "center" }}
               >
                 {menu.icon}
-                <p>{menu.label}</p>
+                <p className="text-[#fff] font-lato text-base font-medium">
+                  {menu.label}
+                </p>
               </Link>
             ))}
           </div>
