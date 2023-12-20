@@ -1,9 +1,8 @@
-import React from "react";
-
-import { Button, Img, Input, List, SelectBox, Text } from "components";
+import { Button, Img, Input, SelectBox, Text } from "components";
 
 import { CloseSVG } from "assets/images";
 import Sidebar1 from "components/Sidebar1";
+import React, { useState } from "react";
 
 const languageOneOptionsList = [
   { label: "Option1", value: "option1" },
@@ -13,6 +12,7 @@ const languageOneOptionsList = [
 
 const ReviewRequestPage = () => {
   const [frame348value, setFrame348value] = React.useState("");
+  const [isApprove, setIsApprove] = useState(false);
 
   return (
     <>
@@ -95,7 +95,7 @@ const ReviewRequestPage = () => {
                   </Text>
                   <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid flex flex-col gap-9  justify-start p-4 shadow-bs7 w-full">
                     <Text className="mt-0.5 md:text-3xl text-center sm:text-[28px] text-3xl font-normal source-sans  text-blue_gray-900_01">
-                      Affiliate Request
+                      Free Footage Request
                     </Text>
                     <div className="flex flex-col font-lato gap-4 items-center justify-start mb-[57px] w-full">
                       <div className="flex flex-col items-center justify-start w-full">
@@ -145,58 +145,70 @@ const ReviewRequestPage = () => {
                             </div>
                           </div>
                           <Text className="mt-10 text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
-                            Business information
+                            Requested footage information
                           </Text>
-                          <div className="flex flex-col gap-1.5 items-start justify-start mt-4 w-[17%] md:w-full">
-                            <div className="flex flex-col items-start justify-start w-full">
-                              <Text className="text-base text-blue_gray-900_01">
-                                Company Name:
-                              </Text>
+                          <div className="flex justify-between items-center w-full ">
+                            <div className="flex flex-col gap-1.5 items-start justify-start mt-4 w-full md:w-full">
+                              <div className="flex flex-col items-start justify-center w-full">
+                                <Text className="text-base text-blue_gray-900_01">
+                                  Footage Name:
+                                </Text>
+                              </div>
+                              <div className="flex  items-start justify-start w-full md">
+                                <Text className="text-blue_gray-900_01 font-normal text-sm">
+                                  Car crash surveillance
+                                </Text>
+                              </div>
                             </div>
-                            <div className="flex flex-col items-start justify-start w-[18px] md:w-full">
-                              <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                Nil
-                              </Text>
+                            <div className="flex flex-col gap-1.5 items-end justify-center -mr-[72px] mt-4 w-full md:w-full">
+                              <div className="flex  items-center justify-start w-full ">
+                                <Text className="text-base text-blue_gray-900_01">
+                                  Footage ID Number:
+                                </Text>
+                              </div>
+                              <div className="flex  items-center justify-start w-full md">
+                                <Text className="text-blue_gray-900_01 font-normal text-sm">
+                                  #1350678
+                                </Text>
+                              </div>
                             </div>
                           </div>
-                          <List
-                            className="sm:flex-col flex-row md:gap-10 gap-[326px] grid sm:grid-cols-1 grid-cols-2 mt-[17px] w-[72%]"
-                            orientation="horizontal"
-                          >
-                            <div className="flex flex-col gap-2 items-start justify-start w-full">
-                              <div className="flex flex-col items-start justify-start w-full">
-                                <Text className="text-base text-blue_gray-900_01">
-                                  Website:
-                                </Text>
-                              </div>
-                              <div className="flex flex-col items-start justify-start w-[18px] md:w-full">
-                                <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                  Nil
-                                </Text>
+                          <div className="flex flex-col mt-4">
+                            <div className="text-[ #303030] font-lato text-base font-medium">
+                              Reason for Request:
+                            </div>
+                            <div className="text-[ #303030] font-lato mt-1   text-sm font-normal leading-7">
+                              Lorem ipsum dolor sit amet consectetur. Pretium
+                              pretium nisl pulvinar in in sed sit. Viverra ut
+                              morbi feugiat dolor aliquam diam. Consectetur
+                              elementum eget neque urna sed viverra. Turpis
+                              risus in non eget aliquam tincidunt pharetra.
+                            </div>
+                          </div>
+
+                          <div className="flex flex-col gap-3.5 items-start justify-start mt-10    w-full">
+                            <Text className="text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
+                              Additional Information
+                            </Text>
+                            <div className="flex flex-col items-start justify-start pb-1 pr-1 w-full">
+                              <div className="flex flex-col gap-2 items-start justify-start w-[21%] md:w-full">
+                                <div className="flex flex-col items-start justify-start w-full">
+                                  <Text className="text-base text-lato  text-blue_gray-900_01">
+                                    Partnered law firms :
+                                  </Text>
+                                </div>
+                                <div className="flex   items-start justify-start ">
+                                  <Text className="font-lato leading-7 text-blue_gray-900_01 font-normal text-sm">
+                                    Peter $ Sons Law firm
+                                  </Text>
+                                </div>
                               </div>
                             </div>
-                            <div className="flex flex-col gap-1.5 items-start justify-start w-full">
-                              <div className="flex flex-col items-center justify-start w-full">
-                                <Text
-                                  className="text-base text-blue_gray-900_01"
-                                  size="txtLatoMedium16"
-                                >
-                                  Industry/Niche:
-                                </Text>
-                              </div>
-                              <div
-                                className="flex flex-col items-start
-                               justify-start w-[18px] md:w-full"
-                              >
-                                <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                  Nil
-                                </Text>
-                              </div>
-                            </div>
-                          </List>
-                          <div className="flex flex-col gap-2 items-start justify-start mt-[19px] w-[19%] md:w-full">
+                          </div>
+
+                          <div className="flex flex-col gap-2 items-start justify-start mt-8  md:w-full">
                             <div className="flex flex-col items-start justify-start w-full">
-                              <Text className="text-base text-blue_gray-900_01">
+                              <Text className="text-base font-medium font-lato text-blue_gray-900_01">
                                 Upload Document:
                               </Text>
                             </div>
@@ -205,61 +217,6 @@ const ReviewRequestPage = () => {
                               size="txtLatoRegular14Blue700"
                             >
                               Police_report.pdf
-                            </Text>
-                          </div>
-                          <Text className="mt-[41px] text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
-                            Affiliate Experience
-                          </Text>
-                          <div className="flex flex-col gap-[13px] items-start justify-start mt-2.5 w-[98%] md:w-full">
-                            <div className="flex flex-col items-center justify-start">
-                              <Text className="text-base text-blue_gray-900_01">
-                                Experience:
-                              </Text>
-                            </div>
-                            <Text className="h-16 text-blue_gray-900_01 font-normal text-sm w-[98%]">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit. Ut auctor nisl nec dolor tristique, ac
-                              facilisis quam fermentum. Sed ac libero et erat
-                              elementum tincidunt. Aenean euismod ante vel purus
-                              aliquam, vel tempor nulla lacinia. Suspendisse
-                              potenti. Proin aliquet quam et elit ullamcorper,
-                              vel semper augue efficitur. Sed consectetur ipsum
-                              vel justo consectetur, ac vehicula odio
-                              sollicitudin. Morbi nec est vel justo dictum
-                              condimentum ac vel ex.
-                            </Text>
-                          </div>
-                          <div className="flex flex-col gap-3.5 items-start justify-start mt-10 w-full">
-                            <Text className="text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
-                              Additional Information
-                            </Text>
-                            <div className="flex flex-col items-start justify-start pb-1 pr-1 w-full">
-                              <div className="flex flex-col gap-[11px] items-start justify-start w-[21%] md:w-full">
-                                <div className="flex flex-col items-start justify-start w-full">
-                                  <Text className="text-base text-blue_gray-900_01">
-                                    Promotion Methods:
-                                  </Text>
-                                </div>
-                                <div className="flex flex-col h-[17px] items-start justify-start w-[17px]">
-                                  <Text className="h-[17px] text-blue_gray-900_01 font-normal text-sm">
-                                    Nil
-                                  </Text>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col items-start justify-start w-full">
-                        <div className="flex flex-col gap-2.5 items-start justify-start mb-[3px] w-[34%] md:w-full">
-                          <div className="flex flex-col items-start justify-start w-full">
-                            <Text className="text-base text-blue_gray-900_01">
-                              Additional Comment or Question:
-                            </Text>
-                          </div>
-                          <div className="flex flex-col h-[17px] items-start justify-start w-[17px]">
-                            <Text className="h-[17px] text-blue_gray-900_01 font-normal text-sm">
-                              Nil
                             </Text>
                           </div>
                         </div>
@@ -317,27 +274,40 @@ const ReviewRequestPage = () => {
                       Description
                     </Text>
                   </div>
-                  <Input
-                    name="groupFortySeven"
-                    placeholder="Add a more detailed description...."
-                    className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-left w-full"
-                    wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[97%]"
-                    size="md"
-                  ></Input>
+
+                  {isApprove ? (
+                    <div className="mt-3 w-[60%] mx-10">
+                      Lorem ipsum dolor sit amet consectetur. Pretium pretium
+                      nisl pulvinar in in sed sit. Viverra ut morbi feugiat
+                      dolor aliquam diam. Consectetur elementum eget neque urna
+                      sed viverra. Turpis risus in non eget aliquam tincidunt
+                      pharetra.
+                    </div>
+                  ) : (
+                    <Input
+                      name="groupFortySeven"
+                      placeholder="Add a more detailed description...."
+                      className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-left w-full"
+                      wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[97%]"
+                      size="md"
+                    ></Input>
+                  )}
                 </div>
               </div>
 
-              <div className="flex w[94%]  justify-start items-center mt-5 mx-10 gap-10 ">
-                <Button className="bg-[#ffff] border-2 border-solid border-1 border-[#29207E] rounded-md px-10 py-2 text-[#29207E]">
-                  <span className="text-[#29207E] font-lato text-base font-bold">
-                    Save
-                  </span>
-                </Button>
+              {isApprove ? null : (
+                <div className="flex w[94%]  justify-start items-center mt-5 mx-10 gap-10 ">
+                  <Button className="bg-[#ffff] border-2 border-solid border-1 border-[#29207E] rounded-md px-10 py-2 text-[#29207E]">
+                    <span className="text-[#29207E] font-lato text-base font-bold">
+                      Save
+                    </span>
+                  </Button>
 
-                <Text className="text-base font-lato font-bold text-[#29207E]">
-                  Cancel
-                </Text>
-              </div>
+                  <Text className="text-base font-lato font-bold text-[#29207E]">
+                    Cancel
+                  </Text>
+                </div>
+              )}
             </div>
             <div className="w-full relative mb-10 mr-10 flex item-center justify-between">
               <div className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] ">
