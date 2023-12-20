@@ -89,7 +89,7 @@ const Sidebar1 = (props) => {
           </div>
           <div className="flex flex-col items-center justify-start mt-[59%]  w-full">
             <Link
-              to="/settings"
+              to="/settingsone"
               className="h-[50px] relative w-full cursor-pointer"
             >
               <div className="flex flex-row gap-2 h-full items-center justify-start ml-[9%] w-auto">

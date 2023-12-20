@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Button, Img, Input, Line, Switch, Text } from "components";
+import { Link } from "react-router-dom";
 
 import Sidebar1 from "components/Sidebar1";
 import { CloseSVG } from "../../assets/images";
@@ -63,24 +64,24 @@ const SettingsOnePage = () => {
               </Text>
               <div className="flex md:flex-col flex-row font-lato md:gap-10 items-end justify-between mt-5 w-full">
                 <div className="flex sm:flex-1 sm:flex-col flex-row sm:gap-10 gap-20 items-start justify-start md:mt-0 mt-6 w-auto sm:w-full">
-                  <Text
-                    className="text-base text-blue-700 w-auto"
-                    size="txtLatoBold16Blue700"
+                  <Link
+                    to="/settingsone"
+                    className="text-base font-lato font-bold text-blue-700 w-auto"
                   >
                     General settings
-                  </Text>
-                  <Text
-                    className="text-base text-blue_gray-900_01 w-auto"
-                    size="txtLatoBold16"
+                  </Link>
+                  <Link
+                    to="/settingstwo"
+                    className="text-base font-bold font-lato text-blue_gray-900_01 w-auto"
                   >
                     Request settings
-                  </Text>
-                  <Text
-                    className="text-base text-blue_gray-900_01 w-auto"
-                    size="txtLatoBold16"
+                  </Link>
+                  <Link
+                    to="/settings"
+                    className="text-base text-blue_gray-900_01 w-auto font-bold font-lato"
                   >
                     Security settings
-                  </Text>
+                  </Link>
                 </div>
                 <div className="flex md:flex-1 flex-col items-center justify-start w-[13%] md:w-full">
                   <Button
