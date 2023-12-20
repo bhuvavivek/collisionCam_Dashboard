@@ -44,10 +44,7 @@ const LoginOnePage = () => {
                 <div className="flex flex-col gap-5 items-start justify-start w-full">
                   <div className="flex flex-col items-start justify-start w-full">
                     <div className="flex flex-col gap-1.5 items-start justify-start w-full">
-                      <Text
-                        className="text-base text-blue_gray-900_01 w-auto"
-                        size="txtLatoMedium16"
-                      >
+                      <Text className=" text-blue_gray-900_01 w-auto font-lato text-base font-medium ">
                         Email
                       </Text>
                       <Input
@@ -61,10 +58,7 @@ const LoginOnePage = () => {
                   </div>
                   <div className="flex flex-col items-start justify-start w-full">
                     <div className="flex flex-col gap-1.5 items-start justify-start w-full">
-                      <Text
-                        className="text-base text-blue_gray-900_01 w-auto"
-                        size="txtLatoMedium16"
-                      >
+                      <Text className=" text-blue_gray-900_01 w-auto text-base font-lato font-medium">
                         Password
                       </Text>
                       <Input
@@ -85,16 +79,13 @@ const LoginOnePage = () => {
                       alt="close"
                     />
                     <div className="flex flex-1 flex-col items-start justify-start w-full">
-                      <Text
-                        className="text-base text-blue_gray-900_01 w-full"
-                        size="txtLatoMedium16"
-                      >
+                      <Text className="text-base text-blue_gray-900_01 w-full  font-lato font-medium">
                         Keep me logged in
                       </Text>
                     </div>
                   </div>
                   <Button
-                    className="common-pointer bg-transparent cursor-pointer font-semibold h-5 text-center text-indigo-900 text-sm"
+                    className="common-pointer bg-transparent leading-5  cursor-pointer font-semibold h-5 text-center text-indigo-900 text-sm"
                     onClick={() => navigate("/login")}
                     size="xs"
                   >
@@ -103,7 +94,7 @@ const LoginOnePage = () => {
                 </div>
                 <div className="flex flex-col gap-4 items-start justify-start w-full">
                   <Button
-                    className="common-pointer cursor-pointer font-bold leading-[normal] rounded-[19px] shadow-bs text-base text-center w-full"
+                    className="common-pointer cursor-pointer font-bold font-lato leading-[normal] rounded-[19px] shadow-bs text-base text-center w-full"
                     onClick={() => navigate("/dashboard")}
                     color="indigo_900"
                     size="sm"
@@ -126,7 +117,7 @@ const LoginOnePage = () => {
                       size="sm"
                       variant="fill"
                     >
-                      <div className="!text-blue_gray-800 font-bold leading-[normal] text-base text-left">
+                      <div className="!text-blue_gray-800 font-bold font-lato leading-[normal] text-base text-left">
                         Sign in with Google
                       </div>
                     </Button>
