@@ -29,7 +29,7 @@ const ManageAffiliateOnePage = () => {
                     placeholder="Search "
                     value={frame348value}
                     onChange={(e) => setFrame348value(e)}
-                    className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-center w-full"
+                    className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-left w-full"
                     wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
                     prefix={
                       <Img

@@ -1,22 +1,116 @@
 import React from "react";
 
 import { Button, Img, Input, SelectBox, Text } from "components";
-
 import Sidebar1 from "components/Sidebar1";
+import ProductTable from "components/producttable";
 import { CloseSVG } from "../../assets/images";
 
-const hideDocumentOptionsList = [
+const buttonOptionsList = [
   { label: "Option1", value: "option1" },
   { label: "Option2", value: "option2" },
   { label: "Option3", value: "option3" },
 ];
-const languageOneOptionsList = [
+const buttonOneOptionsList = [
   { label: "Option1", value: "option1" },
   { label: "Option2", value: "option2" },
   { label: "Option3", value: "option3" },
 ];
 
-const ReviewRequestThreePage = () => {
+const ManageAffiliatePage = () => {
+  const tableData = [
+    [
+      "Grace Villa",
+      "+9167857432342",
+      "Gracevilla95@gmail.com",
+      "12/05/2023",
+      "Business_location.pdf",
+      "Approved",
+      "View Details",
+    ],
+    [
+      "Grace Villa",
+      "+9167857432342",
+      "Gracevilla95@gmail.com",
+      "12/05/2023",
+      "Business_location.pdf",
+      "Approved",
+      "View Details",
+    ],
+    [
+      "Grace Villa",
+      "+9167857432342",
+      "Gracevilla95@gmail.com",
+      "12/05/2023",
+      "Business_location.pdf",
+      "Approved",
+      "View Details",
+    ],
+    [
+      "Grace Villa",
+      "+9167857432342",
+      "Gracevilla95@gmail.com",
+      "12/05/2023",
+      "Business_location.pdf",
+      "Approved",
+      "View Details",
+    ],
+    [
+      "Grace Villa",
+      "+9167857432342",
+      "Gracevilla95@gmail.com",
+      "12/05/2023",
+      "Business_location.pdf",
+      "Approved",
+      "View Details",
+    ],
+    [
+      "Grace Villa",
+      "+9167857432342",
+      "Gracevilla95@gmail.com",
+      "12/05/2023",
+      "Business_location.pdf",
+      "Approved",
+      "View Details",
+    ],
+    [
+      "Grace Villa",
+      "+9167857432342",
+      "Gracevilla95@gmail.com",
+      "12/05/2023",
+      "Business_location.pdf",
+      "Approved",
+      "View Details",
+    ],
+    [
+      "Grace Villa",
+      "+9167857432342",
+      "Gracevilla95@gmail.com",
+      "12/05/2023",
+      "Business_location.pdf",
+      "Approved",
+      "View Details",
+    ],
+    [
+      "Grace Villa",
+      "+9167857432342",
+      "Gracevilla95@gmail.com",
+      "12/05/2023",
+      "Business_location.pdf",
+      "Approved",
+      "View Details",
+    ],
+  ];
+
+  const tableColumns = [
+    "Name",
+    "Phone Number",
+    "Email Address",
+    "Request Date",
+    "Uploaded Document",
+    "Approval Status",
+    "Details",
+  ];
+
   const [frame348value, setFrame348value] = React.useState("");
 
   return (
@@ -24,15 +118,16 @@ const ReviewRequestThreePage = () => {
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full">
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
           <Sidebar1 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
-          <div className="flex flex-1 flex-col md:gap-10 gap-[159px] items-center justify-start md:px-5 w-full">
-            <div className="flex flex-col gap-[43px] justify-start w-full">
-              <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
+          <div className="flex flex-1 flex-col md:gap-10 gap-12 items-center justify-start md:px-5 w-full">
+            <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
+              <div className="w-[43%]">
+                {" "}
                 <Input
                   name="frame348"
                   placeholder="Search "
                   value={frame348value}
                   onChange={(e) => setFrame348value(e)}
-                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-center w-full"
+                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-start w-full"
                   wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
                   prefix={
                     <Img
@@ -55,131 +150,119 @@ const ReviewRequestThreePage = () => {
                       viewBox="0 0 32 32"
                     />
                   }
-                ></Input>
-                <Img
-                  className="h-8 mr-[17px] w-8"
-                  src="images/img_claritynotificationline.svg"
-                  alt="claritynotifica"
-                />
+                ></Input>{" "}
               </div>
-              <div className="flex flex-col items-center justify-start ml-10 md:ml-[0] w-[13%] md:w-full">
-                <SelectBox
-                  className="font-bold leading-[normal] text-base text-blue_gray-900_01 text-left w-full"
-                  placeholderClassName="text-blue_gray-900_01"
-                  indicator={
-                    <Img
-                      className="h-6 w-6"
-                      src="images/img_arrowdown_black_900.svg"
-                      alt="arrow_down"
-                    />
-                  }
-                  isMulti={false}
-                  name="frame423"
-                  options={hideDocumentOptionsList}
-                  isSearchable={false}
-                  placeholder="Hide document"
-                />
-              </div>
+
+              <Img
+                className="h-8 mr-[17px] w-8"
+                src="images/img_claritynotificationline.svg"
+                alt="claritynotifica"
+              />
             </div>
-            <div className="flex flex-col font-sourcesanspro md:gap-10 gap-40 items-center justify-start w-[94%] md:w-full">
-              <div className="flex flex-col gap-[15px] items-start justify-start w-full">
-                <Text
-                  className="md:text-3xl sm:text-[28px] text-[32px] text-blue_gray-900_01"
-                  size="txtSourceSansProRegular32"
+            <div className="flex flex-col items-start justify-start w-[94%] md:w-full">
+              <div className="flex md:flex-col flex-row md:gap-10 ml-[60%] items-center justify-between w-full">
+                {/* <Button
+                  className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"
+                  shape="round"
+                  color="indigo_900"
+                  size="md"
+                  variant="fill"
                 >
-                  Administration Use
-                </Text>
-                <div className="flex flex-col font-lato items-start justify-start w-full">
-                  <div className="flex flex-row gap-2 items-center justify-start w-[28%] md:w-full">
-                    <Text
-                      className="text-base text-blue_gray-900_01"
-                      size="txtLatoBold16"
-                    >
-                      Approval Status{" "}
-                    </Text>
-                    <SelectBox
-                      className="!text-blue_gray-900_87 border border-gray-500_7f border-solid font-semibold text-left text-sm w-3/5 sm:w-full"
-                      placeholderClassName="!text-blue_gray-900_87"
-                      indicator={
-                        <Img
-                          className="h-[5px] mr-[0] w-2.5"
-                          src="images/img_vector.svg"
-                          alt="Vector"
-                        />
-                      }
-                      isMulti={false}
-                      name="language_One"
-                      options={languageOneOptionsList}
-                      isSearchable={false}
-                      placeholder="Select Status "
-                      shape="round"
-                      color="white_A700"
-                      size="xs"
-                      variant="fill"
-                    />
-                  </div>
-                  <div className="flex flex-row gap-2 items-center justify-start mt-7 w-[14%] md:w-full">
-                    <Img
-                      className="h-8 w-8"
-                      src="images/img_solarhamburgermenubroken.svg"
-                      alt="solarhamburgerm"
-                    />
-                    <Text
-                      className="text-[22px] text-blue_gray-900_01 sm:text-lg md:text-xl"
-                      size="txtLatoMedium22"
-                    >
-                      Description
-                    </Text>
-                  </div>
-                  <Input
-                    name="moredetaileddescription"
-                    placeholder="Add a more detailed description...."
-                    className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-left w-full"
-                    wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[97%]"
-                    size="md"
-                  ></Input>
-                </div>
-              </div>
-              <div className="flex sm:flex-col flex-row font-lato md:gap-10 items-center justify-between pl-4 w-full">
-                <div className="flex sm:flex-1 flex-row gap-4 items-start justify-between w-[7%] sm:w-full">
-                  <Img
-                    className="h-6 w-6"
-                    src="images/img_contrast.svg"
-                    alt="contrast"
-                  />
+                  Affiliate Performance
+                </Button> */}
+
+                <div className="flex sm:flex-col gap-3 items-center justify-center w-[40%] sm:w-full">
                   <Text
-                    className="mt-[3px] text-base text-indigo-900"
-                    size="txtLatoBold16Indigo900"
+                    className="text-base text-blue_gray-900_01 w-[15%]"
+                    size="txtLatoBold16"
                   >
-                    Back
+                    Filter by
                   </Text>
-                </div>
-                <div className="flex sm:flex-1 flex-row gap-4 items-center justify-between w-[35%] sm:w-full">
-                  <div className="flex flex-col items-center justify-start">
-                    <Button
-                      className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"
-                      shape="round"
-                      color="indigo_900"
-                      size="md"
-                      variant="fill"
-                    >
-                      Edit
-                    </Button>
-                  </div>
-                  <Input
-                    name="delete"
-                    placeholder="Delete"
-                    className="font-bold leading-[normal] p-0 placeholder:text-white-A700 text-base text-left w-full"
-                    wrapClassName="flex"
-                    prefix={
+                  <SelectBox
+                    className="!text-blue_gray-900_01 border border-gray-500_7f border-solid font-semibold text-left text-sm w-[33%] sm:w-full"
+                    placeholderClassName="!text-blue_gray-900_01"
+                    indicator={
                       <Img
-                        className="h-6 mr-4 my-auto"
-                        src="images/img_materialsymbolslightdeleteoutline.svg"
-                        alt="material-symbols-light:delete-outline"
+                        className="h-[5px] mr-[0] w-2.5"
+                        src="images/img_vector.svg"
+                        alt="Vector"
                       />
                     }
-                    color="red_700"
-                  ></Input>
+                    isMulti={false}
+                    name="button"
+                    options={buttonOptionsList}
+                    isSearchable={false}
+                    placeholder="Approved"
+                    shape="round"
+                    color="white_A700"
+                    size="xs"
+                    variant="fill"
+                  />
+                  <SelectBox
+                    className="border border-gray-500_7f border-solid font-semibold text-left text-sm w-[42%] sm:w-full"
+                    placeholderClassName="text-blue_gray-900_a2"
+                    indicator={
+                      <Img
+                        className="h-[5px] mr-[0] w-2.5"
+                        src="images/img_vector.svg"
+                        alt="Vector"
+                      />
+                    }
+                    isMulti={false}
+                    name="button_One"
+                    options={buttonOneOptionsList}
+                    isSearchable={false}
+                    placeholder="Newest-Oldest"
+                    shape="round"
+                    color="white_A700"
+                    size="xs"
+                    variant="fill"
+                  />
+                </div>
+              </div>
+              <div className="overflow-auto mt-12 w-[85%] mx-auto">
+                <ProductTable
+                  columns={tableColumns}
+                  data={tableData}
+                ></ProductTable>
+              </div>
+              <div className="flex flex-col items-center justify-start md:ml-[0] ml-[53%] my-14  w-[43%] md:w-full">
+                <div className="flex sm:flex-col gap-5 flex-row sm:gap-14 items-center justify-end w-full">
+                  <Button
+                    className="cursor-pointer ml-[10%] flex items-center justify-center min-w-[150px]"
+                    rightIcon={
+                      <Img
+                        className="h-6 ml-[5px]"
+                        src="images/img_arrowright.svg"
+                        alt="arrow_right"
+                      />
+                    }
+                    shape="round"
+                    color="indigo_900"
+                    size="md"
+                    variant="fill"
+                  >
+                    <div className="font-bold text-base text-left">
+                      Next page
+                    </div>
+                  </Button>
+                  <div className="flex flex-row items-center gap-5 justify-end w-full">
+                    <Text className="text-base text-center mr-3 leading-6 font-lato  font-semibold text-[#212121] ">
+                      page
+                    </Text>
+                    <Button
+                      className="!text-[#212121] border font-semibold border-gray-500 border-solid cursor-auto min-w-[94px] text-base text-center"
+                      shape="round"
+                      color="white_A700"
+                      size="sm"
+                      variant="fill"
+                    >
+                      1
+                    </Button>
+                    <Text className="text-base text-center font-semibold text-[#212121] -ml-3">
+                      <pre>of 300</pre>
+                    </Text>
+                  </div>
                 </div>
               </div>
             </div>
@@ -190,4 +273,4 @@ const ReviewRequestThreePage = () => {
   );
 };
 
-export default ReviewRequestThreePage;
+export default ManageAffiliatePage;

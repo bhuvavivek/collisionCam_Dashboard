@@ -3,6 +3,7 @@ import React from "react";
 import { Button, Img, Input, Text } from "components";
 
 import Sidebar1 from "components/Sidebar1";
+import { Link } from "react-router-dom";
 import { CloseSVG } from "../../assets/images";
 
 const ManageFootagePage = () => {
@@ -141,7 +142,10 @@ const ManageFootagePage = () => {
               {/* setions for button and other things  */}
 
               <div className="w-[90%] relative flex item-center justify-between">
-                <div className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] ">
+                <Link
+                  to="/managefootageone"
+                  className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] "
+                >
                   {" "}
                   <Img
                     className=" h-6  w-6"
@@ -152,7 +156,7 @@ const ManageFootagePage = () => {
                     {" "}
                     Back{" "}
                   </Text>
-                </div>
+                </Link>
 
                 <div className="  relative flex flex-row gap-4 items-center justify-end  w-[38%]">
                   <div className="cursor-pointer w-[50%] p-2">

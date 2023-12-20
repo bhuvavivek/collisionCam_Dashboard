@@ -1,9 +1,15 @@
 import { Menu, MenuItem, Sidebar } from "react-pro-sidebar";
 
 import { Img, Line, Text } from "components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Sidebar1 = (props) => {
+  const navigate = useNavigate();
+
+  const handleButtonClick = () => {
+    // Use navigate to navigate to a different route
+    navigate("/loginone");
+  };
   const sideBarMenu = [
     {
       icon: (
@@ -38,7 +44,7 @@ const Sidebar1 = (props) => {
         />
       ),
       label: "Review Requests",
-      href: "/reviewrequest",
+      href: "/reviewrequestthree",
       active: window.location.pathname === "/reviewrequest",
     },
     {
@@ -137,7 +143,10 @@ const Sidebar1 = (props) => {
               >
                 Testing Account
               </Text>
-              <div className="h-7 w-7">
+              <div
+                onClick={handleButtonClick}
+                className="h-7 w-7 cursor-pointer"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="32"

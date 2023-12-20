@@ -3,6 +3,7 @@ import React from "react";
 import { Button, Img, Input, List, SelectBox, Text } from "components";
 
 import Sidebar1 from "components/Sidebar1";
+import { Link } from "react-router-dom";
 import { CloseSVG } from "../../assets/images";
 
 const buttonOptionsList = [
@@ -32,35 +33,37 @@ const ManageFootageOnePage = () => {
           <div className="flex flex-1 flex-col md:gap-10 gap-9 justify-start md:px-5 w-full">
             <div className="flex flex-col md:gap-10 gap-9 items-center justify-start w-full">
               <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
-                <Input
-                  name="frame348"
-                  placeholder="Search "
-                  value={frame348value}
-                  onChange={(e) => setFrame348value(e)}
-                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-center w-full"
-                  wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
-                  prefix={
-                    <Img
-                      className="cursor-pointer h-8 mr-2.5 my-auto"
-                      src="images/img_search_blue_gray_900_01.svg"
-                      alt="search"
-                    />
-                  }
-                  suffix={
-                    <CloseSVG
-                      fillColor="#30303090"
-                      className="cursor-pointer h-8 my-auto"
-                      onClick={() => setFrame348value("")}
-                      style={{
-                        visibility:
-                          frame348value?.length <= 0 ? "hidden" : "visible",
-                      }}
-                      height={32}
-                      width={32}
-                      viewBox="0 0 32 32"
-                    />
-                  }
-                ></Input>
+                <div className="w-[43%]">
+                  <Input
+                    name="frame348"
+                    placeholder="Search "
+                    value={frame348value}
+                    onChange={(e) => setFrame348value(e)}
+                    className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-left w-full"
+                    wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
+                    prefix={
+                      <Img
+                        className="cursor-pointer h-8 mr-2.5 my-auto"
+                        src="images/img_search_blue_gray_900_01.svg"
+                        alt="search"
+                      />
+                    }
+                    suffix={
+                      <CloseSVG
+                        fillColor="#30303090"
+                        className="cursor-pointer h-8 my-auto"
+                        onClick={() => setFrame348value("")}
+                        style={{
+                          visibility:
+                            frame348value?.length <= 0 ? "hidden" : "visible",
+                        }}
+                        height={32}
+                        width={32}
+                        viewBox="0 0 32 32"
+                      />
+                    }
+                  ></Input>
+                </div>
                 <Img
                   className="h-8 mr-[17px] w-8"
                   src="images/img_claritynotificationline.svg"
@@ -154,7 +157,7 @@ const ManageFootageOnePage = () => {
                   <div className="flex flex-1 flex-col gap-2 items-center justify-start w-full ">
                     <div className="gap-10 grid sm:grid-cols-1 md:grid-cols-3 grid-cols-5 items-center justify-between w-full">
                       {Array.from({ length: 10 }).map((item, i) => (
-                        <div key={i}>
+                        <Link to={"/managefootage"} key={i}>
                           <Img
                             className="common-pointer flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
                             src="images/img_rectangle39.png"
@@ -188,7 +191,7 @@ const ManageFootageOnePage = () => {
                               </>
                             </span>
                           </Text>
-                        </div>
+                        </Link>
                       ))}
                     </div>
                   </div>

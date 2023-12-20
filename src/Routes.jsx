@@ -1,7 +1,11 @@
-import Home from "pages/Home";
 import NotFound from "pages/NotFound";
 import React from "react";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
 const ManageAffiliateOne = React.lazy(() => import("pages/ManageAffiliateOne"));
 const ReviewRequestThree = React.lazy(() => import("pages/ReviewRequestThree"));
 const Affiliateperformance = React.lazy(() =>
@@ -24,7 +28,7 @@ const ProjectRoutes = () => {
     <React.Suspense fallback={<>Loading...</>}>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Navigate to={"/dashboard"} />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/loginone" element={<LoginOne />} />
           <Route path="/dashboard" element={<Dashboard />} />
