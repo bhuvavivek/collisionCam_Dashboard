@@ -21,7 +21,7 @@ const ReviewRequestTwoPage = () => {
 
   return (
     <>
-      <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto pb-[141px] w-full">
+      <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto  w-full">
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
           <Sidebar1 className="!sticky !w-[262px] flex h-screen md:hidden  bg-indigo-900 justify-start overflow-auto md:px-5 top-[0]" />
           <div className="flex flex-1 flex-col gap-[43px] items-center justify-start md:px-5 w-full">
@@ -103,7 +103,7 @@ const ReviewRequestTwoPage = () => {
                         Personal Information
                       </Text>
                       <div className="flex flex-col gap-2 items-start justify-start ml-1 md:ml-[0] mt-3.5 w-[11%] md:w-full">
-                        <div className="flex flex-col items-center justify-start w-full">
+                        <div className="flex flex-col items-start justify-start w-full">
                           <Text
                             className="text-base text-blue_gray-900_01"
                             size="txtLatoMedium16"
@@ -122,7 +122,7 @@ const ReviewRequestTwoPage = () => {
                       </div>
                       <div className="flex flex-row items-center justify-between ml-1 md:ml-[0] mt-[17px] w-[71%] md:w-full">
                         <div className="flex flex-col gap-[9px] items-start justify-start w-[31%]">
-                          <div className="flex flex-col items-center justify-start">
+                          <div className="flex flex-col items-start justify-start">
                             <Text
                               className="text-base text-blue_gray-900_01"
                               size="txtLatoMedium16"
@@ -130,7 +130,7 @@ const ReviewRequestTwoPage = () => {
                               Email address:
                             </Text>
                           </div>
-                          <div className="flex flex-col items-center justify-start w-full">
+                          <div className="flex flex-col items-start justify-start w-full">
                             <Text
                               className="text-blue_gray-900_01 text-sm"
                               size="txtLatoRegular14"
@@ -169,7 +169,7 @@ const ReviewRequestTwoPage = () => {
                         orientation="horizontal"
                       >
                         <div className="flex flex-col gap-2 items-start justify-start w-full">
-                          <div className="flex flex-col items-center justify-start w-full">
+                          <div className="flex flex-col items-start justify-start w-full">
                             <Text
                               className="text-base text-blue_gray-900_01"
                               size="txtLatoMedium16"
@@ -177,7 +177,7 @@ const ReviewRequestTwoPage = () => {
                               Date of Incident:
                             </Text>
                           </div>
-                          <div className="flex flex-col items-center justify-start">
+                          <div className="flex flex-col items-start justify-start">
                             <Text
                               className="text-blue_gray-900_01 text-sm"
                               size="txtLatoRegular14"
@@ -187,7 +187,7 @@ const ReviewRequestTwoPage = () => {
                           </div>
                         </div>
                         <div className="flex flex-col gap-2 items-start justify-start w-full">
-                          <div className="flex flex-col items-center justify-start w-full">
+                          <div className="flex flex-col items-start justify-start w-full">
                             <Text
                               className="text-base text-blue_gray-900_01"
                               size="txtLatoMedium16"
@@ -195,7 +195,7 @@ const ReviewRequestTwoPage = () => {
                               Location of Incident:
                             </Text>
                           </div>
-                          <div className="flex flex-col items-center justify-start">
+                          <div className="flex flex-col items-start justify-start">
                             <Text
                               className="text-blue_gray-900_01 text-sm"
                               size="txtLatoRegular14"
@@ -206,7 +206,7 @@ const ReviewRequestTwoPage = () => {
                         </div>
                       </List>
                       <div className="flex flex-col gap-[5px] items-start justify-start mt-[19px] w-full">
-                        <div className="flex flex-col items-center justify-start">
+                        <div className="flex flex-col items-start justify-start">
                           <Text
                             className="text-base text-blue_gray-900_01"
                             size="txtLatoMedium16"
@@ -214,7 +214,7 @@ const ReviewRequestTwoPage = () => {
                             Description of Incident:
                           </Text>
                         </div>
-                        <div className="flex flex-col items-center justify-start w-full">
+                        <div className="flex flex-col items-start justify-start w-full">
                           <Text
                             className="leading-[26.00px] text-blue_gray-900_01 text-sm w-full"
                             size="txtLatoRegular14"
@@ -228,7 +228,7 @@ const ReviewRequestTwoPage = () => {
                         </div>
                       </div>
                       <div className="flex flex-col gap-2 items-start justify-start mt-4 w-[26%] md:w-full">
-                        <div className="flex flex-col items-center justify-start w-full">
+                        <div className="flex flex-col items-start justify-start w-full">
                           <Text
                             className="text-base text-blue_gray-900_01"
                             size="txtLatoMedium16"
@@ -236,7 +236,7 @@ const ReviewRequestTwoPage = () => {
                             Claim Reference Number:
                           </Text>
                         </div>
-                        <div className="flex flex-col items-center justify-start w-[18px] md:w-full">
+                        <div className="flex flex-col items-start  justify-start w-[18px] md:w-full">
                           <Text
                             className="text-blue_gray-900_01 text-sm"
                             size="txtLatoRegular14"
@@ -251,9 +251,9 @@ const ReviewRequestTwoPage = () => {
                       >
                         Motives
                       </Text>
-                      <div className="flex flex-col items-center justify-start mt-3.5 w-full">
+                      <div className="flex flex-col items-start justify-start mt-3.5 w-full">
                         <div className="flex flex-col gap-[5px] items-start justify-start w-full">
-                          <div className="flex flex-col items-center justify-start">
+                          <div className="flex flex-col items-start justify-start">
                             <Text
                               className="text-base text-blue_gray-900_01"
                               size="txtLatoMedium16"
@@ -261,7 +261,7 @@ const ReviewRequestTwoPage = () => {
                               Reasons for Selling:
                             </Text>
                           </div>
-                          <div className="flex flex-col items-center justify-start w-full">
+                          <div className="flex flex-col items-start justify-start w-full">
                             <Text
                               className="leading-[26.00px] text-blue_gray-900_01 text-sm w-full"
                               size="txtLatoRegular14"
@@ -275,7 +275,7 @@ const ReviewRequestTwoPage = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex flex-col items-center justify-start mt-[17px]">
+                      <div className="flex flex-col items-start justify-start mt-[17px]">
                         <Text
                           className="text-base text-blue_gray-900_01"
                           size="txtLatoMedium16"
@@ -351,46 +351,67 @@ const ReviewRequestTwoPage = () => {
                   ></Input>
                 </div>
               </div>
-              <div className="flex sm:flex-col flex-row font-lato md:gap-10 items-center justify-between mt-40 pl-4 w-full">
-                <div className="flex sm:flex-1 flex-row gap-4 items-start justify-between w-[7%] sm:w-full">
+              <div className="w-full relative mb-10 mt-7 mr-10 flex item-center justify-between">
+                <div className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] ">
+                  {" "}
                   <Img
-                    className="h-6 w-6"
+                    className=" h-6  w-6"
                     src="images/img_contrast.svg"
                     alt="contrast"
                   />
-                  <Text
-                    className="mt-[3px] text-base text-indigo-900"
-                    size="txtLatoBold16Indigo900"
-                  >
-                    Back
+                  <Text className="text-[#29207E] font-lato font-bold text-xl">
+                    {" "}
+                    Back{" "}
                   </Text>
                 </div>
-                <div className="flex sm:flex-1 flex-row gap-4 items-center justify-between w-[35%] sm:w-full">
-                  <div className="flex flex-col items-center justify-start">
+
+                <div className="  relative flex flex-row gap-4 items-center justify-end  w-[38%]">
+                  <div className="cursor-pointer w-[50%] p-2">
+                    {" "}
                     <Button
-                      className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"
-                      shape="round"
-                      color="indigo_900"
-                      size="md"
-                      variant="fill"
+                      className="font-bold   flex items-center pl-4 gap-3 rounded-lg   leading-[normal] p-3 bg-[#29207E] text-white-A700 text-base  w-full  placeholder:"
+                      color="red_700"
                     >
-                      Edit
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <path
+                          d="M15 5.99994L18 8.99994M13 19.9999H21M5 15.9999L4 19.9999L8 18.9999L19.586 7.41394C19.9609 7.03889 20.1716 6.53027 20.1716 5.99994C20.1716 5.46961 19.9609 4.961 19.586 4.58594L19.414 4.41394C19.0389 4.039 18.5303 3.82837 18 3.82837C17.4697 3.82837 16.9611 4.039 16.586 4.41394L5 15.9999Z"
+                          stroke="white"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      <Text className=""> Edit </Text>
                     </Button>
                   </div>
-                  <Input
-                    name="groupTwo"
-                    placeholder="Delete"
-                    className="font-bold leading-[normal] p-0 placeholder:text-white-A700 text-base text-left w-full"
-                    wrapClassName="flex"
-                    prefix={
-                      <Img
-                        className="h-6 mr-4 my-auto"
-                        src="images/img_materialsymbolslightdeleteoutline.svg"
-                        alt="material-symbols-light:delete-outline"
-                      />
-                    }
-                    color="red_700"
-                  ></Input>
+
+                  <div className="cursor-pointer w-[50%] p-2">
+                    {" "}
+                    <Button
+                      className="font-bold  flex rounded-lg pl-4 gap-3 items-center leading-[normal] p-3 bg-red-700 text-white-A700 text-base text-left w-full  placeholder:"
+                      color="red_700"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <path
+                          d="M7.615 20C7.16833 20 6.78733 19.8426 6.472 19.528C6.15733 19.2133 6 18.8323 6 18.385V5.99998H5V4.99998H9V4.22998H15V4.99998H19V5.99998H18V18.385C18 18.845 17.846 19.229 17.538 19.537C17.2293 19.8456 16.845 20 16.385 20H7.615ZM17 5.99998H7V18.385C7 18.5643 7.05767 18.7116 7.173 18.827C7.28833 18.9423 7.43567 19 7.615 19H16.385C16.5383 19 16.6793 18.936 16.808 18.808C16.936 18.6793 17 18.5383 17 18.385V5.99998ZM9.808 17H10.808V7.99998H9.808V17ZM13.192 17H14.192V7.99998H13.192V17Z"
+                          fill="white"
+                        />
+                      </svg>
+                      Delete
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
