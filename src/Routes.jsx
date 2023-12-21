@@ -1,4 +1,5 @@
 import NotFound from "pages/NotFound";
+import Uploadform from "pages/uploadform";
 import React from "react";
 import {
   Navigate,
@@ -42,6 +43,7 @@ const ProjectRoutes = () => {
           <Route path="/managefootage" element={<ManageFootage />} />
           <Route path="/reviewrequest" element={<ReviewRequest />} />
           <Route path="/reviewrequesttwo" element={<ReviewRequestTwo />} />
+          <Route path="/upload-form" element={<Uploadform />} />
           <Route
             path="/affiliateperformance"
             element={<Affiliateperformance />}
