@@ -26,6 +26,36 @@ const DashboardPage = () => {
 
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const data = [
+    {
+      name: " Jenny pauls",
+      email: "jennypauls@gmail.com",
+      requesttype: "Submitted a Sell your Claim Request",
+      time: "10 mins ago",
+    },
+
+    {
+      name: " Jenny pauls",
+      email: "jennypauls@gmail.com",
+      requesttype: "Submitted an Affiliate Request",
+      time: "10 mins ago",
+    },
+
+    {
+      name: " Jenny pauls",
+      email: "jennypauls@gmail.com",
+      requesttype: "Submitted an Free Footage Request",
+      time: "10 mins ago",
+    },
+
+    {
+      name: " Jenny pauls",
+      email: "jennypauls@gmail.com",
+      requesttype: "Bought Footage ID: 2343786",
+      time: "10 mins ago",
+    },
+  ];
+
   const handleButtonClick = () => {
     // Toggle the state when the button is clicked
     setIsExpanded(!isExpanded);
@@ -693,114 +723,58 @@ const DashboardPage = () => {
                   >
                     <div className="flex flex-col gap-[29px] items-center justify-start mt-3 w-full">
                       <List
-                        className="flex flex-col gap-[31.5px] items-center pt-[34px] sm:px-5 px-[34px] w-full"
+                        className="flex flex-col gap-[31.5px] items-center  pt-[30px] sm:px-5 px-[34px] w-full"
                         orientation="vertical"
                       >
-                        <div className="flex md:flex-1 md:flex-col flex-row md:gap-5 items-start justify-start w-[99%] md:w-full">
-                          <div className="flex flex-row items-center justify-between w-[34%] md:w-full">
-                            <Text
-                              className="text-base text-blue_gray-900_01"
-                              size="txtLatoRegular16Bluegray90001"
-                            >
-                              Jenny pauls
-                            </Text>
-                            <Text
-                              className="text-base text-blue_gray-900_01"
-                              size="txtLatoRegular16Bluegray90001"
-                            >
-                              jennypauls@gmail.com
-                            </Text>
+                        {data?.map((item, i) => (
+                          <div className="w-full ">
+                            <div className="grid grid-cols-4 md:flex-1 md:flex-col flex-row md:gap-5 gap-4 w-[99%] md:w-full">
+                              <Text
+                                className="text-base items-start text-left  text-blue_gray-900_01"
+                                size="txtLatoRegular16Bluegray90001"
+                              >
+                                {item.name}
+                              </Text>
+                              <Text
+                                className="text-base items-start text-left  text-blue_gray-900_01"
+                                size="txtLatoRegular16Bluegray90001"
+                              >
+                                {item.email}
+                              </Text>
+                              <div className="flex ">
+                                <Text
+                                  className="md:ml-[0]  text-base text-blue_gray-900_01"
+                                  size="txtLatoBold16"
+                                >
+                                  {item.requesttype}
+                                </Text>
+                              </div>
+
+                              <div className="flex gap-14 mr-5">
+                                {" "}
+                                <Text
+                                  className="md:ml-[0] text-base text-blue_gray-900_01"
+                                  size="txtLatoBold16"
+                                >
+                                  {item.time}
+                                </Text>
+                                <Text
+                                  className="md:ml-[0]  text-base text-blue-700 underline"
+                                  size="txtLatoBold16Blue700"
+                                >
+                                  View
+                                </Text>
+                              </div>
+                            </div>
+                            <Line className="self-center h-px mt-8 bg-blue_gray-100_01 w-full" />
                           </div>
-                          <Text
-                            className="md:ml-[0] ml-[173px] text-base text-blue_gray-900_01"
-                            size="txtLatoBold16"
-                          >
-                            Submitted an Affiliate Request
-                          </Text>
-                          <Text
-                            className="md:ml-[0] ml-[113px] text-base text-blue_gray-900_01"
-                            size="txtLatoBold16"
-                          >
-                            10 mins ago
-                          </Text>
-                          <Text
-                            className="md:ml-[0] ml-[47px] text-base text-blue-700 underline"
-                            size="txtLatoBold16Blue700"
-                          >
-                            View
-                          </Text>
-                        </div>
-                        <Line className="self-center h-px bg-blue_gray-100_01 w-full" />
-                        <div className="flex md:flex-1 md:flex-col flex-row md:gap-5 items-start justify-start w-[99%] md:w-full">
-                          <div className="flex flex-row items-center justify-between w-[34%] md:w-full">
-                            <Text
-                              className="text-base text-blue_gray-900_01"
-                              size="txtLatoRegular16Bluegray90001"
-                            >
-                              Jenny pauls
-                            </Text>
-                            <Text
-                              className="text-base text-blue_gray-900_01"
-                              size="txtLatoRegular16Bluegray90001"
-                            >
-                              jennypauls@gmail.com
-                            </Text>
-                          </div>
-                          <Text
-                            className="md:ml-[0] ml-[173px] text-base text-blue_gray-900_01"
-                            size="txtLatoBold16"
-                          >
-                            Submitted an Free Footage Request
-                          </Text>
-                          <Text
-                            className="md:ml-[0] ml-[76px] text-base text-blue_gray-900_01"
-                            size="txtLatoBold16"
-                          >
-                            10 mins ago
-                          </Text>
-                          <Text
-                            className="md:ml-[0] ml-[47px] text-base text-blue-700 underline"
-                            size="txtLatoBold16Blue700"
-                          >
-                            View
-                          </Text>
-                        </div>
-                        <Line className="self-center h-px bg-blue_gray-100_01 w-full" />
-                        <div className="flex md:flex-1 md:flex-col flex-row md:gap-5 items-start justify-start w-[99%] md:w-full">
-                          <div className="flex flex-row items-center justify-between w-[34%] md:w-full">
-                            <Text
-                              className="text-base text-blue_gray-900_01"
-                              size="txtLatoRegular16Bluegray90001"
-                            >
-                              Jenny pauls
-                            </Text>
-                            <Text
-                              className="text-base text-blue_gray-900_01"
-                              size="txtLatoRegular16Bluegray90001"
-                            >
-                              jennypauls@gmail.com
-                            </Text>
-                          </div>
-                          <Text
-                            className="md:ml-[0] ml-[173px] text-base text-blue_gray-900_01"
-                            size="txtLatoBold16"
-                          >
-                            Bought Footage ID: 2343786
-                          </Text>
-                          <Text
-                            className="md:ml-[0] ml-[121px] text-base text-blue_gray-900_01"
-                            size="txtLatoBold16"
-                          >
-                            10 mins ago
-                          </Text>
-                          <Text
-                            className="md:ml-[0] ml-[47px] text-base text-blue-700 underline"
-                            size="txtLatoBold16Blue700"
-                          >
-                            View
-                          </Text>
-                        </div>
+                        ))}
                       </List>
+                      {/* <div class="grid grid-cols-3  gap-4 justify-items-end w-full">
+                        <div class="bg-red-500 p-4">Item 1</div>
+                        <div class="bg-green-500 p-4">Item 2</div>
+                        <div class="bg-blue-500 p-4">Item 3</div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

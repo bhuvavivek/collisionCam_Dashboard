@@ -184,7 +184,7 @@ const ManageAffiliatePage = () => {
                     name="button_One"
                     options={ReviewRequestOptions}
                     isSearchable={false}
-                    placeholder="Newest-Oldest"
+                    placeholder="Sell Claim"
                     shape="round"
                     color="white_A700"
                     size="xs"

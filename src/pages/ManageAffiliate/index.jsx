@@ -3,6 +3,7 @@ import React from "react";
 import { Button, Img, Input, SelectBox, Text } from "components";
 import Sidebar1 from "components/Sidebar1";
 import ProductTable from "components/producttable";
+import { Link } from "react-router-dom";
 import { CloseSVG } from "../../assets/images";
 
 const buttonOptionsList = [
@@ -161,15 +162,18 @@ const ManageAffiliatePage = () => {
             </div>
             <div className="flex flex-col items-start justify-start w-[94%] md:w-full">
               <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between w-full">
-                <Button
-                  className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"
-                  shape="round"
-                  color="indigo_900"
-                  size="md"
-                  variant="fill"
-                >
-                  Affiliate Performance
-                </Button>
+                <Link to="/manageaffiliateone">
+                  {" "}
+                  <Button
+                    className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"
+                    shape="round"
+                    color="indigo_900"
+                    size="md"
+                    variant="fill"
+                  >
+                    Affiliate Performance
+                  </Button>
+                </Link>
 
                 <div className="flex sm:flex-col gap-3 items-center justify-center w-[40%] sm:w-full">
                   <Text
