@@ -72,15 +72,18 @@ const ManageFootageOnePage = () => {
               </div>
               <div className="flex flex-col md:gap-10 gap-[30px] items-center justify-start w-[90%] md:w-full">
                 <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between w-full">
-                  <Button
-                    className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"
-                    shape="round"
-                    color="indigo_900"
-                    size="md"
-                    variant="fill"
-                  >
-                    Upload New
-                  </Button>
+                  <Link to="/upload-form">
+                    <Button
+                      className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"
+                      shape="round"
+                      color="indigo_900"
+                      size="md"
+                      variant="fill"
+                    >
+                      Upload New
+                    </Button>
+                  </Link>
+
                   <div className="flex md:flex-1 md:flex-col flex-row gap-[11px] items-center justify-start w-3/5 md:w-full">
                     <Text className=" filter-text   text-base text-blue_gray-900_01 w-3/12 text-end font-bold">
                       Filter by

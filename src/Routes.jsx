@@ -1,4 +1,5 @@
 import NotFound from "pages/NotFound";
+import EditForm from "pages/editform";
 import Uploadform from "pages/uploadform";
 import React from "react";
 import {
@@ -44,6 +45,7 @@ const ProjectRoutes = () => {
           <Route path="/reviewrequest" element={<ReviewRequest />} />
           <Route path="/reviewrequesttwo" element={<ReviewRequestTwo />} />
           <Route path="/upload-form" element={<Uploadform />} />
+          <Route path="/edit-form" element={<EditForm />} />
           <Route
             path="/affiliateperformance"
             element={<Affiliateperformance />}
