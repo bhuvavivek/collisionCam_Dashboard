@@ -14,9 +14,9 @@ const LoginOnePage = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const location = useLocation()
-  const queryParams = new URLSearchParams(location.search)
-  const returnTo = queryParams.get('returnTo')
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const returnTo = queryParams.get("returnTo");
 
   const handleLogin = async () => {
     try {
@@ -41,7 +41,7 @@ const LoginOnePage = () => {
       return;
     }
     if (user) {
-      return navigate('/'+returnTo || "/");
+      return navigate(returnTo ? "/" + returnTo : "/");
     }
   }, [user, isDataLoaded]);
 
