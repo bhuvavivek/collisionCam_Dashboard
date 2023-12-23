@@ -1,5 +1,5 @@
-import React from "react";
 import PropTypes from "prop-types";
+import React from "react";
 import { ErrorMessage } from "../../components/ErrorMessage";
 
 const variants = {
@@ -34,14 +34,11 @@ const Input = React.forwardRef(
       size = "xs",
       variant = "fill",
       color = "white_A700",
+      handleChange,
       ...restProps
     },
-    ref,
+    ref
   ) => {
-    const handleChange = (e) => {
-      if (onChange) onChange(e?.target?.value);
-    };
-
     return (
       <>
         <div
@@ -66,7 +63,7 @@ const Input = React.forwardRef(
         {!!errors && <ErrorMessage errors={errors} />}
       </>
     );
-  },
+  }
 );
 
 Input.propTypes = {
