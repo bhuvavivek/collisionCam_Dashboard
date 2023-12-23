@@ -1,17 +1,53 @@
-import { useNavigate } from "react-router-dom";
-
-import { useGoogleLogin } from "@react-oauth/google";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button, Img, Input, Text } from "components";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
+import { AppContext } from "pages/store/AppContext";
+import { api } from "utils/api";
 
 const LoginOnePage = () => {
   const navigate = useNavigate();
-  const googleSignIn = useGoogleLogin({
-    onSuccess: (res) => {
-      console.log("res", res);
-      alert("Login successfull. 😍");
-    },
-  });
+
+  const { user, isDataLoaded, setUser } = useContext(AppContext);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const location = useLocation()
+  const queryParams = new URLSearchParams(location.search)
+  const returnTo = queryParams.get('returnTo')
+
+  const handleLogin = async () => {
+    try {
+      const { data } = await api.post("/admin/auth/login", { email, password });
+      if (data?.success) {
+        window.localStorage.setItem("token", data?.token);
+        setUser(data?.user);
+        toast.success(data?.message, toastOptions);
+      }
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.message || "Internal server error",
+        toastOptions
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (!isDataLoaded) {
+      return;
+    }
+    if (user) {
+      return navigate('/'+returnTo || "/");
+    }
+  }, [user, isDataLoaded]);
+
+  if (!isDataLoaded) {
+    return <h1>Loading...</h1>;
+  }
 
   return (
     <>
@@ -48,6 +84,8 @@ const LoginOnePage = () => {
                         Email
                       </Text>
                       <Input
+                        value={email}
+                        onChange={setEmail}
                         name="email"
                         placeholder="Enter your email"
                         className="!placeholder:text-blue_gray-500_99 !text-blue_gray-500_99 leading-[normal] p-0 text-base text-left w-full"
@@ -62,7 +100,10 @@ const LoginOnePage = () => {
                         Password
                       </Text>
                       <Input
+                        value={password}
+                        onChange={setPassword}
                         name="input"
+                        type="password"
                         placeholder="••••••••"
                         className="!placeholder:text-blue_gray-500 !text-blue_gray-500 font-inter p-0 text-base text-left w-full"
                         wrapClassName="border border-blue_gray-100 border-solid w-full"
@@ -72,7 +113,7 @@ const LoginOnePage = () => {
                   </div>
                 </div>
                 <div className="flex sm:flex-col flex-row sm:gap-5 items-center justify-start w-full">
-                  <div className="flex flex-1 flex-row gap-2 items-start justify-start w-full">
+                  {/* <div className="flex flex-1 flex-row gap-2 items-start justify-start w-full">
                     <Img
                       className="h-[18px] max-h-[18px]"
                       src="images/img_close.svg"
@@ -83,7 +124,7 @@ const LoginOnePage = () => {
                         Keep me logged in
                       </Text>
                     </div>
-                  </div>
+                  </div> */}
                   <Button
                     className="common-pointer bg-transparent leading-5  cursor-pointer font-semibold h-5 text-center text-indigo-900 text-sm"
                     onClick={() => navigate("/login")}
@@ -95,33 +136,13 @@ const LoginOnePage = () => {
                 <div className="flex flex-col gap-4 items-start justify-start w-full">
                   <Button
                     className="common-pointer cursor-pointer font-bold font-lato leading-[normal] rounded-[19px] shadow-bs text-base text-center w-full"
-                    onClick={() => navigate("/dashboard")}
+                    onClick={handleLogin}
                     color="indigo_900"
                     size="sm"
                     variant="fill"
                   >
                     Sign in
                   </Button>
-                  <div className="flex flex-col items-center justify-center w-full">
-                    <Button
-                      className="common-pointer border border-blue_gray-100 border-solid cursor-pointer flex items-center justify-center min-w-[429px] sm:min-w-full rounded-[20px] shadow-bs"
-                      onClick={() => googleSignIn()}
-                      leftIcon={
-                        <Img
-                          className="h-6 mr-3"
-                          src="images/img_social_icon.svg"
-                          alt="Social icon"
-                        />
-                      }
-                      color="white_A700"
-                      size="sm"
-                      variant="fill"
-                    >
-                      <div className="!text-blue_gray-800 font-bold font-lato leading-[normal] text-base text-left">
-                        Sign in with Google
-                      </div>
-                    </Button>
-                  </div>
                 </div>
               </div>
             </div>

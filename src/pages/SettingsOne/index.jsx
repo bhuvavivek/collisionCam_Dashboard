@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Button, Img, Input, Line, Switch, Text } from "components";
 import { Link } from "react-router-dom";
 
 import Sidebar1 from "components/Sidebar1";
 import { CloseSVG } from "../../assets/images";
+import { AppContext } from "pages/store/AppContext";
 
 const SettingsOnePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState('');
+
+  const { user } = useContext(AppContext);
+
+  useEffect(() => {
+    setEmail(user?.email);
+    setPhone(user?.phone);
+    setAddress(user?.address);
+  }, [user]);
 
   return (
     <>
@@ -122,6 +134,8 @@ const SettingsOnePage = () => {
                 </Text>
                 <div className="w-[38%]">
                   <Input
+                    value={phone}
+                    onChange={setPhone}
                     name="group161"
                     placeholder="(123) 456-7890"
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
@@ -140,6 +154,8 @@ const SettingsOnePage = () => {
 
                 <div className="w-[38%]">
                   <Input
+                    value={email}
+                    onChange={setEmail}
                     name="email"
                     placeholder="info@collisioncam.com"
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"

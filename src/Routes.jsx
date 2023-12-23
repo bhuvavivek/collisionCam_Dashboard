@@ -1,5 +1,6 @@
 import NotFound from "pages/NotFound";
 import EditForm from "pages/editform";
+import Protected from "pages/routers/Protected";
 import Uploadform from "pages/uploadform";
 import React from "react";
 import {
@@ -33,9 +34,30 @@ const ProjectRoutes = () => {
           <Route path="/" element={<Navigate to={"/dashboard"} />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/loginone" element={<LoginOne />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/managefootageone" element={<ManageFootageOne />} />
-          <Route path="/settingsone" element={<SettingsOne />} />
+          <Route
+            path="/dashboard"
+            element={
+              <Protected returnTo="dashboard">
+                <Dashboard />
+              </Protected>
+            }
+          />
+          <Route
+            path="/managefootageone"
+            element={
+              <Protected returnTo="managefootageone">
+                <ManageFootageOne />
+              </Protected>
+            }
+          />
+          <Route
+            path="/settingsone"
+            element={
+              <Protected returnTo="settingsone">
+                <SettingsOne />
+              </Protected>
+            }
+          />
           <Route path="/settingstwo" element={<SettingsTwo />} />
           <Route path="/manageaffiliate" element={<ManageAffiliate />} />
 

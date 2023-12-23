@@ -2,13 +2,19 @@ import { Menu, Sidebar } from "react-pro-sidebar";
 
 import { Img, Line, Text } from "components";
 import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AppContext } from "pages/store/AppContext";
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
 
 const Sidebar1 = (props) => {
-  const navigate = useNavigate();
+  const { setUser } = useContext(AppContext);
 
   const handleButtonClick = () => {
     // Use navigate to navigate to a different route
-    navigate("/loginone");
+    window.localStorage.clear();
+    setUser(null);
+    toast.success('Logout successfull', toastOptions);
   };
   const sideBarMenu = [
     {

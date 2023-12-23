@@ -34,6 +34,7 @@ const Input = React.forwardRef(
       size = "xs",
       variant = "fill",
       color = "white_A700",
+      value,
       ...restProps
     },
     ref,
@@ -59,6 +60,7 @@ const Input = React.forwardRef(
             name={name}
             onChange={handleChange}
             placeholder={placeholder}
+            value={value}
             {...restProps}
           />
           {!!suffix && suffix}
