@@ -4,13 +4,13 @@ import { useLocation } from "react-router-dom";
 import { Button, Img, Input, Text } from "components";
 
 import Sidebar1 from "components/Sidebar1";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const ManageFootagePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
-
+  const nevigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
@@ -57,6 +57,19 @@ const ManageFootagePage = () => {
     time,
     thumbnail,
   } = footageDetails;
+
+  const deleteFootageDetails = async () => {
+    try {
+      const { data } = await api.delete(`/admin/footage/delete/${footageId}`);
+      setLoading(false);
+      if (data.success) {
+        nevigate("/managefootageone");
+      }
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -232,6 +245,7 @@ const ManageFootagePage = () => {
                   <div className="cursor-pointer w-[50%] p-2">
                     {" "}
                     <Button
+                      onClick={deleteFootageDetails}
                       className="font-bold  flex rounded-lg pl-4 gap-3 items-center leading-[normal] p-3 bg-red-700 text-white-A700 text-base text-left w-full  placeholder:"
                       color="red_700"
                     >

@@ -9,9 +9,8 @@ import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const buttonTwoOptionsList = [
-  { label: "Option1", value: "option1" },
-  { label: "Option2", value: "option2" },
-  { label: "Option3", value: "option3" },
+  { label: "Newest-Oldest", value: "new" },
+  { label: "Oldest-Newest", value: "old" },
 ];
 
 const ManageFootageOnePage = () => {
@@ -23,15 +22,21 @@ const ManageFootageOnePage = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [name, setName] = useState("");
+  const [sort, setSort] = useState("new");
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, [page, city, state, name, sort]);
+
+  console.log(name);
 
   const fetchData = async () => {
     try {
       const response = await api.get(
-        `/admin/footage?state=West Bengal&city=Kolkata&fromDate=2024-01-01&toDate=2024-12-31&name=car&sortBy=new&page=${page}&limit=15`
+        `/admin/footage?state=${state ? state : ""}&city=${
+          city ? city : ""
+        }&name=${name ? name : ""}&sortBy=${sort}&page=${page}&limit=15`
       );
 
       setData(response.data.result);
@@ -40,6 +45,8 @@ const ManageFootageOnePage = () => {
       console.error("Error fetching data:", error);
     }
   };
+
+  console.log(sort);
 
   return (
     <>
@@ -53,8 +60,8 @@ const ManageFootageOnePage = () => {
                   <Input
                     name="frame348"
                     placeholder="Search "
-                    value={frame348value}
-                    onChange={(e) => setFrame348value(e)}
+                    value={name}
+                    onChange={setName}
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-left w-full"
                     wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
                     prefix={
@@ -168,6 +175,10 @@ const ManageFootageOnePage = () => {
                       options={buttonTwoOptionsList}
                       isSearchable={false}
                       placeholder="Newest-Oldest"
+                      value={sort}
+                      onChange={(value) => {
+                        setSort(value);
+                      }}
                       shape="round"
                       color="white_A700"
                       size="xs"
