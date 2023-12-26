@@ -63,7 +63,7 @@ const ProjectRoutes = () => {
 
           <Route path="/login" element={<Login />} />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/managefootage" element={<ManageFootage />} />
+          <Route path="/manage-footage" element={<ManageFootage />} />
           <Route path="/reviewrequest" element={<ReviewRequest />} />
           <Route path="/reviewrequesttwo" element={<ReviewRequestTwo />} />
           <Route path="/upload-form" element={<Uploadform />} />

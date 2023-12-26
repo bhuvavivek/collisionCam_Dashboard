@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 import { Button, Img, Input, Text } from "components";
 
@@ -8,6 +9,12 @@ import { CloseSVG } from "../../assets/images";
 
 const ManageFootagePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  // Example: Get the value of the 'footageid' query parameter
+  const footageId = queryParams.get("footageid");
 
   return (
     <>

@@ -41,10 +41,6 @@ const ManageFootageOnePage = () => {
     }
   };
 
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
-  };
-
   return (
     <>
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full h-[100vh]">
@@ -189,7 +185,10 @@ const ManageFootageOnePage = () => {
                   <div className="flex flex-1 flex-col gap-2 items-center justify-start w-full ">
                     <div className="gap-10 grid sm:grid-cols-1 md:grid-cols-3 grid-cols-5 items-center justify-between w-full">
                       {data.map((item, i) => (
-                        <Link to={"/managefootage"} key={i}>
+                        <Link
+                          to={`/manage-footage?footageid=${item._id}`}
+                          key={i}
+                        >
                           <Img
                             className="common-pointer flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
                             src={item.thumbnail}
