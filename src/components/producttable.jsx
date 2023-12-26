@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const ProductTable = ({ columns, data }) => {
   return (
     <div className="relative overflow-x-auto m-auto">
@@ -30,11 +32,23 @@ const ProductTable = ({ columns, data }) => {
                 <td
                   key={cellIndex}
                   className={`px-2 py-3 text-center ${
-                    cellIndex === row.length - 1 ? "text-[#1976D2]" : ""
+                    cellIndex === row.length - 1 && "text-[#1976D2]"
                   }`}
                   style={{ border: "1px solid #B9B9B9" }}
                 >
-                  {cell}
+                  {cellIndex === row.length - 1 ? (
+                    <Link
+                      to={`/manageaffiliateone?id=${cell}`}
+                      onClick={() => {
+                        console.log(row[row.length - 1]);
+                      }}
+                      className="underline"
+                    >
+                      View Details
+                    </Link>
+                  ) : (
+                    cell
+                  )}
                 </td>
               ))}
             </tr>

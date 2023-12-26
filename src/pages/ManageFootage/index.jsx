@@ -47,16 +47,8 @@ const ManageFootagePage = () => {
   }
 
   // Assuming footageDetails has the structure of the API response
-  const {
-    name,
-    price,
-    id,
-    description,
-
-    date,
-    time,
-    thumbnail,
-  } = footageDetails;
+  const { name, price, id, description, date, time, thumbnail } =
+    footageDetails;
 
   const deleteFootageDetails = async () => {
     try {
@@ -79,35 +71,38 @@ const ManageFootagePage = () => {
           <div className="flex flex-1 flex-col md:gap-10 gap-12 items-center justify-start md:px-5 w-full">
             {/* SEarch section start */}
             <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
-              <Input
-                name="frame348"
-                placeholder="Search "
-                value={frame348value}
-                onChange={(e) => setFrame348value(e)}
-                className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-center w-full"
-                wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
-                prefix={
-                  <Img
-                    className="cursor-pointer h-8 mr-2.5 my-auto"
-                    src="images/img_search_blue_gray_900_01.svg"
-                    alt="search"
-                  />
-                }
-                suffix={
-                  <CloseSVG
-                    fillColor="#30303090"
-                    className="cursor-pointer h-8 my-auto"
-                    onClick={() => setFrame348value("")}
-                    style={{
-                      visibility:
-                        frame348value?.length <= 0 ? "hidden" : "visible",
-                    }}
-                    height={32}
-                    width={32}
-                    viewBox="0 0 32 32"
-                  />
-                }
-              ></Input>
+              <div className="w-[40%]">
+                {" "}
+                <Input
+                  name="frame348"
+                  placeholder="Search "
+                  value={frame348value}
+                  onChange={(e) => setFrame348value(e)}
+                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-start w-full"
+                  wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
+                  prefix={
+                    <Img
+                      className="cursor-pointer h-8 mr-2.5 my-auto"
+                      src="images/img_search_blue_gray_900_01.svg"
+                      alt="search"
+                    />
+                  }
+                  suffix={
+                    <CloseSVG
+                      fillColor="#30303090"
+                      className="cursor-pointer h-8 my-auto"
+                      onClick={() => setFrame348value("")}
+                      style={{
+                        visibility:
+                          frame348value?.length <= 0 ? "hidden" : "visible",
+                      }}
+                      height={32}
+                      width={32}
+                      viewBox="0 0 32 32"
+                    />
+                  }
+                ></Input>
+              </div>
               <Img
                 className="h-8 mr-[17px] w-8"
                 src="images/img_claritynotificationline.svg"

@@ -3,7 +3,11 @@ import React from "react";
 import { Button, Img, Input, List, SelectBox, Text } from "components";
 
 import Sidebar1 from "components/Sidebar1";
+import { Link, useLocation } from "react-router-dom";
 import { CloseSVG } from "../../assets/images";
+
+import { useEffect, useState } from "react";
+import { api } from "utils/api";
 
 const buttonOptionsList = [
   { label: "Option1", value: "option1" },
@@ -13,6 +17,50 @@ const buttonOptionsList = [
 
 const ManageAffiliateOnePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get("id");
+  const [AffiliateDetails, setAffiliateDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchAffiliateDetails = async () => {
+      try {
+        const response = await api.get(`/user/get-single-affliate/${id}`);
+        setAffiliateDetails(response.data.result);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchAffiliateDetails();
+    }
+  }, [id]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  const {
+    email,
+    full_name,
+    phone,
+    companyName,
+    website,
+    industry,
+    document,
+    experience,
+    promotionMethod,
+    comments,
+  } = AffiliateDetails;
 
   return (
     <>
@@ -342,7 +390,10 @@ const ManageAffiliateOnePage = () => {
                   </div>
                 </div>
                 <div className="w-[90%] relative mb-10 flex item-center justify-between">
-                  <div className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] ">
+                  <Link
+                    to="/manageaffiliate"
+                    className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] "
+                  >
                     {" "}
                     <Img
                       className=" h-6  w-6"
@@ -353,7 +404,7 @@ const ManageAffiliateOnePage = () => {
                       {" "}
                       Back{" "}
                     </Text>
-                  </div>
+                  </Link>
 
                   <div className="  relative flex flex-row gap-4 items-center justify-end  w-[38%]">
                     <div className="cursor-pointer w-[50%] p-2">
