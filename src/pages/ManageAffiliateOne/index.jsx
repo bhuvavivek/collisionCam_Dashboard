@@ -160,7 +160,7 @@ const ManageAffiliateOnePage = () => {
                             </div>
                             <div className="flex flex-col items-start justify-start">
                               <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                Grace Villa
+                                {full_name}
                               </Text>
                             </div>
                           </div>
@@ -173,7 +173,7 @@ const ManageAffiliateOnePage = () => {
                               </div>
                               <div className="flex flex-col items-start justify-start w-full">
                                 <Text className="text-blue_gray-900_01 font-normal font-lato text-sm">
-                                  Gracevilla95@gmail.com
+                                  {email}
                                 </Text>
                               </div>
                             </div>
@@ -188,7 +188,7 @@ const ManageAffiliateOnePage = () => {
                                   className="text-blue_gray-900_01 text-sm"
                                   size="txtLatoRegular14"
                                 >
-                                  +9167857432342
+                                  +91 {phone}
                                 </Text>
                               </div>
                             </div>
@@ -204,12 +204,12 @@ const ManageAffiliateOnePage = () => {
                             </div>
                             <div className="flex flex-col items-start justify-start w-[18px] md:w-full">
                               <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                Nil
+                                {companyName}
                               </Text>
                             </div>
                           </div>
                           <List
-                            className="sm:flex-col flex-row md:gap-10 gap-[326px] grid sm:grid-cols-1 grid-cols-2 mt-[17px] w-[72%]"
+                            className="sm:flex-col flex-row md:gap-10 gap-[300px] grid sm:grid-cols-1 grid-cols-2 mt-[17px] w-[70%]]"
                             orientation="horizontal"
                           >
                             <div className="flex flex-col gap-2 items-start justify-start w-full">
@@ -218,14 +218,14 @@ const ManageAffiliateOnePage = () => {
                                   Website:
                                 </Text>
                               </div>
-                              <div className="flex flex-col items-start justify-start w-[18px] md:w-full">
+                              <div className="flex flex-col items-start justify-start md:w-full">
                                 <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                  Nil
+                                  {website}
                                 </Text>
                               </div>
                             </div>
                             <div className="flex flex-col gap-1.5 items-start justify-start w-full">
-                              <div className="flex flex-col items-center justify-start w-full">
+                              <div className="flex items-center justify-start w-[100%]">
                                 <Text
                                   className="text-base text-blue_gray-900_01"
                                   size="txtLatoMedium16"
@@ -238,7 +238,7 @@ const ManageAffiliateOnePage = () => {
                                justify-start w-[18px] md:w-full"
                               >
                                 <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                  Nil
+                                  {industry}
                                 </Text>
                               </div>
                             </div>
@@ -253,7 +253,7 @@ const ManageAffiliateOnePage = () => {
                               className="text-blue-700 text-sm underline"
                               size="txtLatoRegular14Blue700"
                             >
-                              Police_report.pdf
+                              {document}
                             </Text>
                           </div>
                           <Text className="mt-[41px] text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
@@ -266,16 +266,7 @@ const ManageAffiliateOnePage = () => {
                               </Text>
                             </div>
                             <Text className="h-16 text-blue_gray-900_01 font-normal text-sm w-[98%]">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit. Ut auctor nisl nec dolor tristique, ac
-                              facilisis quam fermentum. Sed ac libero et erat
-                              elementum tincidunt. Aenean euismod ante vel purus
-                              aliquam, vel tempor nulla lacinia. Suspendisse
-                              potenti. Proin aliquet quam et elit ullamcorper,
-                              vel semper augue efficitur. Sed consectetur ipsum
-                              vel justo consectetur, ac vehicula odio
-                              sollicitudin. Morbi nec est vel justo dictum
-                              condimentum ac vel ex.
+                              {experience}
                             </Text>
                           </div>
                           <div className="flex flex-col gap-3.5 items-start justify-start mt-10 w-full">
@@ -291,7 +282,7 @@ const ManageAffiliateOnePage = () => {
                                 </div>
                                 <div className="flex flex-col h-[17px] items-start justify-start w-[17px]">
                                   <Text className="h-[17px] text-blue_gray-900_01 font-normal text-sm">
-                                    Nil
+                                    {promotionMethod}
                                   </Text>
                                 </div>
                               </div>
@@ -308,7 +299,7 @@ const ManageAffiliateOnePage = () => {
                           </div>
                           <div className="flex flex-col h-[17px] items-start justify-start w-[17px]">
                             <Text className="h-[17px] text-blue_gray-900_01 font-normal text-sm">
-                              Nil
+                              {comments}
                             </Text>
                           </div>
                         </div>
