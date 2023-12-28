@@ -1,18 +1,110 @@
-import React from "react";
-
 import { Button, Img, Input, List, SelectBox, Text } from "components";
+import React, { useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CloseSVG } from "../../assets/images";
 
+import { useEffect } from "react";
+import { api } from "utils/api";
+
 const buttonOptionsList = [
-  { label: "Option1", value: "option1" },
-  { label: "Option2", value: "option2" },
-  { label: "Option3", value: "option3" },
+  { label: "Approved", value: "approved" },
+  { label: "Rejected", value: "reject" },
+  { label: "Pending", value: "pending" },
 ];
 
 const ManageAffiliateOnePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
+  const nevigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get("id");
+  const [AffiliateDetails, setAffiliateDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [filter, setFilter] = useState("");
+  const [affiliateID, setAffiliateID] = useState("");
+  const [description, setDescription] = useState("");
+  const [editbtn, setEditbtn] = useState(true);
+
+  useEffect(() => {
+    const fetchAffiliateDetails = async () => {
+      try {
+        const response = await api.get(`/user/get-single-affliate/${id}`);
+        setAffiliateDetails(response.data.result);
+        setDescription(response.data.result.description);
+        setAffiliateID(response.data.result.affliate_id);
+        setFilter(response.data.result.status);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchAffiliateDetails();
+    }
+  }, [id]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  const {
+    email,
+    full_name,
+    phone,
+    companyName,
+    website,
+    industry,
+    document,
+    experience,
+    promotionMethod,
+    comments,
+  } = AffiliateDetails;
+
+  const updateAffiliate = async () => {
+    try {
+      await api.put(`/user/update-affliate/${id}`, {
+        status: filter,
+        description: description,
+        affliate_id: affiliateID,
+      });
+      setEditbtn(true);
+      setLoading(false);
+    } catch (error) {
+      setEditbtn(true);
+      setError(error);
+      setLoading(false);
+    }
+  };
+
+  const deleteAffiliate = async () => {
+    try {
+      setLoading(true);
+      const response = await api.delete(`/user/delete-affliate/${id}`);
+      setLoading(false);
+
+      if (response.data.success) {
+        // Handle success, you can navigate or perform any other actions
+        nevigate("/manageaffiliate");
+      } else {
+        // Handle failure
+        console.error("Failed to delete affiliate");
+      }
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+      // Handle error
+      console.error("Error deleting affiliate:", error);
+    }
+  };
 
   return (
     <>
@@ -112,7 +204,7 @@ const ManageAffiliateOnePage = () => {
                             </div>
                             <div className="flex flex-col items-start justify-start">
                               <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                Grace Villa
+                                {full_name}
                               </Text>
                             </div>
                           </div>
@@ -125,7 +217,7 @@ const ManageAffiliateOnePage = () => {
                               </div>
                               <div className="flex flex-col items-start justify-start w-full">
                                 <Text className="text-blue_gray-900_01 font-normal font-lato text-sm">
-                                  Gracevilla95@gmail.com
+                                  {email}
                                 </Text>
                               </div>
                             </div>
@@ -140,7 +232,7 @@ const ManageAffiliateOnePage = () => {
                                   className="text-blue_gray-900_01 text-sm"
                                   size="txtLatoRegular14"
                                 >
-                                  +9167857432342
+                                  +91 {phone}
                                 </Text>
                               </div>
                             </div>
@@ -156,12 +248,12 @@ const ManageAffiliateOnePage = () => {
                             </div>
                             <div className="flex flex-col items-start justify-start w-[18px] md:w-full">
                               <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                Nil
+                                {companyName}
                               </Text>
                             </div>
                           </div>
                           <List
-                            className="sm:flex-col flex-row md:gap-10 gap-[326px] grid sm:grid-cols-1 grid-cols-2 mt-[17px] w-[72%]"
+                            className="sm:flex-col flex-row md:gap-10 gap-[300px] grid sm:grid-cols-1 grid-cols-2 mt-[17px] w-[70%]]"
                             orientation="horizontal"
                           >
                             <div className="flex flex-col gap-2 items-start justify-start w-full">
@@ -170,14 +262,14 @@ const ManageAffiliateOnePage = () => {
                                   Website:
                                 </Text>
                               </div>
-                              <div className="flex flex-col items-start justify-start w-[18px] md:w-full">
+                              <div className="flex flex-col items-start justify-start md:w-full">
                                 <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                  Nil
+                                  {website}
                                 </Text>
                               </div>
                             </div>
                             <div className="flex flex-col gap-1.5 items-start justify-start w-full">
-                              <div className="flex flex-col items-center justify-start w-full">
+                              <div className="flex items-center justify-start w-[100%]">
                                 <Text
                                   className="text-base text-blue_gray-900_01"
                                   size="txtLatoMedium16"
@@ -190,7 +282,7 @@ const ManageAffiliateOnePage = () => {
                                justify-start w-[18px] md:w-full"
                               >
                                 <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                  Nil
+                                  {industry}
                                 </Text>
                               </div>
                             </div>
@@ -205,7 +297,7 @@ const ManageAffiliateOnePage = () => {
                               className="text-blue-700 text-sm underline"
                               size="txtLatoRegular14Blue700"
                             >
-                              Police_report.pdf
+                              {document}
                             </Text>
                           </div>
                           <Text className="mt-[41px] text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
@@ -218,16 +310,7 @@ const ManageAffiliateOnePage = () => {
                               </Text>
                             </div>
                             <Text className="h-16 text-blue_gray-900_01 font-normal text-sm w-[98%]">
-                              Lorem ipsum dolor sit amet, consectetur adipiscing
-                              elit. Ut auctor nisl nec dolor tristique, ac
-                              facilisis quam fermentum. Sed ac libero et erat
-                              elementum tincidunt. Aenean euismod ante vel purus
-                              aliquam, vel tempor nulla lacinia. Suspendisse
-                              potenti. Proin aliquet quam et elit ullamcorper,
-                              vel semper augue efficitur. Sed consectetur ipsum
-                              vel justo consectetur, ac vehicula odio
-                              sollicitudin. Morbi nec est vel justo dictum
-                              condimentum ac vel ex.
+                              {experience}
                             </Text>
                           </div>
                           <div className="flex flex-col gap-3.5 items-start justify-start mt-10 w-full">
@@ -243,7 +326,7 @@ const ManageAffiliateOnePage = () => {
                                 </div>
                                 <div className="flex flex-col h-[17px] items-start justify-start w-[17px]">
                                   <Text className="h-[17px] text-blue_gray-900_01 font-normal text-sm">
-                                    Nil
+                                    {promotionMethod}
                                   </Text>
                                 </div>
                               </div>
@@ -252,15 +335,15 @@ const ManageAffiliateOnePage = () => {
                         </div>
                       </div>
                       <div className="flex flex-col items-start justify-start w-full">
-                        <div className="flex flex-col gap-2.5 items-start justify-start mb-[3px] w-[34%] md:w-full">
+                        <div className="flex flex-col gap-2.5 items-start justify-start mb-[3px] w-[70%] md:w-full">
                           <div className="flex flex-col items-start justify-start w-full">
                             <Text className="text-base text-blue_gray-900_01">
                               Additional Comment or Question:
                             </Text>
                           </div>
-                          <div className="flex flex-col h-[17px] items-start justify-start w-[17px]">
+                          <div className="flex  h-[17px] items-start justify-start ">
                             <Text className="h-[17px] text-blue_gray-900_01 font-normal text-sm">
-                              Nil
+                              {comments}
                             </Text>
                           </div>
                         </div>
@@ -282,7 +365,10 @@ const ManageAffiliateOnePage = () => {
                         <div className="w-[40%]">
                           {" "}
                           <Input
+                            readOnly={editbtn}
                             name="group161"
+                            value={affiliateID}
+                            onChange={setAffiliateID}
                             placeholder="Input text here"
                             className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 font-lato leading-[normal] p-0 text-base text-left w-full"
                             wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
@@ -308,7 +394,12 @@ const ManageAffiliateOnePage = () => {
                               />
                             }
                             isMulti={false}
+                            readOnly={editbtn}
                             name="button"
+                            value={filter}
+                            onChange={(status) => {
+                              setFilter(status);
+                            }}
                             options={buttonOptionsList}
                             isSearchable={false}
                             placeholder="Approved"
@@ -331,6 +422,9 @@ const ManageAffiliateOnePage = () => {
                         <div className="w-full  ">
                           <Input
                             name="groupFortySeven"
+                            readOnly={editbtn}
+                            value={description}
+                            onChange={setDescription}
                             placeholder="Add a more detailed description...."
                             className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 font-lato leading-[normal] py-3 text-base text-left w-full"
                             wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[97%]"
@@ -342,7 +436,10 @@ const ManageAffiliateOnePage = () => {
                   </div>
                 </div>
                 <div className="w-[90%] relative mb-10 flex item-center justify-between">
-                  <div className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] ">
+                  <Link
+                    to="/manageaffiliate"
+                    className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] "
+                  >
                     {" "}
                     <Img
                       className=" h-6  w-6"
@@ -353,12 +450,26 @@ const ManageAffiliateOnePage = () => {
                       {" "}
                       Back{" "}
                     </Text>
-                  </div>
+                  </Link>
 
-                  <div className="  relative flex flex-row gap-4 items-center justify-end  w-[38%]">
+                  <div className="  relative flex flex-row gap-4 items-center justify-end  w-[58%]">
                     <div className="cursor-pointer w-[50%] p-2">
                       {" "}
                       <Button
+                        onClick={updateAffiliate}
+                        className="font-bold flex items-center justify-center pl-4 gap-3 rounded-lg leading-[normal] p-3 bg-[#29207E] text-white-A700 text-base w-full  placeholder:"
+                        color="red_700"
+                      >
+                        <Text className="text-center"> Save </Text>
+                      </Button>
+                    </div>
+
+                    <div className="cursor-pointer w-[50%] p-2">
+                      {" "}
+                      <Button
+                        onClick={() => {
+                          setEditbtn(false);
+                        }}
                         className="font-bold   flex items-center pl-4 gap-3 rounded-lg   leading-[normal] p-3 bg-[#29207E] text-white-A700 text-base  w-full  placeholder:"
                         color="red_700"
                       >
@@ -384,6 +495,7 @@ const ManageAffiliateOnePage = () => {
                     <div className="cursor-pointer w-[50%] p-2">
                       {" "}
                       <Button
+                        onClick={deleteAffiliate}
                         className="font-bold  flex rounded-lg pl-4 gap-3 items-center leading-[normal] p-3 bg-red-700 text-white-A700 text-base text-left w-full  placeholder:"
                         color="red_700"
                       >

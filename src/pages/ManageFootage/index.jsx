@@ -1,13 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import { Button, Img, Input, Text } from "components";
 
 import Sidebar1 from "components/Sidebar1";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const ManageFootagePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
+  const nevigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+
+  // Example: Get the value of the 'footageid' query parameter
+  const footageId = queryParams.get("footageid");
+
+  const [footageDetails, setFootageDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchFootageDetails = async () => {
+      try {
+        const response = await api.get(`/admin/footage/details/${footageId}`);
+        setFootageDetails(response.data.result);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    if (footageId) {
+      fetchFootageDetails();
+    }
+  }, [footageId]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  // Assuming footageDetails has the structure of the API response
+  const { name, price, id, description, date, time, thumbnail } =
+    footageDetails;
+
+  const deleteFootageDetails = async () => {
+    try {
+      const { data } = await api.delete(`/admin/footage/delete/${footageId}`);
+      setLoading(false);
+      if (data.success) {
+        nevigate("/managefootageone");
+      }
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -17,35 +72,38 @@ const ManageFootagePage = () => {
           <div className="flex flex-1 flex-col md:gap-10 gap-12 items-center justify-start md:px-5 w-full">
             {/* SEarch section start */}
             <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
-              <Input
-                name="frame348"
-                placeholder="Search "
-                value={frame348value}
-                onChange={(e) => setFrame348value(e)}
-                className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-center w-full"
-                wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
-                prefix={
-                  <Img
-                    className="cursor-pointer h-8 mr-2.5 my-auto"
-                    src="images/img_search_blue_gray_900_01.svg"
-                    alt="search"
-                  />
-                }
-                suffix={
-                  <CloseSVG
-                    fillColor="#30303090"
-                    className="cursor-pointer h-8 my-auto"
-                    onClick={() => setFrame348value("")}
-                    style={{
-                      visibility:
-                        frame348value?.length <= 0 ? "hidden" : "visible",
-                    }}
-                    height={32}
-                    width={32}
-                    viewBox="0 0 32 32"
-                  />
-                }
-              ></Input>
+              <div className="w-[40%]">
+                {" "}
+                <Input
+                  name="frame348"
+                  placeholder="Search "
+                  value={frame348value}
+                  onChange={(e) => setFrame348value(e)}
+                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-start w-full"
+                  wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
+                  prefix={
+                    <Img
+                      className="cursor-pointer h-8 mr-2.5 my-auto"
+                      src="images/img_search_blue_gray_900_01.svg"
+                      alt="search"
+                    />
+                  }
+                  suffix={
+                    <CloseSVG
+                      fillColor="#30303090"
+                      className="cursor-pointer h-8 my-auto"
+                      onClick={() => setFrame348value("")}
+                      style={{
+                        visibility:
+                          frame348value?.length <= 0 ? "hidden" : "visible",
+                      }}
+                      height={32}
+                      width={32}
+                      viewBox="0 0 32 32"
+                    />
+                  }
+                ></Input>
+              </div>
               <Img
                 className="h-8 mr-[17px] w-8"
                 src="images/img_claritynotificationline.svg"
@@ -60,17 +118,17 @@ const ManageFootagePage = () => {
                 <div className="flex md:flex-1 flex-col md:gap-10 gap-10 justify-start md:mt-0 mt-2 w-[43%] md:w-full">
                   <Img
                     className="h-[331px] sm:h-auto object-cover w-full"
-                    src="images/img_rectangle39_331x407.png"
-                    alt="rectangleThirtyNine"
+                    src={thumbnail}
+                    alt="Footage Thumbnail"
                   />
                 </div>
                 {/* carderails-right end */}
                 {/* cardetails-left start  */}
-                <div className="flex md:flex-1 flex-col font-sourcesanspro gap-6 items-start justify-start w-auto md:w-full">
+                <div className="flex md:flex-1 flex-col font-sourcesanspro gap-6 items-start justify-start w-full">
                   <div className="flex flex-col items-start justify-start w-[55%] md:w-full">
                     <div className="flex flex-col items-center justify-start w-auto sm:w-full">
                       <Text className="md:text-3xl sm:text-[28px] text-3xl font-semibold text-blue_gray-900_01 w-auto source-sans">
-                        Name: Car crash surveillance
+                        Name:{name}
                       </Text>
                     </div>
                   </div>
@@ -81,14 +139,14 @@ const ManageFootagePage = () => {
                           ID:
                         </Text>
                         <Text className="text-blue_gray-900_01 text-lg font-normal font-lato">
-                          #1350678
+                          {id}
                         </Text>
                       </div>
                     </div>
                   </div>
                   <div className="flex flex-col font-sourcesanspro items-center justify-start">
                     <Text className="md:text-3xl sm:text-[28px] text-3xl font-semibold text-blue_gray-900_01 w-auto source-sans">
-                      Price: $25.00
+                      Price:${price}
                     </Text>
                   </div>
                   <div className="flex flex-col font-lato items-center justify-start w-[57%] md:w-full">
@@ -101,7 +159,7 @@ const ManageFootagePage = () => {
                           className="text-blue_gray-900_01 text-lg"
                           size="txtLatoRegular18"
                         >
-                          12/08/2023
+                          {date}
                         </Text>
                       </div>
                       <div className="flex flex-row items-start justify-start gap-1 w-[53%]">
@@ -112,12 +170,12 @@ const ManageFootagePage = () => {
                           className=" text-blue_gray-900_01 text-lg text-left"
                           size="txtLatoRegular18"
                         >
-                          10:00 pm GMT+1
+                          {time}
                         </Text>
                       </div>
                     </div>
                   </div>
-                  <div className="flex flex-col font-lato items-center justify-start w-full">
+                  <div className="flex flex-col font-lato items-start justify-start w-full">
                     <div className="flex flex-col gap-[7px] items-start justify-start w-full">
                       <Text className="ml-0.5 md:ml-[0] text-center text-gray-900 text-lg font-bold leading-6">
                         Description:
@@ -126,11 +184,7 @@ const ManageFootagePage = () => {
                         className="leading-6 text-blue_gray-900_01 text-lg w-[90%]"
                         size="txtLatoRegular18"
                       >
-                        Lorem ipsum dolor sit amet consectetur. Pretium pretium
-                        nisl pulvinar in in sed sit. Viverra ut morbi feugiat
-                        dolor aliquam diam. Consectetur elementum eget neque
-                        urna sed viverra. Turpis risus in non eget aliquam
-                        tincidunt pharetra.
+                        {description}
                       </Text>
                     </div>
                   </div>
@@ -187,6 +241,7 @@ const ManageFootagePage = () => {
                   <div className="cursor-pointer w-[50%] p-2">
                     {" "}
                     <Button
+                      onClick={deleteFootageDetails}
                       className="font-bold  flex rounded-lg pl-4 gap-3 items-center leading-[normal] p-3 bg-red-700 text-white-A700 text-base text-left w-full  placeholder:"
                       color="red_700"
                     >

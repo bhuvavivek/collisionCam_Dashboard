@@ -1,12 +1,24 @@
+<<<<<<< HEAD
 import { useNavigate } from "react-router-dom";
 
 import { Button, Img, Input, Text } from "components";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+=======
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { Button, Img, Input, Text } from "components";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
+import { AppContext } from "pages/store/AppContext";
+import { api } from "utils/api";
+>>>>>>> api
 
 const LoginOnePage = () => {
   const navigate = useNavigate();
 
+<<<<<<< HEAD
   const loginSchema = Yup.object({
     email: Yup.string().email("Invalid email address").required("Required"),
     password: Yup.string()
@@ -16,6 +28,46 @@ const LoginOnePage = () => {
         "Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one special character, and one number"
       ),
   });
+=======
+  const { user, isDataLoaded, setUser } = useContext(AppContext);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const returnTo = queryParams.get("returnTo");
+
+  const handleLogin = async () => {
+    try {
+      const { data } = await api.post("/admin/auth/login", { email, password });
+      if (data?.success) {
+        window.localStorage.setItem("token", data?.token);
+        setUser(data?.user);
+        toast.success(data?.message, toastOptions);
+      }
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.message || "Internal server error",
+        toastOptions
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (!isDataLoaded) {
+      return;
+    }
+    if (user) {
+      return navigate(returnTo ? "/" + returnTo : "/");
+    }
+  }, [user, isDataLoaded]);
+
+  if (!isDataLoaded) {
+    return <h1>Loading...</h1>;
+  }
+>>>>>>> api
 
   const initialValues = {
     email: "",
@@ -62,6 +114,7 @@ const LoginOnePage = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-6 items-center justify-start w-full">
+<<<<<<< HEAD
                 {/* Email and password main container */}
 
                 <form
@@ -114,12 +167,51 @@ const LoginOnePage = () => {
                       touched={touched}
                       errors={errors}
                     ></Input>
+=======
+                <div className="flex flex-col gap-5 items-start justify-start w-full">
+                  <div className="flex flex-col items-start justify-start w-full">
+                    <div className="flex flex-col gap-1.5 items-start justify-start w-full">
+                      <Text className=" text-blue_gray-900_01 w-auto font-lato text-base font-medium ">
+                        Email
+                      </Text>
+                      <Input
+                        value={email}
+                        onChange={setEmail}
+                        name="email"
+                        placeholder="Enter your email"
+                        className="!placeholder:text-blue_gray-500_99 !text-blue_gray-500_99 leading-[normal] p-0 text-base text-left w-full"
+                        wrapClassName="border border-blue_gray-100 border-solid w-full"
+                        type="email"
+                      ></Input>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-start justify-start w-full">
+                    <div className="flex flex-col gap-1.5 items-start justify-start w-full">
+                      <Text className=" text-blue_gray-900_01 w-auto text-base font-lato font-medium">
+                        Password
+                      </Text>
+                      <Input
+                        value={password}
+                        onChange={setPassword}
+                        name="input"
+                        type="password"
+                        placeholder="••••••••"
+                        className="!placeholder:text-blue_gray-500 !text-blue_gray-500 font-inter p-0 text-base text-left w-full"
+                        wrapClassName="border border-blue_gray-100 border-solid w-full"
+                        size="sm"
+                      ></Input>
+                    </div>
+>>>>>>> api
                   </div>
                 </form>
 
                 {/* keep me login */}
                 <div className="flex sm:flex-col flex-row sm:gap-5 items-center justify-start w-full">
+<<<<<<< HEAD
                   <div className="flex flex-1 flex-row gap-2 items-center justify-start w-full">
+=======
+                  {/* <div className="flex flex-1 flex-row gap-2 items-start justify-start w-full">
+>>>>>>> api
                     <Img
                       className="h-[18px] max-h-[18px]"
                       src="images/img_close.svg"
@@ -130,7 +222,7 @@ const LoginOnePage = () => {
                         Keep me logged in
                       </Text>
                     </div>
-                  </div>
+                  </div> */}
                   <Button
                     className="common-pointer bg-transparent leading-5  cursor-pointer font-semibold h-5 text-center text-indigo-900 text-sm"
                     onClick={() => navigate("/login")}
@@ -144,7 +236,7 @@ const LoginOnePage = () => {
                 <div className="flex flex-col gap-4 items-start justify-start w-full">
                   <Button
                     className="common-pointer cursor-pointer font-bold font-lato leading-[normal] rounded-[19px] shadow-bs text-base text-center w-full"
-                    onClick={() => navigate("/dashboard")}
+                    onClick={handleLogin}
                     color="indigo_900"
                     size="sm"
                     variant="fill"
@@ -152,6 +244,7 @@ const LoginOnePage = () => {
                   >
                     Sign in
                   </Button>
+<<<<<<< HEAD
                   {/* <div className="flex flex-col items-center justify-center w-full">
                     <Button
                       className="common-pointer border border-blue_gray-100 border-solid cursor-pointer flex items-center justify-center min-w-[429px] sm:min-w-full rounded-[20px] shadow-bs"
@@ -172,6 +265,8 @@ const LoginOnePage = () => {
                       </div>
                     </Button>
                   </div> */}
+=======
+>>>>>>> api
                 </div>
               </div>
             </div>

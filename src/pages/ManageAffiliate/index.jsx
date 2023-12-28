@@ -3,116 +3,94 @@ import React from "react";
 import { Button, Img, Input, SelectBox, Text } from "components";
 import Sidebar1 from "components/Sidebar1";
 import ProductTable from "components/producttable";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const buttonOptionsList = [
-  { label: "Option1", value: "option1" },
-  { label: "Option2", value: "option2" },
-  { label: "Option3", value: "option3" },
+  { label: "All", value: "" },
+  { label: "Approved", value: "approved" },
+  { label: "Rejected", value: "rejected" },
+  { label: "Pending", value: "pending" },
 ];
 const buttonOneOptionsList = [
-  { label: "Option1", value: "option1" },
-  { label: "Option2", value: "option2" },
-  { label: "Option3", value: "option3" },
+  { label: "Newest-Oldest", value: "desc" },
+  { label: "Oldest-Newest", value: "asc" },
 ];
 
 const ManageAffiliatePage = () => {
-  const tableData = [
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-  ];
+  const [frame348value, setFrame348value] = React.useState("");
+
+  const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const [sort, setSort] = useState("desc");
+  const [filter, setFilter] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get(
+          `/user/get-affliate?page=${page}&limit=10&sortBy=createdAt&order=${sort}&status=${filter}&search=${
+            name ? name : ""
+          }`
+        );
+
+        setTableData(response.data.result);
+        setTotalPages(Math.ceil(response.data.totalCount / 10));
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [loading, error, sort, page, filter, name]);
 
   const tableColumns = [
-    "Name",
+    "Name", // Replace with your actual column names
     "Phone Number",
     "Email Address",
     "Request Date",
-    "Uploaded Document",
+    "Footage ID",
+    "Upload Document",
     "Approval Status",
     "Details",
   ];
 
-  const [frame348value, setFrame348value] = React.useState("");
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  const formattedTableData = tableData.map((item) => [
+    item.full_name ?? "",
+    item.phone ?? "",
+    item.email ?? "",
+    formatDateFromTimestamp(item.createdAt) ?? "",
+    "empty",
+    item.document ?? "",
+    item.status ?? "",
+    item?._id ?? "",
+  ]);
+
+  function formatDateFromTimestamp(timestamp) {
+    const dateObject = new Date(timestamp);
+    const year = dateObject.getFullYear();
+    const month = (dateObject.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+    const day = dateObject.getDate().toString().padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  }
 
   return (
     <>
@@ -126,8 +104,8 @@ const ManageAffiliatePage = () => {
                 <Input
                   name="frame348"
                   placeholder="Search "
-                  value={frame348value}
-                  onChange={(e) => setFrame348value(e)}
+                  value={name}
+                  onChange={setName}
                   className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-start w-full"
                   wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
                   prefix={
@@ -194,9 +172,13 @@ const ManageAffiliatePage = () => {
                     }
                     isMulti={false}
                     name="button"
+                    value={filter}
+                    onChange={(status) => {
+                      setFilter(status);
+                    }}
                     options={buttonOptionsList}
                     isSearchable={false}
-                    placeholder="Approved"
+                    placeholder="All"
                     shape="round"
                     color="white_A700"
                     size="xs"
@@ -213,6 +195,10 @@ const ManageAffiliatePage = () => {
                       />
                     }
                     isMulti={false}
+                    value={sort}
+                    onChange={(value) => {
+                      setSort(value);
+                    }}
                     name="button_One"
                     options={buttonOneOptionsList}
                     isSearchable={false}
@@ -224,16 +210,35 @@ const ManageAffiliatePage = () => {
                   />
                 </div>
               </div>
-              <div className="overflow-auto mt-12 w-[85%] mx-auto">
+              <div className="overflow-auto mt-12 w-[95%] mx-auto">
                 <ProductTable
                   columns={tableColumns}
-                  data={tableData}
+                  data={formattedTableData}
                 ></ProductTable>
               </div>
               <div className="flex flex-col items-center justify-start md:ml-[0] ml-[53%] my-14  w-[43%] md:w-full">
                 <div className="flex sm:flex-col gap-5 flex-row sm:gap-14 items-center justify-end w-full">
                   <Button
+                    onClick={() => {
+                      if (page > 1) {
+                        setPage(page - 1);
+                      }
+                    }}
+                    className="bg-white-A700 border-2 border-indigo-900 border-solid  flex flex-col items-center justify-start p-3 rounded-[16px] w-[30%] sm:w-full"
+                  >
+                    <Img
+                      className="h-6 w-6"
+                      src="images/img_arrowdown.svg"
+                      alt="arrowdown"
+                    />
+                  </Button>
+                  <Button
                     className="cursor-pointer ml-[10%] flex items-center justify-center min-w-[150px]"
+                    onClick={() => {
+                      if (page < totalPages) {
+                        setPage(page + 1);
+                      }
+                    }}
                     rightIcon={
                       <Img
                         className="h-6 ml-[5px]"
@@ -261,10 +266,10 @@ const ManageAffiliatePage = () => {
                       size="sm"
                       variant="fill"
                     >
-                      1
+                      {page}
                     </Button>
                     <Text className="text-base text-center font-semibold text-[#212121] -ml-3">
-                      <pre>of 300</pre>
+                      <pre>of {totalPages}</pre>
                     </Text>
                   </div>
                 </div>

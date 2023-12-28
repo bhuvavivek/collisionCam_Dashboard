@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const ProductTable = ({ columns, data }) => {
+const SellClaimTable = ({ columns, data }) => {
   return (
     <div className="relative overflow-x-auto m-auto">
       <table
@@ -59,4 +59,4 @@ const ProductTable = ({ columns, data }) => {
   );
 };
 
-export default ProductTable;
+export default SellClaimTable;

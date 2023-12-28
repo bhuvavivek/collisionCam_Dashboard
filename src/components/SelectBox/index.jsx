@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React from "react";
 import Select from "react-select";
-import PropTypes from "prop-types";
 import { ErrorMessage } from "../ErrorMessage";
 
 const variants = {
@@ -29,12 +29,13 @@ const SelectBox = React.forwardRef(
       color = "",
       ...restProps
     },
-    ref,
+    ref
   ) => {
     const [selectedVal, setSelectedVal] = React.useState(value);
 
     const handleChange = (data) => {
       setSelectedVal(data);
+      onChange(data);
       if (isMulti) {
         onChange?.(data?.map((d) => d.value) || []);
       } else {
@@ -126,7 +127,7 @@ const SelectBox = React.forwardRef(
         {children}
       </>
     );
-  },
+  }
 );
 
 SelectBox.propTypes = {
