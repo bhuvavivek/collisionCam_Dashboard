@@ -29,6 +29,7 @@ const ManageFootagePage = () => {
         setLoading(false);
       } catch (error) {
         setError(error);
+        setError(error);
         setLoading(false);
       }
     };
