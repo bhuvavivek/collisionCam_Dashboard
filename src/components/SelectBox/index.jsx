@@ -31,10 +31,10 @@ const SelectBox = React.forwardRef(
     },
     ref
   ) => {
-    const [selectedVal, setSelectedVal] = React.useState(value);
 
+    console.log(value)
+    const [selectedVal, setSelectedVal] = React.useState(value);
     const handleChange = (data) => {
-      setSelectedVal(data);
       onChange(data);
       if (isMulti) {
         onChange?.(data?.map((d) => d.value) || []);
@@ -52,7 +52,7 @@ const SelectBox = React.forwardRef(
             (size && sizes[size]) || ""
           } ${(variant && variants[variant]?.[color]) || ""}`}
           placeholder={
-            <div className={placeholderClassName}>{placeholder}</div>
+            <div className={placeholderClassName} style={{textTransform: 'capitalize'}}>{placeholder}</div>
           }
           isSearchable={isSearchable}
           isMulti={isMulti}
@@ -79,7 +79,7 @@ const SelectBox = React.forwardRef(
             }),
             option: (provided, state) => ({
               ...provided,
-              color: state.isSelected && "#fafafa",
+              color: state.isSelected && "#303030a2",
               backgroundColor: state.isSelected && "#ffffff",
               "&:hover": { backgroundColor: "#ffffff", color: "#303030a2" },
             }),

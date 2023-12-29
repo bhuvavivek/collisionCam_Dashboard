@@ -368,7 +368,7 @@ const ManageAffiliateOnePage = () => {
                             readOnly={editbtn}
                             name="group161"
                             value={affiliateID}
-                            onChange={setAffiliateID}
+                            handleChange={(e) => setAffiliateID(e.target.value)}
                             placeholder="Input text here"
                             className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 font-lato leading-[normal] p-0 text-base text-left w-full"
                             wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
@@ -402,7 +402,7 @@ const ManageAffiliateOnePage = () => {
                             }}
                             options={buttonOptionsList}
                             isSearchable={false}
-                            placeholder="Approved"
+                            placeholder={filter}
                             shape="round"
                             color="white_A700"
                             size="xs"
@@ -424,7 +424,7 @@ const ManageAffiliateOnePage = () => {
                             name="groupFortySeven"
                             readOnly={editbtn}
                             value={description}
-                            onChange={setDescription}
+                            handleChange={(e) => setDescription(e.target.value)}
                             placeholder="Add a more detailed description...."
                             className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 font-lato leading-[normal] py-3 text-base text-left w-full"
                             wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[97%]"

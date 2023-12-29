@@ -12,7 +12,7 @@ const LoginOnePage = () => {
 
   const { user, isDataLoaded, setUser } = useContext(AppContext);
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("adas");
   const [password, setPassword] = useState("");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -85,7 +85,7 @@ const LoginOnePage = () => {
                       </Text>
                       <Input
                         value={email}
-                        onChange={setEmail}
+                        handleChange={(e) => setEmail(e.target.value)}
                         name="email"
                         placeholder="Enter your email"
                         className="!placeholder:text-blue_gray-500_99 !text-blue_gray-500_99 leading-[normal] p-0 text-base text-left w-full"
@@ -101,7 +101,7 @@ const LoginOnePage = () => {
                       </Text>
                       <Input
                         value={password}
-                        onChange={setPassword}
+                        handleChange={(e) => setPassword(e.target.value)}
                         name="input"
                         type="password"
                         placeholder="••••••••"
