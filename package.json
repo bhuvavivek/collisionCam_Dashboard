@@ -13,6 +13,7 @@
     "@vercel/speed-insights": "^1.0.2",
     "axios": "^1.6.2",
     "dotenv": "^16.0.1",
+    "esbuild": "^0.19.10",
     "formik": "^2.4.5",
     "prop-types": "^15.8.1",
     "react": "17.0.2",
