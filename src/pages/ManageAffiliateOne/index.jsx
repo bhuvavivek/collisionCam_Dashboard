@@ -1,17 +1,18 @@
+import React from "react";
+
 import { Button, Img, Input, List, SelectBox, Text } from "components";
-import React, { useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
 import { Link, useLocation } from "react-router-dom";
 import { CloseSVG } from "../../assets/images";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { api } from "utils/api";
 
 const buttonOptionsList = [
-  { label: "Approved", value: "approved" },
-  { label: "Rejected", value: "rejected" },
-  { label: "Pending", value: "pending" },
+  { label: "Option1", value: "option1" },
+  { label: "Option2", value: "option2" },
+  { label: "Option3", value: "option3" },
 ];
 
 const ManageAffiliateOnePage = () => {
@@ -22,10 +23,6 @@ const ManageAffiliateOnePage = () => {
   const [AffiliateDetails, setAffiliateDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const [filter, setFilter] = useState("");
-  const [affiliateID, setAffiliateID] = useState("");
-  const [description, setDescription] = useState("");
 
   useEffect(() => {
     const fetchAffiliateDetails = async () => {
@@ -42,7 +39,7 @@ const ManageAffiliateOnePage = () => {
     if (id) {
       fetchAffiliateDetails();
     }
-  }, [id, filter, affiliateID, description]);
+  }, [id]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -64,23 +61,6 @@ const ManageAffiliateOnePage = () => {
     promotionMethod,
     comments,
   } = AffiliateDetails;
-
-  const updateAffiliate = async () => {
-    try {
-      await api.put(`/user/update-affliate/${id}`, {
-        status: filter,
-        description: description,
-        affliate_id: affiliateID,
-      });
-      setFilter("");
-      setAffiliateID("");
-      setDescription("");
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
-  };
 
   return (
     <>
@@ -342,8 +322,6 @@ const ManageAffiliateOnePage = () => {
                           {" "}
                           <Input
                             name="group161"
-                            value={affiliateID}
-                            onChange={setAffiliateID}
                             placeholder="Input text here"
                             className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 font-lato leading-[normal] p-0 text-base text-left w-full"
                             wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
@@ -370,10 +348,6 @@ const ManageAffiliateOnePage = () => {
                             }
                             isMulti={false}
                             name="button"
-                            value={filter}
-                            onChange={(status) => {
-                              setFilter(status);
-                            }}
                             options={buttonOptionsList}
                             isSearchable={false}
                             placeholder="Approved"
@@ -396,8 +370,6 @@ const ManageAffiliateOnePage = () => {
                         <div className="w-full  ">
                           <Input
                             name="groupFortySeven"
-                            value={description}
-                            onChange={setDescription}
                             placeholder="Add a more detailed description...."
                             className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 font-lato leading-[normal] py-3 text-base text-left w-full"
                             wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[97%]"
@@ -425,18 +397,7 @@ const ManageAffiliateOnePage = () => {
                     </Text>
                   </Link>
 
-                  <div className="  relative flex flex-row gap-4 items-center justify-end  w-[58%]">
-                    <div className="cursor-pointer w-[50%] p-2">
-                      {" "}
-                      <Button
-                        onClick={updateAffiliate}
-                        className="font-bold flex items-center justify-center pl-4 gap-3 rounded-lg leading-[normal] p-3 bg-[#29207E] text-white-A700 text-base w-full  placeholder:"
-                        color="red_700"
-                      >
-                        <Text className="text-center"> Save </Text>
-                      </Button>
-                    </div>
-
+                  <div className="  relative flex flex-row gap-4 items-center justify-end  w-[38%]">
                     <div className="cursor-pointer w-[50%] p-2">
                       {" "}
                       <Button
