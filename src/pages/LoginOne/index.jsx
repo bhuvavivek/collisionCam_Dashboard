@@ -1,34 +1,15 @@
-<<<<<<< HEAD
-import { useNavigate } from "react-router-dom";
-
-import { Button, Img, Input, Text } from "components";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-=======
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Button, Img, Input, Text } from "components";
+import { AppContext } from "pages/store/AppContext";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { toastOptions } from "utils";
-import { AppContext } from "pages/store/AppContext";
 import { api } from "utils/api";
->>>>>>> api
 
 const LoginOnePage = () => {
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-  const loginSchema = Yup.object({
-    email: Yup.string().email("Invalid email address").required("Required"),
-    password: Yup.string()
-      .required("Password is required ")
-      .matches(
-        /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one special character, and one number"
-      ),
-  });
-=======
   const { user, isDataLoaded, setUser } = useContext(AppContext);
 
   const [email, setEmail] = useState("");
@@ -67,24 +48,6 @@ const LoginOnePage = () => {
   if (!isDataLoaded) {
     return <h1>Loading...</h1>;
   }
->>>>>>> api
-
-  const initialValues = {
-    email: "",
-    password: "",
-  };
-
-  const { values, handleChange, handleBlur, handleSubmit, touched, errors } =
-    useFormik({
-      initialValues: initialValues,
-      validationSchema: loginSchema,
-      onSubmit: (values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 400);
-      },
-    });
 
   return (
     <>
@@ -114,60 +77,6 @@ const LoginOnePage = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-6 items-center justify-start w-full">
-<<<<<<< HEAD
-                {/* Email and password main container */}
-
-                <form
-                  onSubmit={handleSubmit}
-                  className="flex flex-col gap-5 items-start justify-start w-full"
-                >
-                  {/* Email  field*/}
-                  <div className="flex flex-col gap-1.5 items-start justify-start w-full">
-                    <label
-                      htmlFor="email"
-                      className=" text-blue_gray-900_01 w-auto font-lato text-base font-medium "
-                    >
-                      Email
-                    </label>
-                    <Input
-                      type="email"
-                      name="email"
-                      id="email"
-                      placeholder="Email"
-                      className="!placeholder:text-blue_gray-500 !text-blue_gray-500 font-inter p-0 text-base text-left w-full"
-                      wrapClassName="border border-blue_gray-100 border-solid w-full"
-                      size="sm"
-                      onChange={handleChange}
-                      value={values.email}
-                      handleBlur={handleBlur}
-                      touched={touched}
-                      errors={errors}
-                    ></Input>
-                  </div>
-
-                  {/* Password */}
-                  <div className="flex flex-col gap-1.5 items-start justify-start w-full">
-                    <label
-                      htmlFor="password"
-                      className=" text-blue_gray-900_01 w-auto text-base font-lato font-medium"
-                    >
-                      Password
-                    </label>
-                    <Input
-                      type="password"
-                      name="password"
-                      id="password"
-                      placeholder="••••••••"
-                      className="!placeholder:text-blue_gray-500 !text-blue_gray-500 font-inter p-0 text-base text-left w-full"
-                      wrapClassName="border border-blue_gray-100 border-solid w-full"
-                      size="sm"
-                      onChange={handleChange}
-                      value={values.email}
-                      handleBlur={handleBlur}
-                      touched={touched}
-                      errors={errors}
-                    ></Input>
-=======
                 <div className="flex flex-col gap-5 items-start justify-start w-full">
                   <div className="flex flex-col items-start justify-start w-full">
                     <div className="flex flex-col gap-1.5 items-start justify-start w-full">
@@ -201,17 +110,10 @@ const LoginOnePage = () => {
                         size="sm"
                       ></Input>
                     </div>
->>>>>>> api
                   </div>
-                </form>
-
-                {/* keep me login */}
+                </div>
                 <div className="flex sm:flex-col flex-row sm:gap-5 items-center justify-start w-full">
-<<<<<<< HEAD
-                  <div className="flex flex-1 flex-row gap-2 items-center justify-start w-full">
-=======
                   {/* <div className="flex flex-1 flex-row gap-2 items-start justify-start w-full">
->>>>>>> api
                     <Img
                       className="h-[18px] max-h-[18px]"
                       src="images/img_close.svg"
@@ -231,8 +133,6 @@ const LoginOnePage = () => {
                     Forgot password
                   </Button>
                 </div>
-
-                {/* Sigin button and sign in with google  */}
                 <div className="flex flex-col gap-4 items-start justify-start w-full">
                   <Button
                     className="common-pointer cursor-pointer font-bold font-lato leading-[normal] rounded-[19px] shadow-bs text-base text-center w-full"
@@ -240,33 +140,9 @@ const LoginOnePage = () => {
                     color="indigo_900"
                     size="sm"
                     variant="fill"
-                    type="submit"
                   >
                     Sign in
                   </Button>
-<<<<<<< HEAD
-                  {/* <div className="flex flex-col items-center justify-center w-full">
-                    <Button
-                      className="common-pointer border border-blue_gray-100 border-solid cursor-pointer flex items-center justify-center min-w-[429px] sm:min-w-full rounded-[20px] shadow-bs"
-                      onClick={() => googleSignIn()}
-                      leftIcon={
-                        <Img
-                          className="h-6 mr-3"
-                          src="images/img_social_icon.svg"
-                          alt="Social icon"
-                        />
-                      }
-                      color="white_A700"
-                      size="sm"
-                      variant="fill"
-                    >
-                      <div className="!text-blue_gray-800 font-bold font-lato leading-[normal] text-base text-left">
-                        Sign in with Google
-                      </div>
-                    </Button>
-                  </div> */}
-=======
->>>>>>> api
                 </div>
               </div>
             </div>
