@@ -10,9 +10,9 @@ import { useEffect, useState } from "react";
 import { api } from "utils/api";
 
 const buttonOptionsList = [
-  { label: "Option1", value: "option1" },
-  { label: "Option2", value: "option2" },
-  { label: "Option3", value: "option3" },
+  { label: "Approved", value: "approved" },
+  { label: "Rejected", value: "rejected" },
+  { label: "Pending", value: "pending" },
 ];
 
 const ManageAffiliateOnePage = () => {
@@ -23,6 +23,10 @@ const ManageAffiliateOnePage = () => {
   const [AffiliateDetails, setAffiliateDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const [filter, setFilter] = useState("");
+  const [affiliateID, setAffiliateID] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     const fetchAffiliateDetails = async () => {
@@ -39,7 +43,7 @@ const ManageAffiliateOnePage = () => {
     if (id) {
       fetchAffiliateDetails();
     }
-  }, [id]);
+  }, [id, filter, affiliateID, description]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -61,6 +65,23 @@ const ManageAffiliateOnePage = () => {
     promotionMethod,
     comments,
   } = AffiliateDetails;
+
+  const updateAffiliate = async () => {
+    try {
+      await api.put(`/user/update-affliate/${id}`, {
+        status: filter,
+        description: description,
+        affliate_id: affiliateID,
+      });
+      setFilter("");
+      setAffiliateID("");
+      setDescription("");
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -370,6 +391,8 @@ const ManageAffiliateOnePage = () => {
                         <div className="w-full  ">
                           <Input
                             name="groupFortySeven"
+                            value={description}
+                            onChange={setDescription}
                             placeholder="Add a more detailed description...."
                             className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 font-lato leading-[normal] py-3 text-base text-left w-full"
                             wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[97%]"
