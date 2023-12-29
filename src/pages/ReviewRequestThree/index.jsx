@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button, Img, Input, SelectBox, Text } from "components";
 import Sidebar1 from "components/Sidebar1";
-import SellClaimTable from "components/sellclaimTable";
+import ProductTable from "components/producttable";
 import { useEffect, useState } from "react";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
@@ -218,10 +218,10 @@ const ManageAffiliatePage = () => {
                 </div>
               </div>
               <div className="overflow-auto mt-12 w-[95%] mx-auto">
-                <SellClaimTable
+                <ProductTable
                   columns={tableColumns}
                   data={formattedTableData}
-                ></SellClaimTable>
+                ></ProductTable>
               </div>
               <div className="flex flex-col items-center justify-start md:ml-[0] ml-[53%] my-14  w-[43%] md:w-full">
                 <div className="flex sm:flex-col gap-5 flex-row sm:gap-14 items-center justify-end w-full">

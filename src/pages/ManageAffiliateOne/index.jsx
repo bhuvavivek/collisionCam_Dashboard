@@ -2,7 +2,7 @@ import { Button, Img, Input, List, SelectBox, Text } from "components";
 import React, { useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { CloseSVG } from "../../assets/images";
 
 import { useEffect } from "react";
@@ -10,32 +10,28 @@ import { api } from "utils/api";
 
 const buttonOptionsList = [
   { label: "Approved", value: "approved" },
-  { label: "Rejected", value: "reject" },
+  { label: "Rejected", value: "rejected" },
   { label: "Pending", value: "pending" },
 ];
 
 const ManageAffiliateOnePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
-  const nevigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
   const [AffiliateDetails, setAffiliateDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [filter, setFilter] = useState("");
   const [affiliateID, setAffiliateID] = useState("");
   const [description, setDescription] = useState("");
-  const [editbtn, setEditbtn] = useState(true);
 
   useEffect(() => {
     const fetchAffiliateDetails = async () => {
       try {
         const response = await api.get(`/user/get-single-affliate/${id}`);
         setAffiliateDetails(response.data.result);
-        setDescription(response.data.result.description);
-        setAffiliateID(response.data.result.affliate_id);
-        setFilter(response.data.result.status);
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -46,7 +42,7 @@ const ManageAffiliateOnePage = () => {
     if (id) {
       fetchAffiliateDetails();
     }
-  }, [id]);
+  }, [id, filter, affiliateID, description]);
 
   if (loading) {
     return <p>Loading...</p>;
@@ -76,33 +72,13 @@ const ManageAffiliateOnePage = () => {
         description: description,
         affliate_id: affiliateID,
       });
-      setEditbtn(true);
+      setFilter("");
+      setAffiliateID("");
+      setDescription("");
       setLoading(false);
-    } catch (error) {
-      setEditbtn(true);
-      setError(error);
-      setLoading(false);
-    }
-  };
-
-  const deleteAffiliate = async () => {
-    try {
-      setLoading(true);
-      const response = await api.delete(`/user/delete-affliate/${id}`);
-      setLoading(false);
-
-      if (response.data.success) {
-        // Handle success, you can navigate or perform any other actions
-        nevigate("/manageaffiliate");
-      } else {
-        // Handle failure
-        console.error("Failed to delete affiliate");
-      }
     } catch (error) {
       setError(error);
       setLoading(false);
-      // Handle error
-      console.error("Error deleting affiliate:", error);
     }
   };
 
@@ -335,13 +311,13 @@ const ManageAffiliateOnePage = () => {
                         </div>
                       </div>
                       <div className="flex flex-col items-start justify-start w-full">
-                        <div className="flex flex-col gap-2.5 items-start justify-start mb-[3px] w-[70%] md:w-full">
+                        <div className="flex flex-col gap-2.5 items-start justify-start mb-[3px] w-[34%] md:w-full">
                           <div className="flex flex-col items-start justify-start w-full">
                             <Text className="text-base text-blue_gray-900_01">
                               Additional Comment or Question:
                             </Text>
                           </div>
-                          <div className="flex  h-[17px] items-start justify-start ">
+                          <div className="flex flex-col h-[17px] items-start justify-start w-[17px]">
                             <Text className="h-[17px] text-blue_gray-900_01 font-normal text-sm">
                               {comments}
                             </Text>
@@ -365,7 +341,6 @@ const ManageAffiliateOnePage = () => {
                         <div className="w-[40%]">
                           {" "}
                           <Input
-                            readOnly={editbtn}
                             name="group161"
                             value={affiliateID}
                             onChange={setAffiliateID}
@@ -394,7 +369,6 @@ const ManageAffiliateOnePage = () => {
                               />
                             }
                             isMulti={false}
-                            readOnly={editbtn}
                             name="button"
                             value={filter}
                             onChange={(status) => {
@@ -422,7 +396,6 @@ const ManageAffiliateOnePage = () => {
                         <div className="w-full  ">
                           <Input
                             name="groupFortySeven"
-                            readOnly={editbtn}
                             value={description}
                             onChange={setDescription}
                             placeholder="Add a more detailed description...."
@@ -467,9 +440,6 @@ const ManageAffiliateOnePage = () => {
                     <div className="cursor-pointer w-[50%] p-2">
                       {" "}
                       <Button
-                        onClick={() => {
-                          setEditbtn(false);
-                        }}
                         className="font-bold   flex items-center pl-4 gap-3 rounded-lg   leading-[normal] p-3 bg-[#29207E] text-white-A700 text-base  w-full  placeholder:"
                         color="red_700"
                       >
@@ -495,7 +465,6 @@ const ManageAffiliateOnePage = () => {
                     <div className="cursor-pointer w-[50%] p-2">
                       {" "}
                       <Button
-                        onClick={deleteAffiliate}
                         className="font-bold  flex rounded-lg pl-4 gap-3 items-center leading-[normal] p-3 bg-red-700 text-white-A700 text-base text-left w-full  placeholder:"
                         color="red_700"
                       >
