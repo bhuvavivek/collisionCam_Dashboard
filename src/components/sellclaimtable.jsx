@@ -38,7 +38,7 @@ const SellClaimTable = ({ columns, data }) => {
                 >
                   {cellIndex === row.length - 1 ? (
                     <Link
-                      to={`/manageaffiliateone?id=${cell}`}
+                      to={`/reviewrequesttwo?id=${cell}`}
                       onClick={() => {
                         console.log(row[row.length - 1]);
                       }}
