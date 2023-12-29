@@ -34,11 +34,8 @@ const Input = React.forwardRef(
       size = "xs",
       variant = "fill",
       color = "white_A700",
-<<<<<<< HEAD
       handleChange,
-=======
       value,
->>>>>>> api
       ...restProps
     },
     ref
