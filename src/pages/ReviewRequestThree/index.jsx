@@ -2,7 +2,7 @@ import React from "react";
 
 import { Button, Img, Input, SelectBox, Text } from "components";
 import Sidebar1 from "components/Sidebar1";
-import SellClaimTable from "components/sellclaimTable";
+import SellClaimTable from "components/sellclaimtable";
 import { useEffect, useState } from "react";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
