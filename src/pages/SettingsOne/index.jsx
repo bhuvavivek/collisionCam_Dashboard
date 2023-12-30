@@ -4,22 +4,40 @@ import { Button, Img, Input, Line, Switch, Text } from "components";
 import { Link } from "react-router-dom";
 
 import Sidebar1 from "components/Sidebar1";
-import { CloseSVG } from "../../assets/images";
 import { AppContext } from "pages/store/AppContext";
+import { api } from "utils/api";
+import { CloseSVG } from "../../assets/images";
 
 const SettingsOnePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState("");
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const { user } = useContext(AppContext);
 
   useEffect(() => {
-    setEmail(user?.email);
-    setPhone(user?.phone);
-    setAddress(user?.address);
+    fetchData();
+
+    if (user) {
+      setEmail(user.email || "");
+      setPhone(user.phone || "");
+      setAddress(user.address || "");
+    }
   }, [user]);
+
+  const fetchData = async () => {
+    try {
+      const response = await api.get("/admin/auth/profile");
+
+      setData(response.data.result);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   return (
     <>
@@ -137,7 +155,7 @@ const SettingsOnePage = () => {
                     value={phone}
                     onChange={setPhone}
                     name="group161"
-                    placeholder="(123) 456-7890"
+                    placeholder={phone}
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
                     wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
                   ></Input>
@@ -157,7 +175,7 @@ const SettingsOnePage = () => {
                     value={email}
                     onChange={setEmail}
                     name="email"
-                    placeholder="info@collisioncam.com"
+                    placeholder="bhuvavivek65@gmail.com"
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
                     wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
                     type="email"
@@ -176,7 +194,9 @@ const SettingsOnePage = () => {
                   {" "}
                   <Input
                     name="timeZone"
-                    placeholder="City of St. George, East 200 North, Saint George, UT, USA"
+                    value={address}
+                    onChange={address}
+                    placeholder={address}
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
                     wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
                   ></Input>
