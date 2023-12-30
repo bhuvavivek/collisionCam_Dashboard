@@ -10,7 +10,7 @@ import { CloseSVG } from "../../assets/images";
 const buttonOptionsList = [
   { label: "All", value: "" },
   { label: "Approved", value: "approved" },
-  { label: "Rejected", value: "value" },
+  { label: "Rejected", value: "reject" },
   { label: "Pending", value: "pending" },
 ];
 const buttonOneOptionsList = [
@@ -33,7 +33,7 @@ const ManageAffiliatePage = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("new");
+  const [category, setCategory] = useState("old");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,9 +52,24 @@ const ManageAffiliatePage = () => {
         setLoading(false);
       }
     };
+    const fetchrequestData = async () => {
+      try {
+        const response = await api.get(
+          `/user/get-request?status=${filter}&search=${
+            name ? name : ""
+          }&page=${page}&limit=10&sortBy=createdAt&order=${sort}&`
+        );
 
-    fetchData();
-  }, [loading, error, sort, page, filter, name]); // Empty dependency array means the effect runs once when the component mounts
+        setTableData(response.data.result);
+        setTotalPages(Math.ceil(response.data.totalCount / 10));
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+    category === "old" ? fetchData() : fetchrequestData();
+  }, [loading, error, sort, page, filter, name, category]); // Empty dependency array means the effect runs once when the component mounts
 
   const tableColumns = [
     "Name", // Replace with your actual column names
@@ -76,6 +91,17 @@ const ManageAffiliatePage = () => {
   }
 
   const formattedTableData = tableData.map((item) => [
+    item.full_name ?? "",
+    item.phone ?? "",
+    item.email ?? "",
+    item.date ?? "",
+    "empty",
+    item.document ?? "",
+    item.status ?? "",
+    item?._id ?? "",
+  ]);
+
+  const requestTableData = tableData.map((item) => [
     item.full_name ?? "",
     item.phone ?? "",
     item.email ?? "",
@@ -156,7 +182,9 @@ const ManageAffiliatePage = () => {
                     onChange={(value) => {
                       setCategory(value);
                     }}
-                    placeholder="Sell Claim"
+                    placeholder={
+                      category === "old" ? "sell-claim" : "request for free"
+                    }
                     shape="round"
                     color="white_A700"
                     size="xs"
@@ -236,7 +264,9 @@ const ManageAffiliatePage = () => {
               <div className="overflow-auto mt-12 w-[95%] mx-auto">
                 <SellClaimTable
                   columns={tableColumns}
-                  data={formattedTableData}
+                  data={
+                    category === "old" ? formattedTableData : requestTableData
+                  }
                 ></SellClaimTable>
               </div>
               <div className="flex flex-col items-center justify-start md:ml-[0] ml-[53%] my-14  w-[43%] md:w-full">
