@@ -36,8 +36,8 @@ const SettingsOnePage = () => {
       setEmail(response2.data.user.email);
       setID(response.data.settings._id);
       setSwitch1(response.data.settings.sellClaimRequest);
-      // setSwitch2(response.data.settings.affiliateRequest);
-      // setSwitch3(response.data.settings.freeFootageRequest);
+      setSwitch2(response.data.settings.affiliateRequest);
+      setSwitch3(response.data.settings.freeFootageRequest);
       setLoading(false);
     } catch (error) {
       setError(error);
