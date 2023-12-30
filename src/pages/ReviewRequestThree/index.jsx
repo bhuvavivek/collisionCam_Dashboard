@@ -6,6 +6,7 @@ import SellClaimTable from "components/sellclaimtable";
 import { useEffect, useState } from "react";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
+import { formatDateTime } from "utils";
 
 const buttonOptionsList = [
   { label: "All", value: "" },
@@ -94,7 +95,7 @@ const ManageAffiliatePage = () => {
     item.full_name ?? "",
     item.phone ?? "",
     item.email ?? "",
-    item.date ?? "",
+    formatDateTime(item.createdAt) ?? "",
     "empty",
     item.document ?? "",
     item.status ?? "",
@@ -105,7 +106,7 @@ const ManageAffiliatePage = () => {
     item.full_name ?? "",
     item.phone ?? "",
     item.email ?? "",
-    item.date ?? "",
+    formatDateTime(item.createdAt) ?? "",
     "empty",
     item.document ?? "",
     item.status ?? "",

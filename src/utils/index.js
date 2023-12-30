@@ -22,3 +22,20 @@ export const toastOptions = {
   progress: undefined,
   theme: "light",
 };
+
+export const formatDateTime = (timestamp) => {
+  const dateObject = new Date(timestamp);
+
+  const formattedDate = `${dateObject.getDate()}/${
+    dateObject.getMonth() + 1
+  }/${dateObject.getFullYear()}`;
+
+  const hours = dateObject.getHours();
+  const minutes = dateObject.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedTime = `${hours % 12 || 12}:${
+    minutes < 10 ? "0" : ""
+  }${minutes} ${ampm}`;
+
+  return `${formattedDate} - ${formattedTime}`;
+};

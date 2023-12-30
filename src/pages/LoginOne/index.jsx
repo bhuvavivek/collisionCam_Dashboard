@@ -12,7 +12,7 @@ const LoginOnePage = () => {
 
   const { user, isDataLoaded, setUser } = useContext(AppContext);
 
-  const [email, setEmail] = useState("adas");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
