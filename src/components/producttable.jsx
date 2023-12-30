@@ -1,10 +1,8 @@
 import { Link } from "react-router-dom";
-import { Text } from "./Text";
 
 const ProductTable = ({ columns, data }) => {
   return (
     <div className="relative overflow-x-auto m-auto">
-      <Text>this is product table </Text>
       <table
         className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
         style={{ borderCollapse: "collapse", border: "1px solid #B9B9B9" }}

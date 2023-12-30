@@ -98,7 +98,7 @@ const ManageAffiliatePage = () => {
                   name="frame348"
                   placeholder="Search "
                   value={name}
-                  onChange={setName}
+                  handleChange={(e) => setName(e.target.value)}
                   className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-start w-full"
                   wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
                   prefix={

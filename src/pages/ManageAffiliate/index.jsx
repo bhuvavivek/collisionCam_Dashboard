@@ -140,7 +140,7 @@ const ManageAffiliatePage = () => {
             </div>
             <div className="flex flex-col items-start justify-start w-[94%] md:w-full">
               <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between w-full">
-                <Link to="/manageaffiliateone">
+                <Link to="/affiliateperformance">
                   {" "}
                   <Button
                     className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"

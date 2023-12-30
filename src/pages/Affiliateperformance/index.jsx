@@ -1,107 +1,72 @@
 import React from "react";
 
 import { Button, Img, Input, Text } from "components";
+import { useEffect, useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
 import AffiliateTable from "components/affiliatetable";
+import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const AffiliateperformancePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [name, setName] = useState("");
 
-  const tableData = [
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-    [
-      "Grace Villa",
-      "+9167857432342",
-      "Gracevilla95@gmail.com",
-      "12/05/2023",
-      "Business_location.pdf",
-      "Approved",
-      "View Details",
-    ],
-  ];
+  const [tableData, setTableData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get(
+          `/user/get-affliate?page=${page}&limit=10&sortBy=createdAt&order=&status=&search=${
+            name ? name : ""
+          }`
+        );
+
+        setTableData(response.data.result);
+        setTotalPages(Math.ceil(response.data.totalCount / 10));
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [loading, error, page, name]);
 
   const tableColumns = [
     "Name",
-    "Phone Number",
-    "Email Address",
-    "Request Date",
-    "Uploaded Document",
-    "Approval Status",
-    "Details",
+    "Affilliate ID",
+    "Total Sales",
+    "Commission",
+    "Number of Sales",
+    "Paid Earning",
+    "Unpaid Earning",
   ];
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  const formattedTableData = tableData.map((item) => [
+    item.full_name ?? "",
+    item.phone ?? "",
+    item.email ?? "",
+    "something",
+    "empty",
+    item.document ?? "",
+    item.status ?? "",
+    item?._id ?? "",
+  ]);
 
   return (
     <>
