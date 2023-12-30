@@ -62,8 +62,22 @@ const ProjectRoutes = () => {
           <Route path="/manageaffiliate" element={<ManageAffiliate />} />
 
           <Route path="/login" element={<Login />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/manage-footage" element={<ManageFootage />} />
+          <Route
+            path="/settings"
+            element={
+              <Protected returnTo="settings">
+                <Settings />
+              </Protected>
+            }
+          />
+          <Route
+            path="/manage-footage"
+            element={
+              <Protected returnTo="/manage-footage">
+                <ManageFootage />
+              </Protected>
+            }
+          />
           <Route path="/reviewrequest" element={<ReviewRequest />} />
           <Route path="/reviewrequesttwo" element={<ReviewRequestTwo />} />
           <Route path="/upload-form" element={<Uploadform />} />

@@ -4,9 +4,9 @@ import { Button, Img, Input, SelectBox, Text } from "components";
 import Sidebar1 from "components/Sidebar1";
 import SellClaimTable from "components/sellclaimtable";
 import { useEffect, useState } from "react";
+import { formatDateTime } from "utils";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
-import { formatDateTime } from "utils";
 
 const buttonOptionsList = [
   { label: "All", value: "" },
@@ -266,6 +266,7 @@ const ManageAffiliatePage = () => {
               </div>
               <div className="overflow-auto mt-12 w-[95%] mx-auto">
                 <SellClaimTable
+                  category={category}
                   columns={tableColumns}
                   data={
                     category === "old" ? formattedTableData : requestTableData

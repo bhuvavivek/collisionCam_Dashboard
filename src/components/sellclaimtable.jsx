@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const SellClaimTable = ({ columns, data }) => {
+const SellClaimTable = ({ columns, data, category }) => {
   return (
     <div className="relative overflow-x-auto m-auto">
       <table
@@ -38,10 +38,11 @@ const SellClaimTable = ({ columns, data }) => {
                 >
                   {cellIndex === row.length - 1 ? (
                     <Link
-                      to={`/reviewrequesttwo?id=${cell}`}
-                      onClick={() => {
-                        console.log(row[row.length - 1]);
-                      }}
+                      to={`${
+                        category === "old"
+                          ? "/reviewrequesttwo?id=" + cell
+                          : "/reviewrequest?id=" + cell
+                      }`}
                       className="underline"
                     >
                       View Details
