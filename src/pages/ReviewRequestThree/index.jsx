@@ -33,6 +33,7 @@ const ManageAffiliatePage = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [name, setName] = useState("");
+  const [category, setCategory] = useState("new");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,6 +152,10 @@ const ManageAffiliatePage = () => {
                     name="button_One"
                     options={ReviewRequestOptions}
                     isSearchable={false}
+                    value={category}
+                    onChange={(value) => {
+                      setCategory(value);
+                    }}
                     placeholder="Sell Claim"
                     shape="round"
                     color="white_A700"
@@ -184,7 +189,17 @@ const ManageAffiliatePage = () => {
                     name="button"
                     options={buttonOptionsList}
                     isSearchable={false}
-                    placeholder={filter}
+                    placeholder={
+                      filter === ""
+                        ? "All"
+                        : filter === "approved"
+                        ? "Approved"
+                        : filter === "reject"
+                        ? "Rejected"
+                        : filter === "pending"
+                        ? "Pending"
+                        : "All"
+                    }
                     shape="round"
                     color="white_A700"
                     size="xs"
@@ -208,7 +223,9 @@ const ManageAffiliatePage = () => {
                     }}
                     options={buttonOneOptionsList}
                     isSearchable={false}
-                    placeholder={sort}
+                    placeholder={
+                      sort === "desc" ? "Newest-Oldest" : "Oldest-Newest"
+                    }
                     shape="round"
                     color="white_A700"
                     size="xs"

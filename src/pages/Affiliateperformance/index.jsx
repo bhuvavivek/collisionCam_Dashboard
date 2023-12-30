@@ -1,11 +1,10 @@
 import React from "react";
 
 import { Button, Img, Input, Text } from "components";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
 import AffiliateTable from "components/affiliatetable";
-import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const AffiliateperformancePage = () => {
@@ -18,26 +17,26 @@ const AffiliateperformancePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get(
-          `/user/get-affliate?page=${page}&limit=10&sortBy=createdAt&order=&status=&search=${
-            name ? name : ""
-          }`
-        );
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await api.get(
+  //         `/user/get-affliate?page=${page}&limit=10&sortBy=createdAt&order=&status=&search=${
+  //           name ? name : ""
+  //         }`
+  //       );
 
-        setTableData(response.data.result);
-        setTotalPages(Math.ceil(response.data.totalCount / 10));
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
-    };
+  //       setTableData(response.data.result);
+  //       setTotalPages(Math.ceil(response.data.totalCount / 10));
+  //       setLoading(false);
+  //     } catch (error) {
+  //       setError(error);
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, [loading, error, page, name]);
+  //   fetchData();
+  // }, [loading, error, page, name]);
 
   const tableColumns = [
     "Name",
@@ -49,13 +48,13 @@ const AffiliateperformancePage = () => {
     "Unpaid Earning",
   ];
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
 
-  if (error) {
-    return <p>Error: {error.message}</p>;
-  }
+  // if (error) {
+  //   return <p>Error: {error.message}</p>;
+  // }
 
   const formattedTableData = tableData.map((item) => [
     item.full_name ?? "",
@@ -80,8 +79,8 @@ const AffiliateperformancePage = () => {
                 <Input
                   name="frame348"
                   placeholder="Search "
-                  value={frame348value}
-                  onChange={(e) => setFrame348value(e)}
+                  value={name}
+                  handleChange={(e) => setName(e.target.value)}
                   className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-center w-full"
                   wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
                   prefix={
@@ -163,10 +162,29 @@ const AffiliateperformancePage = () => {
                 data={tableData}
               ></AffiliateTable>
             </div>
-            <div className="flex flex-col items-center justify-start md:ml-[0] ml-[53%] my-14  w-[43%] md:w-full">
+            <div className="flex flex-col items-center justify-start md:ml-[0] ml-[53%] my-14 mr-12 w-[43%] md:w-full">
               <div className="flex sm:flex-col gap-5 flex-row sm:gap-14 items-center justify-end w-full">
                 <Button
+                  onClick={() => {
+                    if (page > 1) {
+                      setPage(page - 1);
+                    }
+                  }}
+                  className="bg-white-A700 border-2 border-indigo-900 border-solid  flex flex-col items-center justify-start p-3 rounded-[16px] w-[30%] sm:w-full"
+                >
+                  <Img
+                    className="h-6 w-6"
+                    src="images/img_arrowdown.svg"
+                    alt="arrowdown"
+                  />
+                </Button>
+                <Button
                   className="cursor-pointer ml-[10%] flex items-center justify-center min-w-[150px]"
+                  onClick={() => {
+                    if (page < totalPages) {
+                      setPage(page + 1);
+                    }
+                  }}
                   rightIcon={
                     <Img
                       className="h-6 ml-[5px]"
@@ -192,10 +210,10 @@ const AffiliateperformancePage = () => {
                     size="sm"
                     variant="fill"
                   >
-                    1
+                    {page}
                   </Button>
                   <Text className="text-base text-center font-semibold text-[#212121] -ml-3">
-                    <pre>of 300</pre>
+                    <pre>of {totalPages}</pre>
                   </Text>
                 </div>
               </div>

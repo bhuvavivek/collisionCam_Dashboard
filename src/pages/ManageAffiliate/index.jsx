@@ -11,7 +11,7 @@ import { CloseSVG } from "../../assets/images";
 const buttonOptionsList = [
   { label: "All", value: "" },
   { label: "Approved", value: "approved" },
-  { label: "Rejected", value: "value" },
+  { label: "Rejected", value: "reject" },
   { label: "Pending", value: "pending" },
 ];
 const buttonOneOptionsList = [
@@ -178,7 +178,17 @@ const ManageAffiliatePage = () => {
                     }}
                     options={buttonOptionsList}
                     isSearchable={false}
-                    placeholder="All"
+                    placeholder={
+                      filter === ""
+                        ? "All"
+                        : filter === "approved"
+                        ? "Approved"
+                        : filter === "reject"
+                        ? "Rejected"
+                        : filter === "pending"
+                        ? "Pending"
+                        : "All"
+                    }
                     shape="round"
                     color="white_A700"
                     size="xs"
@@ -202,7 +212,9 @@ const ManageAffiliatePage = () => {
                     name="button_One"
                     options={buttonOneOptionsList}
                     isSearchable={false}
-                    placeholder="Newest-Oldest"
+                    placeholder={
+                      sort === "desc" ? "Newest-Oldest" : "Oldest-Newest"
+                    }
                     shape="round"
                     color="white_A700"
                     size="xs"

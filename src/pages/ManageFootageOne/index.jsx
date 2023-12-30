@@ -16,8 +16,8 @@ const buttonTwoOptionsList = [
 const ManageFootageOnePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
 
-  const [state, setState] = useState();
-  const [city, setCity] = useState();
+  const [state, setState] = useState(null);
+  const [city, setCity] = useState(null);
 
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
@@ -46,8 +46,6 @@ const ManageFootageOnePage = () => {
     }
   };
 
-  console.log(sort);
-
   return (
     <>
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full h-[100vh]">
@@ -61,7 +59,7 @@ const ManageFootageOnePage = () => {
                     name="frame348"
                     placeholder="Search "
                     value={name}
-                    onChange={setName}
+                    handleChange={(e) => setName(e.target.value)}
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-left w-full"
                     wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
                     prefix={
@@ -125,7 +123,7 @@ const ManageFootageOnePage = () => {
                       name="button"
                       options={States}
                       isSearchable={false}
-                      placeholder="Select state"
+                      placeholder={state === null ? "Select State " : state}
                       shape="round"
                       color="white_A700"
                       size="xs"
@@ -150,7 +148,7 @@ const ManageFootageOnePage = () => {
                       name="button_One"
                       options={Cities[state?.replace(/\s/g, "")]}
                       isSearchable={false}
-                      placeholder="Select City"
+                      placeholder={city === null ? "Select City" : city}
                       shape="round"
                       color="white_A700"
                       size="xs"
@@ -174,7 +172,9 @@ const ManageFootageOnePage = () => {
                       name="button_Two"
                       options={buttonTwoOptionsList}
                       isSearchable={false}
-                      placeholder="Newest-Oldest"
+                      placeholder={
+                        sort === "new" ? "Newest-Oldest" : "Oldest-Newest"
+                      }
                       value={sort}
                       onChange={(value) => {
                         setSort(value);
