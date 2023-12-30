@@ -4,7 +4,8 @@ import { Button, Img, Input, Line, Switch, Text } from "components";
 import { Link } from "react-router-dom";
 
 import Sidebar1 from "components/Sidebar1";
-
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
@@ -17,18 +18,60 @@ const SettingsOnePage = () => {
   const [switch1, setSwitch1] = useState(false);
   const [switch2, setSwitch2] = useState(false);
   const [switch3, setSwitch3] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [id, setID] = useState(null);
 
   useEffect(() => {
     fetchData();
-  });
+  }, []);
 
   const fetchData = async () => {
     try {
-      const response = await api.get("/admin/auth/profile");
-      setPhone(response.data.phone);
-      setAddress(response.data.address);
-      setEmail(response.data.email);
-    } catch {}
+      const response = await api.get("/general-settings");
+      const response2 = await api.get("/admin/auth/profile");
+
+      setPhone(response2.data.user.phone);
+      setAddress(response2.data.user.address);
+      setEmail(response2.data.user.email);
+      setID(response.data.settings._id);
+      setSwitch1(response.data.settings.sellClaimRequest);
+      // setSwitch2(response.data.settings.affiliateRequest);
+      // setSwitch3(response.data.settings.freeFootageRequest);
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
+
+  console.log(switch1);
+
+  const handleChange = async () => {
+    try {
+      const response = await api.put("/admin/auth/general-settings", {
+        phone: phone,
+        address: address,
+        email: email,
+      });
+      const response2 = await api.put(`/general-settings/notification/${id}`, {
+        sellClaimRequest: switch1,
+        affiliateRequest: switch2,
+        freeFootageRequest: switch3,
+      });
+
+      if (response.data?.success && response2.data?.success) {
+        toast.success(response.data?.message, toastOptions);
+      }
+    } catch (error) {
+      // Handle error, e.g., show an error message
+      toast.error(
+        error?.response?.data?.message ||
+          error?.response2?.data.message ||
+          "Internal server error",
+        toastOptions
+      );
+    }
   };
 
   return (
@@ -112,6 +155,7 @@ const SettingsOnePage = () => {
                     color="indigo_900"
                     size="md"
                     variant="fill"
+                    onClick={handleChange}
                   >
                     Save Changes
                   </Button>
@@ -226,11 +270,14 @@ const SettingsOnePage = () => {
                   Sell your claim request
                 </Text>
                 <Switch
+                  value={switch1}
+                  onChange={(e) => {
+                    setSwitch1(e);
+                  }}
                   onColor="#4b9c4fcc"
                   offColor="#c8d2c8"
                   onHandleColor="#ffffff"
                   offHandleColor="#ffffff"
-                  value={true}
                   className=""
                 />
               </div>
@@ -243,11 +290,14 @@ const SettingsOnePage = () => {
                   Affiliate request
                 </Text>
                 <Switch
+                  value={switch2}
+                  onChange={(e) => {
+                    setSwitch2(!switch2);
+                  }}
                   onColor="#4b9c4fcc"
                   offColor="#c8d2c8"
                   onHandleColor="#ffffff"
                   offHandleColor="#ffffff"
-                  value={true}
                   className=""
                 />
               </div>

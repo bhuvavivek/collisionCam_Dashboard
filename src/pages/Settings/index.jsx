@@ -38,9 +38,6 @@ const SettingsPage = () => {
     }
   };
 
-  console.log(currentPassword);
-  console.log(newPassword);
-
   return (
     <>
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full">
