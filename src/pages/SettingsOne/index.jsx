@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, Img, Input, Line, Switch, Text } from "components";
 import { Link } from "react-router-dom";
 
 import Sidebar1 from "components/Sidebar1";
 
+import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const SettingsOnePage = () => {
@@ -12,11 +13,23 @@ const SettingsOnePage = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+
   const [switch1, setSwitch1] = useState(false);
   const [switch2, setSwitch2] = useState(false);
   const [switch3, setSwitch3] = useState(false);
 
-  console.log(switch3);
+  useEffect(() => {
+    fetchData();
+  });
+
+  const fetchData = async () => {
+    try {
+      const response = await api.get("/admin/auth/profile");
+      setPhone(response.data.phone);
+      setAddress(response.data.address);
+      setEmail(response.data.email);
+    } catch {}
+  };
 
   return (
     <>
@@ -131,6 +144,7 @@ const SettingsOnePage = () => {
                 </Text>
                 <div className="w-[38%]">
                   <Input
+                    type="number"
                     value={phone}
                     handleChange={(e) => {
                       setPhone(e.target.value);

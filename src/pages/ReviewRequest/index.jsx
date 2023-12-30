@@ -2,17 +2,127 @@ import { Button, Img, Input, SelectBox, Text } from "components";
 
 import { CloseSVG } from "assets/images";
 import Sidebar1 from "components/Sidebar1";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
+import { api } from "utils/api";
 
-const languageOneOptionsList = [
-  { label: "Option1", value: "option1" },
-  { label: "Option2", value: "option2" },
-  { label: "Option3", value: "option3" },
+const buttonOptionsList = [
+  { label: "Approved", value: "approved" },
+  { label: "Rejected", value: "reject" },
+  { label: "Pending", value: "pending" },
 ];
 
 const ReviewRequestPage = () => {
   const [frame348value, setFrame348value] = React.useState("");
-  const [isApprove, setIsApprove] = useState(false);
+  const nevigate = useNavigate();
+  const location1 = useLocation();
+  const queryParams = new URLSearchParams(location1.search);
+  const id = queryParams.get("id");
+  const [loading, setLoading] = useState(true);
+  const [freereviewRequest, SetFreeReviewRequest] = useState(null);
+  const [error, setError] = useState(null);
+  const [filter, setFilter] = useState("");
+  const [affiliateID, setAffiliateID] = useState("");
+  const [description, setDescription] = useState("");
+  const [editbtn, setEditbtn] = useState(true);
+
+  useEffect(() => {
+    const fetchFreeReviewRequest = async () => {
+      try {
+        const response = await api.get(`/user/get-single-request/${id}`);
+        SetFreeReviewRequest(response.data.result);
+        setDescription(response.data.result.description);
+        setAffiliateID(response.data.result.affliate_id);
+        setFilter(response.data.result.status);
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchFreeReviewRequest();
+    }
+  }, [id]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  const {
+    email,
+    full_name,
+    phone,
+    footageName,
+    footageId,
+    reason,
+    partneredLawFirms,
+    document,
+    type,
+  } = freereviewRequest;
+
+  const updateRequest = async () => {
+    try {
+      const response = await api.put(`/user/update-request/${id}`, {
+        status: filter,
+        description: description,
+      });
+
+      if (response.data.success) {
+        toast.success(
+          response.data?.message || "Internal server error",
+          toastOptions
+        );
+      }
+      setEditbtn(true);
+      setLoading(false);
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message || "Internal server error",
+        toastOptions
+      );
+      setEditbtn(true);
+      setError(error);
+      setLoading(false);
+    }
+  };
+
+  const deleteRequest = async () => {
+    try {
+      setLoading(true);
+      const response = await api.delete(`/user/delete-request/${id}`);
+      setLoading(false);
+
+      if (response.data.success) {
+        // Handle success, you can navigate or perform any other actions
+        nevigate("/reviewrequestthree");
+
+        toast.success(
+          response.data?.message || "Internal server error",
+          toastOptions
+        );
+      } else {
+        // Handle failure
+        console.error("Failed to delete affiliate");
+        toast.error(
+          error?.response?.data?.message || "Internal server error",
+          toastOptions
+        );
+      }
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+      // Handle error
+      console.error("Error deleting affiliate:", error);
+    }
+  };
 
   return (
     <>
@@ -64,7 +174,7 @@ const ReviewRequestPage = () => {
                   className="font-bold flex  leading-[normal] text-base  text-blue_gray-900_01 text-left w-[17%] md:w-full"
                   placeholderClassName="text-blue_gray-900_01"
                 >
-                  <Text className="text-blue_gray-900_01 ml-3 font-lato text-base font-bold">
+                  <Text className="text-blue_gray-900_01   font-lato text-base font-bold">
                     Show document
                   </Text>
                   <svg
@@ -94,8 +204,8 @@ const ReviewRequestPage = () => {
                     Download Form
                   </Text>
                   <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid flex flex-col gap-9  justify-start p-4 shadow-bs7 w-full">
-                    <Text className="mt-0.5 md:text-3xl text-center sm:text-[28px] text-3xl font-normal source-sans  text-blue_gray-900_01">
-                      Free Footage Request
+                    <Text className="mt-0.5 capitalize md:text-3xl text-center sm:text-[28px] text-3xl font-normal source-sans  text-blue_gray-900_01">
+                      {type} Footage Request
                     </Text>
                     <div className="flex flex-col font-lato gap-4 items-center justify-start mb-[57px] w-full">
                       <div className="flex flex-col items-center justify-start w-full">
@@ -111,7 +221,7 @@ const ReviewRequestPage = () => {
                             </div>
                             <div className="flex flex-col items-start justify-start">
                               <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                Grace Villa
+                                {full_name}
                               </Text>
                             </div>
                           </div>
@@ -124,7 +234,7 @@ const ReviewRequestPage = () => {
                               </div>
                               <div className="flex flex-col items-start justify-start w-full">
                                 <Text className="text-blue_gray-900_01 font-normal font-lato text-sm">
-                                  Gracevilla95@gmail.com
+                                  {email}
                                 </Text>
                               </div>
                             </div>
@@ -139,7 +249,7 @@ const ReviewRequestPage = () => {
                                   className="text-blue_gray-900_01 text-sm"
                                   size="txtLatoRegular14"
                                 >
-                                  +9167857432342
+                                  +91{phone}
                                 </Text>
                               </div>
                             </div>
@@ -156,7 +266,7 @@ const ReviewRequestPage = () => {
                               </div>
                               <div className="flex  items-start justify-start w-full md">
                                 <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                  Car crash surveillance
+                                  {footageName}
                                 </Text>
                               </div>
                             </div>
@@ -168,7 +278,7 @@ const ReviewRequestPage = () => {
                               </div>
                               <div className="flex  items-center justify-start w-full md">
                                 <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                  #1350678
+                                  {footageId}
                                 </Text>
                               </div>
                             </div>
@@ -178,11 +288,7 @@ const ReviewRequestPage = () => {
                               Reason for Request:
                             </div>
                             <div className="text-[ #303030] font-lato mt-1   text-sm font-normal leading-7">
-                              Lorem ipsum dolor sit amet consectetur. Pretium
-                              pretium nisl pulvinar in in sed sit. Viverra ut
-                              morbi feugiat dolor aliquam diam. Consectetur
-                              elementum eget neque urna sed viverra. Turpis
-                              risus in non eget aliquam tincidunt pharetra.
+                              {reason}
                             </div>
                           </div>
 
@@ -191,7 +297,7 @@ const ReviewRequestPage = () => {
                               Additional Information
                             </Text>
                             <div className="flex flex-col items-start justify-start pb-1 pr-1 w-full">
-                              <div className="flex flex-col gap-2 items-start justify-start w-[21%] md:w-full">
+                              <div className="flex flex-col gap-2 items-start justify-start  w-full">
                                 <div className="flex flex-col items-start justify-start w-full">
                                   <Text className="text-base text-lato  text-blue_gray-900_01">
                                     Partnered law firms :
@@ -199,7 +305,7 @@ const ReviewRequestPage = () => {
                                 </div>
                                 <div className="flex   items-start justify-start ">
                                   <Text className="font-lato leading-7 text-blue_gray-900_01 font-normal text-sm">
-                                    Peter $ Sons Law firm
+                                    {partneredLawFirms}
                                   </Text>
                                 </div>
                               </div>
@@ -216,7 +322,7 @@ const ReviewRequestPage = () => {
                               className="text-blue-700 text-sm underline"
                               size="txtLatoRegular14Blue700"
                             >
-                              Police_report.pdf
+                              {document}
                             </Text>
                           </div>
                         </div>
@@ -252,9 +358,14 @@ const ReviewRequestPage = () => {
                       }
                       isMulti={false}
                       name="language_One"
-                      options={languageOneOptionsList}
+                      readOnly={editbtn}
+                      value={filter}
+                      onChange={(status) => {
+                        setFilter(status);
+                      }}
+                      options={buttonOptionsList}
                       isSearchable={false}
-                      placeholder="Select Status "
+                      placeholder={filter}
                       shape="round"
                       color="white_A700"
                       size="xs"
@@ -274,43 +385,24 @@ const ReviewRequestPage = () => {
                       Description
                     </Text>
                   </div>
-
-                  {isApprove ? (
-                    <div className="mt-3 w-[60%] mx-10">
-                      Lorem ipsum dolor sit amet consectetur. Pretium pretium
-                      nisl pulvinar in in sed sit. Viverra ut morbi feugiat
-                      dolor aliquam diam. Consectetur elementum eget neque urna
-                      sed viverra. Turpis risus in non eget aliquam tincidunt
-                      pharetra.
-                    </div>
-                  ) : (
-                    <Input
-                      name="groupFortySeven"
-                      placeholder="Add a more detailed description...."
-                      className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-left w-full"
-                      wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[97%]"
-                      size="md"
-                    ></Input>
-                  )}
+                  <Input
+                    name="groupFortySeven"
+                    placeholder="Add a more detailed description...."
+                    className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] py-2 text-base text-left w-full"
+                    wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[97%]"
+                    size="md"
+                    value={description}
+                    readOnly={editbtn}
+                    handleChange={(e) => setDescription(e.target.value)}
+                  ></Input>
                 </div>
               </div>
-
-              {isApprove ? null : (
-                <div className="flex w[94%]  justify-start items-center mt-5 mx-10 gap-10 ">
-                  <Button className="bg-[#ffff] border-2 border-solid border-1 border-[#29207E] rounded-md px-10 py-2 text-[#29207E]">
-                    <span className="text-[#29207E] font-lato text-base font-bold">
-                      Save
-                    </span>
-                  </Button>
-
-                  <Text className="text-base font-lato font-bold text-[#29207E]">
-                    Cancel
-                  </Text>
-                </div>
-              )}
             </div>
-            <div className="w-full relative mb-10 mr-10 flex item-center justify-between">
-              <div className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] ">
+            <div className="w-full relative mb-10 mt-16 mr-10 flex item-center justify-between">
+              <Link
+                to="/reviewrequestthree"
+                className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] "
+              >
                 {" "}
                 <Img
                   className=" h-6  w-6"
@@ -321,12 +413,27 @@ const ReviewRequestPage = () => {
                   {" "}
                   Back{" "}
                 </Text>
-              </div>
+              </Link>
 
-              <div className="  relative flex flex-row gap-4 items-center justify-end  w-[38%]">
+              <div className="  relative flex flex-row gap-4 items-center justify-end  w-[50%]">
                 <div className="cursor-pointer w-[50%] p-2">
                   {" "}
                   <Button
+                    // onClick=}
+                    onClick={updateRequest}
+                    className="font-bold flex items-center justify-center pl-4 gap-3 rounded-lg leading-[normal] p-3 bg-[#29207E] text-white-A700 text-base w-full  placeholder:"
+                    color="red_700"
+                  >
+                    <Text className="text-center"> Save </Text>
+                  </Button>
+                </div>
+
+                <div className="cursor-pointer w-[50%] p-2">
+                  {" "}
+                  <Button
+                    onClick={() => {
+                      setEditbtn(false);
+                    }}
                     className="font-bold   flex items-center pl-4 gap-3 rounded-lg   leading-[normal] p-3 bg-[#29207E] text-white-A700 text-base  w-full  placeholder:"
                     color="red_700"
                   >
@@ -352,6 +459,7 @@ const ReviewRequestPage = () => {
                 <div className="cursor-pointer w-[50%] p-2">
                   {" "}
                   <Button
+                    onClick={deleteRequest}
                     className="font-bold  flex rounded-lg pl-4 gap-3 items-center leading-[normal] p-3 bg-red-700 text-white-A700 text-base text-left w-full  placeholder:"
                     color="red_700"
                   >
