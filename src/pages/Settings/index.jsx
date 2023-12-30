@@ -1,13 +1,45 @@
-import React from "react";
-
 import { Button, Img, Input, Line, Text } from "components";
 import Sidebar1 from "components/Sidebar1";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
+import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const SettingsPage = () => {
-  const [frame348value, setFrame348value] = React.useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [frame348value, setFrame348value] = useState("");
+  const [error, setError] = useState(null);
+
+  const handleChangePassword = async () => {
+    try {
+      const response = await api.put("/admin/auth/change-password", {
+        password: currentPassword,
+        newPassword: newPassword,
+      });
+
+      // Clear input fields after successful password change
+      setCurrentPassword("");
+      setNewPassword("");
+      setError(null);
+
+      if (response.data?.success) {
+        toast.success(response.data?.message, toastOptions);
+      }
+    } catch (error) {
+      // Handle error, e.g., show an error message
+      toast.error(
+        error?.response?.data?.message || "Internal server error",
+        toastOptions
+      );
+    }
+  };
+
+  console.log(currentPassword);
+  console.log(newPassword);
 
   return (
     <>
@@ -85,6 +117,7 @@ const SettingsPage = () => {
                 </div>
                 <div className="flex md:flex-1 flex-col items-center justify-start w-[13%] md:w-full">
                   <Button
+                    onClick={handleChangePassword}
                     className="border border-indigo-900 border-solid cursor-pointer font-bold leading-[normal] min-w-[136px] text-base text-center"
                     shape="round"
                     color="indigo_900"
@@ -124,10 +157,12 @@ const SettingsPage = () => {
                   {" "}
                   <Input
                     name="group161"
+                    value={currentPassword}
                     placeholder="Input password"
                     className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 leading-[normal] p-0 text-base text-left w-full"
                     wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
                     type="password"
+                    handleChange={(e) => setCurrentPassword(e.target.value)}
                   ></Input>
                 </div>
               </div>
@@ -147,6 +182,8 @@ const SettingsPage = () => {
                       className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 leading-[normal] p-0 text-base text-left w-full"
                       wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
                       type="password"
+                      value={newPassword}
+                      handleChange={(e) => setNewPassword(e.target.value)}
                     ></Input>
                   </div>
                 </div>

@@ -113,6 +113,8 @@ const ManageAffiliatePage = () => {
     item?._id ?? "",
   ]);
 
+  console.log("demo");
+
   return (
     <>
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full">

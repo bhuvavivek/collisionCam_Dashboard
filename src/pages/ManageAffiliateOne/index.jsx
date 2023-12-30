@@ -2,11 +2,12 @@ import { Button, Img, Input, List, SelectBox, Text } from "components";
 import React, { useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { CloseSVG } from "../../assets/images";
-
 import { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
 import { api } from "utils/api";
+import { CloseSVG } from "../../assets/images";
 
 const buttonOptionsList = [
   { label: "Approved", value: "approved" },
@@ -71,17 +72,28 @@ const ManageAffiliateOnePage = () => {
 
   const updateAffiliate = async () => {
     try {
-      await api.put(`/user/update-affliate/${id}`, {
+      const response = await api.put(`/user/update-affliate/${id}`, {
         status: filter,
         description: description,
         affliate_id: affiliateID,
       });
       setEditbtn(true);
       setLoading(false);
+
+      if (response.data.success) {
+        toast.success(
+          response.data?.message || "Internal server error",
+          toastOptions
+        );
+      }
     } catch (error) {
       setEditbtn(true);
       setError(error);
       setLoading(false);
+      toast.error(
+        error?.response?.data?.message || "Internal server error",
+        toastOptions
+      );
     }
   };
 
@@ -94,9 +106,17 @@ const ManageAffiliateOnePage = () => {
       if (response.data.success) {
         // Handle success, you can navigate or perform any other actions
         nevigate("/manageaffiliate");
+        toast.success(
+          response.data?.message || "Internal server error",
+          toastOptions
+        );
       } else {
         // Handle failure
         console.error("Failed to delete affiliate");
+        toast.error(
+          error?.response?.data?.message || "Internal server error",
+          toastOptions
+        );
       }
     } catch (error) {
       setError(error);

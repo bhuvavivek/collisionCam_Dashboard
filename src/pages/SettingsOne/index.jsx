@@ -1,25 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Button, Img, Input, Line, Switch, Text } from "components";
 import { Link } from "react-router-dom";
 
 import Sidebar1 from "components/Sidebar1";
+
 import { CloseSVG } from "../../assets/images";
-import { AppContext } from "pages/store/AppContext";
 
 const SettingsOnePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState("");
+  const [switch1, setSwitch1] = useState(false);
+  const [switch2, setSwitch2] = useState(false);
+  const [switch3, setSwitch3] = useState(false);
 
-  const { user } = useContext(AppContext);
-
-  useEffect(() => {
-    setEmail(user?.email);
-    setPhone(user?.phone);
-    setAddress(user?.address);
-  }, [user]);
+  console.log(switch3);
 
   return (
     <>
@@ -135,9 +132,11 @@ const SettingsOnePage = () => {
                 <div className="w-[38%]">
                   <Input
                     value={phone}
-                    onChange={setPhone}
+                    handleChange={(e) => {
+                      setPhone(e.target.value);
+                    }}
                     name="group161"
-                    placeholder="(123) 456-7890"
+                    placeholder="+91 9313114789"
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
                     wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
                   ></Input>
@@ -155,9 +154,11 @@ const SettingsOnePage = () => {
                 <div className="w-[38%]">
                   <Input
                     value={email}
-                    onChange={setEmail}
+                    handleChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                     name="email"
-                    placeholder="info@collisioncam.com"
+                    placeholder="bhuvavivek65@gmail.com"
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
                     wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
                     type="email"
@@ -176,7 +177,11 @@ const SettingsOnePage = () => {
                   {" "}
                   <Input
                     name="timeZone"
-                    placeholder="City of St. George, East 200 North, Saint George, UT, USA"
+                    value={address}
+                    handleChange={(e) => {
+                      setAddress(e.target.value);
+                    }}
+                    placeholder="ahmedabad"
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
                     wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
                   ></Input>
@@ -228,7 +233,7 @@ const SettingsOnePage = () => {
                   offColor="#c8d2c8"
                   onHandleColor="#ffffff"
                   offHandleColor="#ffffff"
-                  value={false}
+                  value={true}
                   className=""
                 />
               </div>
@@ -241,11 +246,14 @@ const SettingsOnePage = () => {
                   Free footage request
                 </Text>
                 <Switch
+                  value={switch3}
+                  onChange={(e) => {
+                    setSwitch3(!switch3);
+                  }}
                   onColor="#4b9c4fcc"
                   offColor="#c8d2c8"
                   onHandleColor="#ffffff"
                   offHandleColor="#ffffff"
-                  value={true}
                   className=""
                 />
               </div>
