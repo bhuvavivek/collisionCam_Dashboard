@@ -5,6 +5,8 @@ import { useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
@@ -69,14 +71,25 @@ const ReviewRequestTwoPage = () => {
 
   const updateRequest = async () => {
     try {
-      await api.put(`/user/update-sell-claim/${id}`, {
+      const response = await api.put(`/user/update-sell-claim/${id}`, {
         status: filter,
         description: description,
         affliate_id: affiliateID,
       });
+
+      if (response.data.success) {
+        toast.success(
+          response.data?.message || "Internal server error",
+          toastOptions
+        );
+      }
       setEditbtn(true);
       setLoading(false);
     } catch (error) {
+      toast.error(
+        error?.response?.data?.message || "Internal server error",
+        toastOptions
+      );
       setEditbtn(true);
       setError(error);
       setLoading(false);
@@ -92,9 +105,18 @@ const ReviewRequestTwoPage = () => {
       if (response.data.success) {
         // Handle success, you can navigate or perform any other actions
         nevigate("/reviewrequestthree");
+
+        toast.success(
+          response.data?.message || "Internal server error",
+          toastOptions
+        );
       } else {
         // Handle failure
         console.error("Failed to delete affiliate");
+        toast.error(
+          error?.response?.data?.message || "Internal server error",
+          toastOptions
+        );
       }
     } catch (error) {
       setError(error);

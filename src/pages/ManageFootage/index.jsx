@@ -5,6 +5,8 @@ import { Button, Img, Input, Text } from "components";
 
 import Sidebar1 from "components/Sidebar1";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
@@ -57,6 +59,7 @@ const ManageFootagePage = () => {
       setLoading(false);
       if (data.success) {
         nevigate("/managefootageone");
+        toast.success(data?.message || "Internal server error", toastOptions);
       }
     } catch (error) {
       setError(error);
