@@ -45,8 +45,6 @@ const SettingsOnePage = () => {
     }
   };
 
-  console.log(switch1);
-
   const handleChange = async () => {
     try {
       const response = await api.put("/admin/auth/general-settings", {

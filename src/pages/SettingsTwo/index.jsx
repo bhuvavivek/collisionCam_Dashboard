@@ -1,14 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, Img, Input, Line, Text, TextArea } from "components";
 import Sidebar1 from "components/Sidebar1";
 
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
+import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const SettingsTwoPage = () => {
   const [frame348value, setFrame348value] = React.useState("");
+  const [commision, setCommision] = useState("");
+  const [termAndCondition, setTermAndCondition] = useState("");
+  const [sellclaimterm, setsellClaimTerm] = useState("");
+  const [id, setID] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    fetchdata();
+  }, []);
+
+  const fetchdata = async () => {
+    try {
+      const response = await api.get("/general-settings");
+      setTermAndCondition(response.data.settings.affiliateTermsCondition);
+      setsellClaimTerm(response.data.settings.sellClaimTermsCondition);
+      setID(response.data.settings._id);
+      setCommision(response.data.settings.commisionRate);
+      setLoading(false);
+    } catch (error) {
+      setError(error);
+      setLoading(false);
+    }
+  };
+  const handleChange = async () => {
+    try {
+      const response = await api.put(`/general-settings/request/${id}`, {
+        commisionRate: commision,
+        affiliateTermsCondition: termAndCondition,
+        sellClaimTermsCondition: sellclaimterm,
+      });
+
+      if (response.data?.success) {
+        toast.success(response.data?.message, toastOptions);
+      }
+    } catch (error) {
+      // Handle error, e.g., show an error message
+      toast.error(
+        error?.response?.data?.message || "Internal server error",
+        toastOptions
+      );
+    }
+  };
   return (
     <>
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full">
@@ -87,6 +132,7 @@ const SettingsTwoPage = () => {
                     className="border border-indigo-900 border-solid cursor-pointer font-bold leading-[normal] min-w-[136px] text-base text-center"
                     shape="round"
                     color="indigo_900"
+                    onClick={handleChange}
                     size="md"
                     variant="fill"
                   >
@@ -123,6 +169,10 @@ const SettingsTwoPage = () => {
                   {" "}
                   <Input
                     name="group161"
+                    value={commision}
+                    handleChange={(e) => {
+                      setCommision(e.target.value);
+                    }}
                     placeholder="Input text here"
                     className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 leading-[normal] p-0 text-base text-left w-full"
                     wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
@@ -146,6 +196,8 @@ const SettingsTwoPage = () => {
                     className="bg-white-A700 border border-blue_gray-100_01 border-solid sm:flex-1 leading-[normal] pb-[35px] pl-4 sm:pr-5 pr-[35px] pt-3 rounded-lg shadow-bs1 text-base placeholder:text-blue_gray-900_87 text-blue_gray-900_87 text-left w-full sm:w-full"
                     name="group164"
                     placeholder="Input text here"
+                    value={termAndCondition}
+                    onChange={setTermAndCondition}
                   ></TextArea>
                 </div>
               </div>
@@ -181,6 +233,8 @@ const SettingsTwoPage = () => {
                     className="bg-white-A700  w-full border border-blue_gray-100_01 border-solid sm:flex-1 leading-[normal] pb-[35px] pl-4 sm:pr-5 pr-[35px] pt-3 rounded-lg shadow-bs1 text-base placeholder:text-blue_gray-900_87 text-blue_gray-900_87 text-left  sm:w-full"
                     name="group164_One"
                     placeholder="Input text here"
+                    value={sellclaimterm}
+                    onChange={setsellClaimTerm}
                   ></TextArea>
                 </div>
               </div>
