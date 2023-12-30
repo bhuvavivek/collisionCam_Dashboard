@@ -3,6 +3,8 @@ import Sidebar1 from "components/Sidebar1";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { toast } from "react-toastify";
+import { toastOptions } from "utils";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
@@ -19,17 +21,20 @@ const SettingsPage = () => {
         newPassword: newPassword,
       });
 
-      // Handle success, e.g., show a success message
-      console.log("Password changed successfully:", response.data);
-
       // Clear input fields after successful password change
       setCurrentPassword("");
       setNewPassword("");
       setError(null);
+
+      if (response.data?.success) {
+        toast.success(response.data?.message, toastOptions);
+      }
     } catch (error) {
       // Handle error, e.g., show an error message
-      console.error("something wrong");
-      setError("Error changing password. Please try again.", error);
+      toast.error(
+        error?.response?.data?.message || "Internal server error",
+        toastOptions
+      );
     }
   };
 
