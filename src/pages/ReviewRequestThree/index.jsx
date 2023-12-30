@@ -8,9 +8,9 @@ import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const buttonOptionsList = [
-  { label: "All", value: " " },
+  { label: "All", value: "" },
   { label: "Approved", value: "approved" },
-  { label: "Rejected", value: "rejected" },
+  { label: "Rejected", value: "value" },
   { label: "Pending", value: "pending" },
 ];
 const buttonOneOptionsList = [
@@ -55,7 +55,6 @@ const ManageAffiliatePage = () => {
     fetchData();
   }, [loading, error, sort, page, filter, name]); // Empty dependency array means the effect runs once when the component mounts
 
-  console.log(name);
   const tableColumns = [
     "Name", // Replace with your actual column names
     "Phone Number",
@@ -185,7 +184,7 @@ const ManageAffiliatePage = () => {
                     name="button"
                     options={buttonOptionsList}
                     isSearchable={false}
-                    placeholder="All"
+                    placeholder={filter}
                     shape="round"
                     color="white_A700"
                     size="xs"
@@ -209,7 +208,7 @@ const ManageAffiliatePage = () => {
                     }}
                     options={buttonOneOptionsList}
                     isSearchable={false}
-                    placeholder="Newest-Oldest"
+                    placeholder={sort}
                     shape="round"
                     color="white_A700"
                     size="xs"
