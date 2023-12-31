@@ -27,11 +27,11 @@ const AffiliateTable = ({ columns, data }) => {
                 style={{
                   display: "flex",
                   gap: "50px",
-                  justifyContent: "flex-between",
+                  justifyContent: "space-arround",
                 }}
               >
-                <div className="text-left -ml-4">status</div>
-                <div className="-mr-2">Icon</div>
+                <div className="text-left ">status</div>
+                <div className="">Icon</div>
               </div>
             </th>
           </tr>
@@ -46,8 +46,13 @@ const AffiliateTable = ({ columns, data }) => {
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={`px-2 py-3 text-center`}
-                  style={{ border: "1px solid #B9B9B9" }}
+                  className={`px-2 py-3 text-left pl-6`}
+                  style={{
+                    border:
+                      cellIndex !== row?.length - 1
+                        ? `1px solid ${"#B9B9B9"}`
+                        : "none",
+                  }}
                 >
                   {cell}
                 </td>
@@ -55,8 +60,7 @@ const AffiliateTable = ({ columns, data }) => {
               {/* Merged "Status and Icon" column */}
               <td
                 colSpan="2"
-                className="px-2 py-3 text-center"
-                style={{ border: "1px solid #B9B9B9" }}
+                className="px-2 py-3 text-center flex flex-between"
               >
                 <div
                   style={{
@@ -65,17 +69,13 @@ const AffiliateTable = ({ columns, data }) => {
                     justifyContent: "space-between",
                   }}
                 >
-                  {/* Display your Status value */}
-                  <div className="text-[#1976D2]">
-                    {row[columns.length - 2]}
-                  </div>
                   {/* Display your icons here */}
                   <div
                     style={{
                       marginLeft: "20px",
                       display: "flex",
                       gap: "10px",
-                      justifyContent: "space-evenly",
+                      justifyContent: "space-arround",
                       textAlign: "center",
                     }}
                   >

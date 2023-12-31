@@ -15,8 +15,6 @@ const SettingsTwoPage = () => {
   const [termAndCondition, setTermAndCondition] = useState("");
   const [sellclaimterm, setsellClaimTerm] = useState("");
   const [id, setID] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchdata();
@@ -29,11 +27,7 @@ const SettingsTwoPage = () => {
       setsellClaimTerm(response.data.settings.sellClaimTermsCondition);
       setID(response.data.settings._id);
       setCommision(response.data.settings.commisionRate);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
+    } catch (error) {}
   };
   const handleChange = async () => {
     try {

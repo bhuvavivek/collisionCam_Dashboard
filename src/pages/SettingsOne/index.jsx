@@ -18,8 +18,7 @@ const SettingsOnePage = () => {
   const [switch1, setSwitch1] = useState(false);
   const [switch2, setSwitch2] = useState(false);
   const [switch3, setSwitch3] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+
   const [id, setID] = useState(null);
 
   useEffect(() => {
@@ -38,11 +37,7 @@ const SettingsOnePage = () => {
       setSwitch1(response.data.settings.sellClaimRequest);
       setSwitch2(response.data.settings.affiliateRequest);
       setSwitch3(response.data.settings.freeFootageRequest);
-      setLoading(false);
-    } catch (error) {
-      setError(error);
-      setLoading(false);
-    }
+    } catch (error) {}
   };
 
   const handleChange = async () => {
