@@ -1,6 +1,6 @@
-import React from "react";
 import SwitchProvider from "@dhiwise/react-switch";
 import PropTypes from "prop-types";
+import React, { useEffect } from "react";
 import { ErrorMessage } from "../../components/ErrorMessage";
 
 const Switch = ({
@@ -16,6 +16,12 @@ const Switch = ({
   onChange,
 }) => {
   const [selected, setSelected] = React.useState(value);
+
+  useEffect(() => {
+    // Update the internal state when the external value prop changes
+    setSelected(value);
+  }, [value]);
+
   const handleChange = (val) => {
     setSelected(val);
     onChange?.(val);

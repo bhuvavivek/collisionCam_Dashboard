@@ -4,9 +4,10 @@ import { Button, Img, Input, SelectBox, Text } from "components";
 import Sidebar1 from "components/Sidebar1";
 import SellClaimTable from "components/sellclaimtable";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { formatDateTime } from "utils";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
-import { formatDateTime } from "utils";
 
 const buttonOptionsList = [
   { label: "All", value: "" },
@@ -19,12 +20,14 @@ const buttonOneOptionsList = [
   { label: "Oldest-Newest", value: "asc" },
 ];
 const ReviewRequestOptions = [
-  { label: "Request for free", value: "new" },
+  { label: "Request for free", value: "free" },
   { label: "Sell Claim", value: "old" },
+  { label: "Request for Paid", value: "paid" },
 ];
 
 const ManageAffiliatePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
+  const location = useLocation();
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -34,7 +37,8 @@ const ManageAffiliatePage = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("old");
+  const [category, setCategory] = useState(location?.state || "old");
+  const [type, setType] = useState("free");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +62,7 @@ const ManageAffiliatePage = () => {
         const response = await api.get(
           `/user/get-request?status=${filter}&search=${
             name ? name : ""
-          }&page=${page}&limit=10&sortBy=createdAt&order=${sort}&`
+          }&page=${page}&limit=10&sortBy=createdAt&order=${sort}&type=${category}`
         );
 
         setTableData(response.data.result);
@@ -112,8 +116,6 @@ const ManageAffiliatePage = () => {
     item.status ?? "",
     item?._id ?? "",
   ]);
-
-  console.log("demo");
 
   return (
     <>
@@ -184,9 +186,14 @@ const ManageAffiliatePage = () => {
                     value={category}
                     onChange={(value) => {
                       setCategory(value);
+                      setType();
                     }}
                     placeholder={
-                      category === "old" ? "sell-claim" : "request for free"
+                      category === "old"
+                        ? "sell-claim"
+                        : category === "free"
+                        ? "request for free"
+                        : "request for paid"
                     }
                     shape="round"
                     color="white_A700"
@@ -266,6 +273,7 @@ const ManageAffiliatePage = () => {
               </div>
               <div className="overflow-auto mt-12 w-[95%] mx-auto">
                 <SellClaimTable
+                  category={category}
                   columns={tableColumns}
                   data={
                     category === "old" ? formattedTableData : requestTableData

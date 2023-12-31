@@ -12,7 +12,6 @@ const SettingsPage = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [frame348value, setFrame348value] = useState("");
-  const [error, setError] = useState(null);
 
   const handleChangePassword = async () => {
     try {
@@ -24,7 +23,6 @@ const SettingsPage = () => {
       // Clear input fields after successful password change
       setCurrentPassword("");
       setNewPassword("");
-      setError(null);
 
       if (response.data?.success) {
         toast.success(response.data?.message, toastOptions);
@@ -37,9 +35,6 @@ const SettingsPage = () => {
       );
     }
   };
-
-  console.log(currentPassword);
-  console.log(newPassword);
 
   return (
     <>

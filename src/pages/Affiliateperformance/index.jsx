@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Button, Img, Input, Text } from "components";
 import { useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
 import AffiliateTable from "components/affiliatetable";
+import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
 const AffiliateperformancePage = () => {
@@ -17,26 +18,26 @@ const AffiliateperformancePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await api.get(
-  //         `/user/get-affliate?page=${page}&limit=10&sortBy=createdAt&order=&status=&search=${
-  //           name ? name : ""
-  //         }`
-  //       );
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get(
+          `/user/get-affliate??page=${page}&limit=10&sortBy=createdAt&order=desc&status=&search=${
+            name ? name : ""
+          }`
+        );
 
-  //       setTableData(response.data.result);
-  //       setTotalPages(Math.ceil(response.data.totalCount / 10));
-  //       setLoading(false);
-  //     } catch (error) {
-  //       setError(error);
-  //       setLoading(false);
-  //     }
-  //   };
+        setTableData(response.data.result);
+        setTotalPages(Math.ceil(response.data.totalCount / 10));
+        setLoading(false);
+      } catch (error) {
+        setError(error);
+        setLoading(false);
+      }
+    };
 
-  //   fetchData();
-  // }, [loading, error, page, name]);
+    fetchData();
+  }, [loading, error, page, name]);
 
   const tableColumns = [
     "Name",
@@ -48,23 +49,23 @@ const AffiliateperformancePage = () => {
     "Unpaid Earning",
   ];
 
-  // if (loading) {
-  //   return <p>Loading...</p>;
-  // }
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-  // if (error) {
-  //   return <p>Error: {error.message}</p>;
-  // }
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
 
   const formattedTableData = tableData.map((item) => [
-    item.full_name ?? "",
-    item.phone ?? "",
-    item.email ?? "",
-    "something",
-    "empty",
-    item.document ?? "",
-    item.status ?? "",
-    item?._id ?? "",
+    item?.full_name ?? "",
+    item?.affliate_id ?? "",
+    item?.totalsales ?? "",
+    item?.commissionRate ?? "",
+    item?.numberOfSale ?? "",
+    item?.paidEarning ?? "",
+    item?.unpaidEarning ?? "",
+    item?.status ?? "",
   ]);
 
   return (
@@ -159,7 +160,7 @@ const AffiliateperformancePage = () => {
             <div className="overflow-auto mt-12 w-[92%] mx-auto">
               <AffiliateTable
                 columns={tableColumns}
-                data={tableData}
+                data={formattedTableData}
               ></AffiliateTable>
             </div>
             <div className="flex flex-col items-center justify-start md:ml-[0] ml-[53%] my-14 mr-12 w-[43%] md:w-full">
