@@ -1,14 +1,12 @@
 import { Text, TextArea } from "components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { api } from "utils/api";
 
 const EditForm = () => {
   const [inputs, setInputs] = useState({});
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // Handle the form submission logic here
-    console.log("Form submitted with name:");
-  };
+  const { id } = useParams();
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -17,6 +15,108 @@ const EditForm = () => {
       ...inputs,
       [name]: value,
     });
+  };
+
+  const [imageSrc, setImageSrc] = useState("");
+  const [image, setImage] = useState("");
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setImage(file);
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImageSrc(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const [videoSrc, setVideoSrc] = useState("");
+  const [video, setVideo] = useState("");
+
+  const handleVideoChange = (event) => {
+    const file = event.target.files[0];
+    setVideo(file);
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setVideoSrc(reader.result);
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const getDetails = async () => {
+    try {
+      const { data } = await api.get(`/admin/footage/details/${id}`);
+      console.log(data);
+      setInputs(data?.result);
+      setImageSrc(data?.result?.thumbnail);
+      setVideoSrc(data?.result?.video);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getDetails();
+  }, [id]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    // Handle the form submission logic here
+    console.log("Form submitted with name:");
+
+    try {
+      const form = new FormData();
+      form.append("photo", image);
+      form.append("video", video);
+      form.append("thumbnail", inputs?.thumbnail);
+      form.append("thumbnailPublicKey", inputs?.thumbnailPublicKey);
+      form.append("video", inputs?.video);
+      form.append("videoPublicKey", inputs?.videoPublicKey);
+      form.append("name", inputs.name);
+      form.append("price", inputs.price);
+      form.append("id", inputs.id);
+      form.append("state", inputs.state);
+      form.append("city", inputs.city);
+      form.append("date", inputs.date);
+      form.append("time", inputs.time);
+      form.append("description", inputs.description);
+
+      const { data } = await api.post("/admin/footage/edit/" + id, form, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success(data?.message, toastOptions);
+      setImage("");
+      setImageSrc("");
+      setVideo("");
+      setVideoSrc("");
+      setInputs({
+        name: "",
+        state: "",
+        city: "",
+        id: "",
+        price: "",
+        time: "",
+        date: "",
+        description: "",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.message || "Internal server error",
+        toastOptions
+      );
+    }
   };
 
   return (
@@ -187,7 +287,7 @@ const EditForm = () => {
 
             <div className="flex ">
               {" "}
-              <div className="w-[200px] h-[200px] flex justify-center items-center mx-auto border border-solid border-[#A5A5A5] bg-[#fff] ">
+              <div className="w-[200px] relative h-[200px] flex justify-center items-center mx-auto border border-solid border-[#A5A5A5] bg-[#fff] ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="59"
@@ -217,8 +317,25 @@ const EditForm = () => {
                     />
                   </g>
                 </svg>
+
+                {imageSrc && (
+                  <div className="absolute top-0 bottom-0 left-0 right-0 bg-[#fff]">
+                    <img
+                      className="w-full h-full object-cover"
+                      src={imageSrc}
+                      alt=""
+                    />
+                  </div>
+                )}
+
+                <input
+                  className="top-0 bottom-0 w-full h-full absolute"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
               </div>
-              <div className="w-[200px] h-[200px] flex justify-center items-center mx-auto border border-solid border-[#A5A5A5] bg-[#fff] ">
+              <div className="w-[200px] relative h-[200px] flex justify-center items-center mx-auto border border-solid border-[#A5A5A5] bg-[#fff] ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="51"
@@ -248,6 +365,19 @@ const EditForm = () => {
                     />
                   </g>
                 </svg>
+
+                {videoSrc && (
+                  <div className="absolute top-0 bottom-0 left-0 right-0 h-full w-full bg-white-A700 ">
+                    <video controls width="100%" height="100%" src={videoSrc} />
+                  </div>
+                )}
+
+                <input
+                  className="top-0 bottom-0 w-full h-full absolute"
+                  type="file"
+                  accept="video/*"
+                  onChange={handleVideoChange}
+                />
               </div>
             </div>
           </div>

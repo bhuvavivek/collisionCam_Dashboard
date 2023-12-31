@@ -67,7 +67,7 @@ const ProjectRoutes = () => {
           <Route path="/reviewrequest" element={<ReviewRequest />} />
           <Route path="/reviewrequesttwo" element={<ReviewRequestTwo />} />
           <Route path="/upload-form" element={<Uploadform />} />
-          <Route path="/edit-form" element={<EditForm />} />
+          <Route path="/edit-form/:id" element={<EditForm />} />
           <Route
             path="/affiliateperformance"
             element={<Affiliateperformance />}

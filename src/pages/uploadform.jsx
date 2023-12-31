@@ -58,31 +58,35 @@ const UploadForm = () => {
 
     try {
       const form = new FormData();
-      form.append("file", image);
-      form.append("upload_preset", "udlxe4sj");
+      form.append("photo", image);
+      form.append("video", video);
+      form.append("thumbnail", 'adas');
+      form.append("thumbnailPublicKey", 'adas');
+      form.append("name", inputs.name);
+      form.append("price", inputs.price);
+      form.append("id", inputs.id);
+      form.append("state", inputs.state);
+      form.append("city", inputs.city);
+      form.append("date", inputs.date);
+      form.append("time", inputs.time);
+      form.append("description", inputs.description);
 
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/duscum5l1/image/upload",
-        form
-      );
-      const { data } = await api.post("/admin/footage/upload", {
-        thumbnail: response?.data?.url,
-        thumbnailPublicKey: response?.data?.public_id,
-        name: inputs?.name,
-        price: inputs?.price,
-        id: inputs?.id,
-        state: inputs?.state,
-        city: inputs?.city,
-        date: inputs?.date,
-        time: inputs?.time,
-        description: inputs?.description,
-      });
+      const { data } = await api.post("/admin/footage/upload", form);
       toast.success(data?.message, toastOptions);
       setImage("");
       setImageSrc("");
       setVideo("");
       setVideoSrc("");
-      setInputs({});
+      setInputs({
+        name: "",
+        state: "",
+        city: "",
+        id: "",
+        price: "",
+        time: "",
+        date: "",
+        description: "",
+      });
     } catch (error) {
       console.log(error);
       toast.error(

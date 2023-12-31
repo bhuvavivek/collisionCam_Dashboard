@@ -216,10 +216,13 @@ const ManageFootagePage = () => {
                 </Link>
 
                 <div className="  relative flex flex-row gap-4 items-center justify-end  w-[38%]">
-                  <Link to="/edit-form" className="cursor-pointer w-[50%] p-2">
+                  <Link
+                    to={"/edit-form/" + footageId}
+                    className="cursor-pointer w-[50%] p-2"
+                  >
                     {" "}
                     <Button
-                      className="font-bold   flex items-center pl-4 gap-3 rounded-lg   leading-[normal] p-3 bg-[#29207E] text-white-A700 text-base  w-full  placeholder:"
+                      className="font-bold  flex items-center pl-4 gap-3 rounded-lg   leading-[normal] p-3 bg-[#29207E] text-white-A700 text-base  w-full  placeholder:"
                       color="red_700"
                     >
                       <svg
