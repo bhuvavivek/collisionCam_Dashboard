@@ -78,16 +78,62 @@ const ProjectRoutes = () => {
               </Protected>
             }
           />
-          <Route path="/reviewrequest" element={<ReviewRequest />} />
-          <Route path="/reviewrequesttwo" element={<ReviewRequestTwo />} />
-          <Route path="/upload-form" element={<Uploadform />} />
-          <Route path="/edit-form/:id" element={<EditForm />} />
+          <Route
+            path="/reviewrequest"
+            element={
+              <Protected returnTo="/reviewrequest">
+                <ReviewRequest />
+              </Protected>
+            }
+          />
+          <Route
+            path="/reviewrequesttwo"
+            element={
+              <Protected returnTo="/reviewrequesttwo">
+                <ReviewRequestTwo />
+              </Protected>
+            }
+          />
+          <Route
+            path="/upload-form"
+            element={
+              <Protected returnTo="/upload-form">
+                <Uploadform />
+              </Protected>
+            }
+          />
+          <Route
+            path="/edit-form/:id"
+            element={
+              <Protected returnTo="/edit-form/:id">
+                <EditForm />
+              </Protected>
+            }
+          />
           <Route
             path="/affiliateperformance"
-            element={<Affiliateperformance />}
+            element={
+              <Protected returnTo="/affiliateperformance">
+                <Affiliateperformance />
+              </Protected>
+            }
           />
-          <Route path="/reviewrequestthree" element={<ReviewRequestThree />} />
-          <Route path="/manageaffiliateone" element={<ManageAffiliateOne />} />
+          <Route
+            path="/reviewrequestthree"
+            element={
+              <Protected returnTo="/reviewrequestthree">
+                <ReviewRequestThree />
+              </Protected>
+            }
+          />
+          <Route
+            path="/manageaffiliateone"
+            element={
+              <Protected returnTo="/manageaffiliateone">
+                <ManageAffiliateOne />
+              </Protected>
+            }
+          />
         </Routes>
       </Router>
     </React.Suspense>

@@ -29,8 +29,6 @@ const ManageFootageOnePage = () => {
     fetchData();
   }, [page, city, state, name, sort]);
 
-  console.log(name);
-
   const fetchData = async () => {
     try {
       const response = await api.get(
@@ -112,13 +110,6 @@ const ManageFootageOnePage = () => {
                     <SelectBox
                       className="border border-gray-500_7f border-solid font-semibold text-left text-sm w-[28%] md:w-full"
                       placeholderClassName="text-blue_gray-900_a2"
-                      indicator={
-                        <Img
-                          className="h-[5px] mr-[0] w-2.5"
-                          src="images/img_vector.svg"
-                          alt="Vector"
-                        />
-                      }
                       isMulti={false}
                       name="button"
                       options={States}

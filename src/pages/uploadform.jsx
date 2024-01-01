@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Text, TextArea } from "components";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -60,8 +59,8 @@ const UploadForm = () => {
       const form = new FormData();
       form.append("photo", image);
       form.append("video", video);
-      form.append("thumbnail", 'adas');
-      form.append("thumbnailPublicKey", 'adas');
+      form.append("thumbnail", "adas");
+      form.append("thumbnailPublicKey", "adas");
       form.append("name", inputs.name);
       form.append("price", inputs.price);
       form.append("id", inputs.id);
