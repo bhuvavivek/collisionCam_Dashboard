@@ -66,6 +66,7 @@ const AffiliateperformancePage = () => {
     item?.paidEarning ?? "",
     item?.unpaidEarning ?? "",
     item?.status ?? "",
+    item?._id ?? "",
   ]);
 
   return (

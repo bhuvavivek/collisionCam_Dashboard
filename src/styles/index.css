@@ -242,3 +242,7 @@ ul li a {
 input[type="file"] {
   color: transparent;
 }
+
+.lastrow {
+  border: none !important;
+}
