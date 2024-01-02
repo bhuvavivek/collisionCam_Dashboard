@@ -13,7 +13,7 @@ const ProductTable = ({ columns, data }) => {
               <th
                 key={index}
                 scope="col"
-                className="px-6 bg-[#E1F0FE] py-4"
+                className=" w-[11%] text-center bg-[#E1F0FE] py-4"
                 style={{ border: "1px solid #B9B9B9" }}
               >
                 {column}

@@ -87,6 +87,16 @@ const ManageAffiliatePage = () => {
     "Details",
   ];
 
+  const selltableColumns = [
+    "Name", // Replace with your actual column names
+    "Phone Number",
+    "Email Address",
+    "Request Date",
+    "Upload Document",
+    "Approval Status",
+    "Details",
+  ];
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -100,7 +110,6 @@ const ManageAffiliatePage = () => {
     item.phone ?? "",
     item.email ?? "",
     formatDateTime(item.createdAt) ?? "",
-    "empty",
     item.document ?? "",
     item.status ?? "",
     item?._id ?? "",
@@ -111,7 +120,7 @@ const ManageAffiliatePage = () => {
     item.phone ?? "",
     item.email ?? "",
     formatDateTime(item.createdAt) ?? "",
-    "empty",
+    item.footageId ?? "",
     item.document ?? "",
     item.status ?? "",
     item?._id ?? "",
@@ -274,7 +283,7 @@ const ManageAffiliatePage = () => {
               <div className="overflow-auto mt-12 w-[95%] mx-auto">
                 <SellClaimTable
                   category={category}
-                  columns={tableColumns}
+                  columns={category === "old" ? selltableColumns : tableColumns}
                   data={
                     category === "old" ? formattedTableData : requestTableData
                   }

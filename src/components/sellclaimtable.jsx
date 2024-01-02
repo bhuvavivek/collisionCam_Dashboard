@@ -13,7 +13,7 @@ const SellClaimTable = ({ columns, data, category }) => {
               <th
                 key={index}
                 scope="col"
-                className="px-6 bg-[#E1F0FE] py-4"
+                className=" bg-[#E1F0FE] py-4 w-[11%] text-center "
                 style={{ border: "1px solid #B9B9B9" }}
               >
                 {column}
@@ -31,7 +31,7 @@ const SellClaimTable = ({ columns, data, category }) => {
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={`px-2 py-3 text-center ${
+                  className={`px-1 py-3 text-center w-[8%] ${
                     cellIndex === row.length - 1 && "text-[#1976D2]"
                   }`}
                   style={{ border: "1px solid #B9B9B9" }}
@@ -43,7 +43,7 @@ const SellClaimTable = ({ columns, data, category }) => {
                           ? "/reviewrequesttwo?id=" + cell
                           : "/reviewrequest?id=" + cell
                       }`}
-                      className="underline"
+                      className="underline "
                     >
                       View Details
                     </Link>
