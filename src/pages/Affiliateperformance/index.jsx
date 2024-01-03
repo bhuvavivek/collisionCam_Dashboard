@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
 import AffiliateTable from "components/affiliatetable";
+import Datepicker from "react-tailwindcss-datepicker";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
@@ -18,18 +19,31 @@ const AffiliateperformancePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [value1, setValue1] = useState("");
+  const [value2, setValue2] = useState("");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get(
-          `/user/get-affliate??page=${page}&limit=10&sortBy=createdAt&order=desc&status=&search=${
-            name ? name : ""
-          }`
-        );
+        let url = `/user/get-affliate??page=${page}&limit=10&sortBy=createdAt&order=desc&status=&search=${
+          name ? name : ""
+        }`;
+        if (value1["startDate"] && value2["endDate"]) {
+          url += `&startDate=${
+            value1["startDate"] ? value1["startDate"] : " "
+          }&endDate=${value2["endDate"] ? value2["endDate"] : ""}`;
+        }
+        const response = await api.get(url);
 
         setTableData(response.data.result);
         setTotalPages(Math.ceil(response.data.totalCount / 10));
-        setLoading(false);
+        // Use a callback function to update loading state without causing re-renders
+        setLoading((prevLoading) => {
+          if (prevLoading) {
+            return false;
+          }
+          return prevLoading;
+        });
       } catch (error) {
         setError(error);
         setLoading(false);
@@ -37,7 +51,7 @@ const AffiliateperformancePage = () => {
     };
 
     fetchData();
-  }, [loading, error, page, name]);
+  }, [page, name, value1, value2]);
 
   const tableColumns = [
     "Name",
@@ -128,7 +142,31 @@ const AffiliateperformancePage = () => {
                 >
                   Filter by Date range
                 </Text>
-                <Input
+
+                <div className="customDatePicker w-[37%] border-blue_gray-100 flex   justify-center items-center">
+                  <Datepicker
+                    useRange={false}
+                    primaryColor={"purple"}
+                    placeholder="From"
+                    asSingle={true}
+                    value={value1}
+                    onChange={setValue1}
+                    classNames={Datepicker}
+                  />
+                </div>
+                <div className="customDatePicker  border-blue_gray-100 flex  w-[37%] justify-center items-center">
+                  <Datepicker
+                    useRange={false}
+                    primaryColor={"purple"}
+                    asSingle={true}
+                    value={value2}
+                    placeholder="To"
+                    onChange={setValue2}
+                    classNames={Datepicker}
+                  />
+                </div>
+
+                {/* <Input
                   name="button"
                   placeholder="From- dd/mm/yyyy"
                   className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 font-semibold p-0 text-left text-sm w-full"
@@ -155,7 +193,7 @@ const AffiliateperformancePage = () => {
                     />
                   }
                   size="sm"
-                ></Input>
+                ></Input> */}
               </div>
             </div>
             <div className="overflow-auto mt-12 w-[92%] mx-auto">

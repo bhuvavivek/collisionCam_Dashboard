@@ -246,3 +246,33 @@ input[type="file"] {
 .lastrow {
   border: none !important;
 }
+
+
+.customDatePicker .shadow-sm {
+  background-color: #f5efef;
+  color: black;
+}
+
+.customDatePicker .placeholder-gray-400 {
+  padding: 14px;
+  color: #212121;
+  font-family: 'Lato', sans-serif !important;
+  font-size: 16px;
+
+  border-radius: 4px;
+  border: 1px solid #929292;
+  background-color: #FFF;
+}
+
+.customDatePicker input::placeholder {
+  font-family: 'Lato', sans-serif !important;
+  font: 16px bold;
+  opacity: 0.5;
+  font-weight: 400;
+  color: #212121;
+}
+
+.customDatePicker svg {
+  width: 24px;
+  height: 24px;
+}
