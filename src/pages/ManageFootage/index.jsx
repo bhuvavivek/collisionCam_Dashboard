@@ -50,7 +50,7 @@ const ManageFootagePage = () => {
   }
 
   // Assuming footageDetails has the structure of the API response
-  const { name, price, id, description, date, time, thumbnail } =
+  const { name, price, id, description, date, time, thumbnail, video } =
     footageDetails;
 
   const deleteFootageDetails = async () => {
@@ -121,7 +121,7 @@ const ManageFootagePage = () => {
                 <div className="flex md:flex-1 flex-col md:gap-10 gap-10 justify-start md:mt-0 mt-2 w-[43%] md:w-full">
                   <Img
                     className="h-[331px] sm:h-auto object-cover w-full"
-                    src={thumbnail}
+                    src={video !== "" && video !== null ? video : Image}
                     alt="Footage Thumbnail"
                   />
                 </div>

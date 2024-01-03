@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { toastOptions } from "utils";
 import { api } from "utils/api";
@@ -7,6 +7,8 @@ const AffiliateTable = ({ columns, data }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [tableData, setTableData] = useState(data);
+
+  useEffect(() => {}, [tableData]);
 
   const deleteAffiliate = async (id) => {
     try {
@@ -139,7 +141,10 @@ const AffiliateTable = ({ columns, data }) => {
                             </svg>
                           </div>
 
-                          <div onClick={() => deleteAffiliate(cell)}>
+                          <div
+                            onClick={() => deleteAffiliate(cell)}
+                            className="cursor-pointer"
+                          >
                             {" "}
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
