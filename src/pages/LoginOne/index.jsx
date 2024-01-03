@@ -49,6 +49,8 @@ const LoginOnePage = () => {
     return <h1>Loading...</h1>;
   }
 
+  console.log(password);
+
   return (
     <>
       <div className="h-[100vh] overflow-hidden bg-white-A700 flex flex-col font-lato items-end justify-start mx-auto pb-[106px] md:pl-10 sm:pl-5 pl-[106px] w-full">
