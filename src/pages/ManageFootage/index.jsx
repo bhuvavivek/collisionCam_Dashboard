@@ -53,6 +53,8 @@ const ManageFootagePage = () => {
   const { name, price, id, description, date, time, thumbnail, video } =
     footageDetails;
 
+    console.log(video)
+
   const deleteFootageDetails = async () => {
     try {
       const { data } = await api.delete(`/admin/footage/delete/${footageId}`);
@@ -119,11 +121,18 @@ const ManageFootagePage = () => {
               <div className="relative  flex md:flex-col flex-row gap-9 h-max inset-[0] items-start justify-between mx-auto w-full">
                 {/* cardetails-right start */}
                 <div className="flex md:flex-1 flex-col md:gap-10 gap-10 justify-start md:mt-0 mt-2 w-[43%] md:w-full">
-                  <Img
-                    className="h-[331px] sm:h-auto object-cover w-full"
-                    src={video !== "" && video !== null ? video : Image}
-                    alt="Footage Thumbnail"
-                  />
+                  {video ? (
+                    <video width="100%" height="100%" controls>
+                      <source src={video} type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <Img
+                      className="h-[331px] sm:h-auto object-cover w-full"
+                      src={thumbnail}
+                      alt="Footage Thumbnail"
+                    />
+                  )}
                 </div>
                 {/* carderails-right end */}
                 {/* cardetails-left start  */}

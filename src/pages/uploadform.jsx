@@ -6,6 +6,7 @@ import { api } from "utils/api";
 
 const UploadForm = () => {
   const [inputs, setInputs] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -55,6 +56,7 @@ const UploadForm = () => {
     event.preventDefault();
     console.log("Form submitted with name:", inputs, videoSrc, imageSrc);
 
+    setIsLoading(true)
     try {
       const form = new FormData();
       form.append("photo", image);
@@ -86,12 +88,16 @@ const UploadForm = () => {
         date: "",
         description: "",
       });
+
+      setIsLoading(false)
     } catch (error) {
       console.log(error);
       toast.error(
         error?.response?.data?.message || "Internal server error",
         toastOptions
       );
+
+      setIsLoading(false)
     }
   };
 
@@ -359,10 +365,11 @@ const UploadForm = () => {
           {/* Button */}
           <div className="flex justify-center my-7">
             <button
+              disabled={isLoading}
               type="submit"
-              className="rounded-lg w-44 p-3 bg-[#29207E] text-[#fff] font-lato font-bold text-base text-center  "
+              className="rounded-lg w-44 p-3 bg-[#29207E] text-[#fff] font-lato font-bold text-base text-center disabled:bg-slate-500 disabled:cursor-not-allowed"
             >
-              Submit
+              {isLoading? 'Submitting...': 'Submit'}
             </button>
           </div>
         </div>

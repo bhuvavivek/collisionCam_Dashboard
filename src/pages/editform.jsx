@@ -7,6 +7,7 @@ import { api } from "utils/api";
 
 const EditForm = () => {
   const [inputs, setInputs] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useParams();
 
@@ -74,7 +75,7 @@ const EditForm = () => {
     event.preventDefault();
     // Handle the form submission logic here
     console.log("Form submitted with name:");
-
+    setIsLoading(true);
     try {
       const form = new FormData();
       form.append("photo", image);
@@ -98,26 +99,14 @@ const EditForm = () => {
         },
       });
       toast.success(data?.message, toastOptions);
-      setImage("");
-      setImageSrc("");
-      setVideo("");
-      setVideoSrc("");
-      setInputs({
-        name: "",
-        state: "",
-        city: "",
-        id: "",
-        price: "",
-        time: "",
-        date: "",
-        description: "",
-      });
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
       toast.error(
         error?.response?.data?.message || "Internal server error",
         toastOptions
       );
+      setIsLoading(false);
     }
   };
 
@@ -386,10 +375,11 @@ const EditForm = () => {
           {/* Button */}
           <div className="flex justify-center my-7">
             <button
+              disabled={isLoading}
               type="submit"
-              className="rounded-lg w-44 p-3 bg-[#29207E] text-[#fff] font-lato font-bold text-base text-center  "
+              className="rounded-lg w-44 p-3 bg-[#29207E] text-[#fff] font-lato font-bold text-base text-center disabled:bg-slate-500 disabled:cursor-not-allowed"
             >
-              Submit
+              {isLoading ? "Submitting..." : "Submit"}
             </button>
           </div>
         </div>
