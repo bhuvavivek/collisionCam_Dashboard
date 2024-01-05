@@ -56,7 +56,7 @@ const UploadForm = () => {
     event.preventDefault();
     console.log("Form submitted with name:", inputs, videoSrc, imageSrc);
 
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const form = new FormData();
       form.append("photo", image);
@@ -89,7 +89,7 @@ const UploadForm = () => {
         description: "",
       });
 
-      setIsLoading(false)
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
       toast.error(
@@ -97,7 +97,7 @@ const UploadForm = () => {
         toastOptions
       );
 
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -369,10 +369,12 @@ const UploadForm = () => {
               type="submit"
               className="rounded-lg w-44 p-3 bg-[#29207E] text-[#fff] font-lato font-bold text-base text-center disabled:bg-slate-500 disabled:cursor-not-allowed"
             >
-              {isLoading? 'Submitting...': 'Submit'}
+              {isLoading ? "Submitting..." : "Submit"}
             </button>
           </div>
         </div>
+
+        {/* please  fix the issue */}
       </form>
     </div>
   );
