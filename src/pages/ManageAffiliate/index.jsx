@@ -78,7 +78,7 @@ const ManageAffiliatePage = () => {
     item.email ?? "",
     formatDateFromTimestamp(item.createdAt) ?? "",
     "empty",
-    item.document ?? "",
+    item.document ? item.document.split("/").pop() : "",
     item.status ?? "",
     item?._id ?? "",
   ]);

@@ -110,7 +110,7 @@ const ManageAffiliatePage = () => {
     item.phone ?? "",
     item.email ?? "",
     formatDateTime(item.createdAt) ?? "",
-    item.document ?? "",
+    item.document ? item.document.split("/").pop() : "",
     item.status ?? "",
     item?._id ?? "",
   ]);
@@ -121,7 +121,7 @@ const ManageAffiliatePage = () => {
     item.email ?? "",
     formatDateTime(item.createdAt) ?? "",
     item.footageId ?? "",
-    item.document ?? "",
+    item.document ? item.document.split("/").pop() : "",
     item.status ?? "",
     item?._id ?? "",
   ]);
