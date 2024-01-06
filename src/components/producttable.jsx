@@ -39,12 +39,16 @@ const ProductTable = ({ columns, data }) => {
                   {cellIndex === row.length - 1 ? (
                     <Link
                       to={`/manageaffiliateone?id=${cell}`}
-                      onClick={() => {
-                        console.log(row[row.length - 1]);
-                      }}
                       className="underline"
                     >
                       View Details
+                    </Link>
+                  ) : cellIndex === row.length - 3 ? (
+                    <Link
+                      to={`/manageaffiliateone?id=${cell}`}
+                      className="underline"
+                    >
+                      {cell}
                     </Link>
                   ) : (
                     cell
