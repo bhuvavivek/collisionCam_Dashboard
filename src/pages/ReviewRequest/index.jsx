@@ -2,11 +2,13 @@ import { Button, Img, Input, SelectBox, Text } from "components";
 
 import { CloseSVG } from "assets/images";
 import Sidebar1 from "components/Sidebar1";
-import React, { useEffect, useState } from "react";
+import Loading from "components/loading";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { toastOptions } from "utils";
 import { api } from "utils/api";
+import { useReactToPrint } from "react-to-print";
 
 const buttonOptionsList = [
   { label: "Approved", value: "approved" },
@@ -27,6 +29,12 @@ const ReviewRequestPage = () => {
   const [affiliateID, setAffiliateID] = useState("");
   const [description, setDescription] = useState("");
   const [editbtn, setEditbtn] = useState(true);
+
+  const pdfRef = useRef();
+
+  const dowloadForm = useReactToPrint({
+    content: () => pdfRef.current,
+  });
 
   useEffect(() => {
     const fetchFreeReviewRequest = async () => {
@@ -49,7 +57,7 @@ const ReviewRequestPage = () => {
   }, [id]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {
@@ -80,6 +88,7 @@ const ReviewRequestPage = () => {
           response.data?.message || "Internal server error",
           toastOptions
         );
+        nevigate("/reviewrequestthree");
       }
       setEditbtn(true);
       setLoading(false);
@@ -128,7 +137,7 @@ const ReviewRequestPage = () => {
     <>
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full">
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
-          <Sidebar1 className="!sticky !w-[262px]  bg-indigo-900 flex h-screen md:hidden justify-start bg-blue overflow-auto md:px-5 top-[0]" />
+          <Sidebar1 className="!sticky !w-[262px]  bg-[#1b1b1b] flex h-screen md:hidden justify-start bg-blue overflow-auto md:px-5 top-[0]" />
           <div className="flex flex-1 flex-col gap-[43px] items-center justify-start md:px-5 w-full">
             <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
               <div className="w-[43%]">
@@ -200,130 +209,145 @@ const ReviewRequestPage = () => {
                   </svg>
                 </div>
                 <div className="flex flex-col gap-[17px] items-end justify-start md:mt-0 mt-1.5 w-5/6 md:w-full">
-                  <Text className="text-base text-blue-700 font-bold underline font-lato  cursor-pointer">
+                  <Text
+                    onClick={dowloadForm}
+                    className="text-base text-blue-700 font-bold underline font-lato  cursor-pointer"
+                  >
                     Download Form
                   </Text>
-                  <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid flex flex-col gap-9  justify-start p-4 shadow-bs7 w-full">
-                    <Text className="mt-0.5 capitalize md:text-3xl text-center sm:text-[28px] text-3xl font-normal source-sans  text-blue_gray-900_01">
-                      {type} Footage Request
-                    </Text>
-                    <div className="flex flex-col font-lato gap-4 items-center justify-start mb-[57px] w-full">
-                      <div className="flex flex-col items-center justify-start w-full">
-                        <div className="flex flex-col items-start justify-start w-full">
-                          <Text className="text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
-                            Personal Information
-                          </Text>
-                          <div className="flex flex-col gap-2 font-lato items-start justify-start ml-1 md:ml-[0] mt-3.5 w-[11%] md:w-full">
-                            <div className="flex flex-col items-start justify-start w-full">
-                              <Text className="text-base text-blue_gray-900_01">
-                                Full Name:
-                              </Text>
-                            </div>
-                            <div className="flex flex-col items-start justify-start">
-                              <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                {full_name}
-                              </Text>
-                            </div>
-                          </div>
-                          <div className="flex flex-row items-center justify-between ml-1 md:ml-[0] mt-[17px] w-[71%] md:w-full">
-                            <div className="flex flex-col gap-[9px] items-start justify-start w-[31%]">
-                              <div className="flex flex-col items-start justify-start">
-                                <Text className="text-base text-blue_gray-900_01 font-medium font-lato">
-                                  Email address:
-                                </Text>
-                              </div>
-                              <div className="flex flex-col items-start justify-start w-full">
-                                <Text className="text-blue_gray-900_01 font-normal font-lato text-sm">
-                                  {email}
-                                </Text>
-                              </div>
-                            </div>
-                            <div className="flex flex-col gap-2 items-center justify-start w-[24%]">
-                              <div className="flex flex-col items-center justify-start">
-                                <Text className="text-base text-blue_gray-900_01 font-medium font-lato">
-                                  Phone Number:
-                                </Text>
-                              </div>
-                              <div className="flex flex-col items-center justify-start w-full">
-                                <Text
-                                  className="text-blue_gray-900_01 text-sm"
-                                  size="txtLatoRegular14"
-                                >
-                                  +91{phone}
-                                </Text>
-                              </div>
-                            </div>
-                          </div>
-                          <Text className="mt-10 text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
-                            Requested footage information
-                          </Text>
-                          <div className="flex justify-between items-center w-full ">
-                            <div className="flex flex-col gap-1.5 items-start justify-start mt-4 w-full md:w-full">
-                              <div className="flex flex-col items-start justify-center w-full">
-                                <Text className="text-base text-blue_gray-900_01">
-                                  Footage Name:
-                                </Text>
-                              </div>
-                              <div className="flex  items-start justify-start w-full md">
-                                <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                  {footageName}
-                                </Text>
-                              </div>
-                            </div>
-                            <div className="flex flex-col gap-1.5 items-end justify-center -mr-[72px] mt-4 w-full md:w-full">
-                              <div className="flex  items-center justify-start w-full ">
-                                <Text className="text-base text-blue_gray-900_01">
-                                  Footage ID Number:
-                                </Text>
-                              </div>
-                              <div className="flex  items-center justify-start w-full md">
-                                <Text className="text-blue_gray-900_01 font-normal text-sm">
-                                  {footageId}
-                                </Text>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex flex-col mt-4">
-                            <div className="text-[ #303030] font-lato text-base font-medium">
-                              Reason for Request:
-                            </div>
-                            <div className="text-[ #303030] font-lato mt-1   text-sm font-normal leading-7">
-                              {reason}
-                            </div>
-                          </div>
-
-                          <div className="flex flex-col gap-3.5 items-start justify-start mt-10    w-full">
+                  <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid  shadow-bs7 w-full">
+                    <div
+                      ref={pdfRef}
+                      className="flex flex-col gap-9  justify-start p-10 w-full"
+                    >
+                      <Text className="mt-0.5 capitalize md:text-3xl text-center sm:text-[28px] text-3xl font-normal source-sans  text-blue_gray-900_01">
+                        {type} Footage Request
+                      </Text>
+                      <div className="flex flex-col font-lato gap-4 items-center justify-start mb-[57px] w-full">
+                        <div className="flex flex-col items-center justify-start w-full">
+                          <div className="flex flex-col items-start justify-start w-full">
                             <Text className="text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
-                              Additional Information
+                              Personal Information
                             </Text>
-                            <div className="flex flex-col items-start justify-start pb-1 pr-1 w-full">
-                              <div className="flex flex-col gap-2 items-start justify-start  w-full">
-                                <div className="flex flex-col items-start justify-start w-full">
-                                  <Text className="text-base text-lato  text-blue_gray-900_01">
-                                    Partnered law firms :
+                            <div className="flex flex-col gap-2 font-lato items-start justify-start ml-1 md:ml-[0] mt-3.5 w-[11%] md:w-full">
+                              <div className="flex flex-col items-start justify-start w-full">
+                                <Text className="text-base text-blue_gray-900_01">
+                                  Full Name:
+                                </Text>
+                              </div>
+                              <div className="flex flex-col items-start justify-start">
+                                <Text className="text-blue_gray-900_01 font-normal text-sm">
+                                  {full_name}
+                                </Text>
+                              </div>
+                            </div>
+                            <div className="flex flex-row items-center justify-between ml-1 md:ml-[0] mt-[17px] w-[71%] md:w-full">
+                              <div className="flex flex-col gap-[9px] items-start justify-start w-[31%]">
+                                <div className="flex flex-col items-start justify-start">
+                                  <Text className="text-base text-blue_gray-900_01 font-medium font-lato">
+                                    Email address:
                                   </Text>
                                 </div>
-                                <div className="flex   items-start justify-start ">
-                                  <Text className="font-lato leading-7 text-blue_gray-900_01 font-normal text-sm">
-                                    {partneredLawFirms}
+                                <div className="flex flex-col items-start justify-start w-full">
+                                  <Text className="text-blue_gray-900_01 font-normal font-lato text-sm">
+                                    {email}
+                                  </Text>
+                                </div>
+                              </div>
+                              <div className="flex flex-col gap-2 items-center justify-start w-[24%]">
+                                <div className="flex flex-col items-center justify-start">
+                                  <Text className="text-base text-blue_gray-900_01 font-medium font-lato">
+                                    Phone Number:
+                                  </Text>
+                                </div>
+                                <div className="flex flex-col items-center justify-start w-full">
+                                  <Text
+                                    className="text-blue_gray-900_01 text-sm"
+                                    size="txtLatoRegular14"
+                                  >
+                                    +91{phone}
                                   </Text>
                                 </div>
                               </div>
                             </div>
-                          </div>
-
-                          <div className="flex flex-col gap-2 items-start justify-start mt-8  md:w-full">
-                            <div className="flex flex-col items-start justify-start w-full">
-                              <Text className="text-base font-medium font-lato text-blue_gray-900_01">
-                                Upload Document:
-                              </Text>
-                            </div>
-                            <Text
-                              className="text-blue-700 text-sm underline"
-                              size="txtLatoRegular14Blue700"
-                            >
-                              {document}
+                            <Text className="mt-10 text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
+                              Requested footage information
                             </Text>
+                            <div className="flex justify-between items-center w-full ">
+                              <div className="flex flex-col gap-1.5 items-start justify-start mt-4 w-full md:w-full">
+                                <div className="flex flex-col items-start justify-center w-full">
+                                  <Text className="text-base text-blue_gray-900_01">
+                                    Footage Name:
+                                  </Text>
+                                </div>
+                                <div className="flex  items-start justify-start w-full md">
+                                  <Text className="text-blue_gray-900_01 font-normal text-sm">
+                                    {footageName}
+                                  </Text>
+                                </div>
+                              </div>
+                              <div className="flex flex-col gap-1.5 items-end justify-center -mr-[72px] mt-4 w-full md:w-full">
+                                <div className="flex  items-center justify-start w-full ">
+                                  <Text className="text-base text-blue_gray-900_01">
+                                    Footage ID Number:
+                                  </Text>
+                                </div>
+                                <div className="flex  items-center justify-start w-full md">
+                                  <Text className="text-blue_gray-900_01 font-normal text-sm">
+                                    {footageId}
+                                  </Text>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <div className="text-[ #303030] font-lato text-base font-medium">
+                                Reason for Request:
+                              </div>
+                              <div className="text-[ #303030] font-lato mt-1   text-sm font-normal leading-7">
+                                {reason}
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col gap-3.5 items-start justify-start mt-10    w-full">
+                              <Text className="text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
+                                Additional Information
+                              </Text>
+                              <div className="flex flex-col items-start justify-start pb-1 pr-1 w-full">
+                                <div className="flex flex-col gap-2 items-start justify-start  w-full">
+                                  <div className="flex flex-col items-start justify-start w-full">
+                                    <Text className="text-base text-lato  text-blue_gray-900_01">
+                                      Partnered law firms :
+                                    </Text>
+                                  </div>
+                                  <div className="flex   items-start justify-start ">
+                                    <Text className="font-lato leading-7 text-blue_gray-900_01 font-normal text-sm">
+                                      {partneredLawFirms}
+                                    </Text>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex flex-col gap-2 items-start justify-start mt-8  md:w-full">
+                              <div className="flex flex-col items-start justify-start w-full">
+                                <Text className="text-base font-medium font-lato text-blue_gray-900_01">
+                                  Upload Document:
+                                </Text>
+                              </div>
+                              <a
+                                href={`${document}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {" "}
+                                <Text
+                                  className="text-blue-700 text-sm underline"
+                                  size="txtLatoRegular14Blue700"
+                                >
+                                  {document}
+                                </Text>
+                              </a>
+                            </div>
                           </div>
                         </div>
                       </div>

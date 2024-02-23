@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { toastOptions } from "utils";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
+import Navbar from "components/navbar/Navbar";
 
 const SettingsOnePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
@@ -18,6 +19,7 @@ const SettingsOnePage = () => {
   const [switch1, setSwitch1] = useState(false);
   const [switch2, setSwitch2] = useState(false);
   const [switch3, setSwitch3] = useState(false);
+  const [toggle, setToggle] = useState(false);
 
   const [id, setID] = useState(null);
 
@@ -30,14 +32,16 @@ const SettingsOnePage = () => {
       const response = await api.get("/general-settings");
       const response2 = await api.get("/admin/auth/profile");
 
-      setPhone(response2.data.user.phone);
-      setAddress(response2.data.user.address);
-      setEmail(response2.data.user.email);
-      setID(response.data.settings._id);
-      setSwitch1(response.data.settings.sellClaimRequest);
-      setSwitch2(response.data.settings.affiliateRequest);
-      setSwitch3(response.data.settings.freeFootageRequest);
-    } catch (error) {}
+      setPhone(response2?.data?.user?.phone);
+      setAddress(response2?.data?.user?.address);
+      setEmail(response2?.data?.user?.email);
+      setID(response?.data?.settings?._id);
+      setSwitch1(response?.data?.settings?.sellClaimRequest);
+      setSwitch2(response?.data?.settings?.affiliateRequest);
+      setSwitch3(response?.data?.settings?.freeFootageRequest);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChange = async () => {
@@ -71,81 +75,60 @@ const SettingsOnePage = () => {
     <>
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full">
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
-          <Sidebar1 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
-          <div className="flex flex-1 flex-col items-center justify-start md:px-5 w-full">
-            <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
-              <div className="w-[43%]">
-                {" "}
-                <Input
-                  name="frame348"
-                  placeholder="Search "
-                  value={frame348value}
-                  onChange={(e) => setFrame348value(e)}
-                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base  w-full"
-                  wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
-                  prefix={
-                    <Img
-                      className="cursor-pointer h-8 mr-2.5 my-auto"
-                      src="images/img_search_blue_gray_900_01.svg"
-                      alt="search"
-                    />
-                  }
-                  suffix={
-                    <CloseSVG
-                      fillColor="#30303090"
-                      className="cursor-pointer h-8 my-auto"
-                      onClick={() => setFrame348value("")}
-                      style={{
-                        visibility:
-                          frame348value?.length <= 0 ? "hidden" : "visible",
-                      }}
-                      height={32}
-                      width={32}
-                      viewBox="0 0 32 32"
-                    />
-                  }
-                ></Input>
-              </div>
+          <Sidebar1
+            className={` transition-transform ${
+              toggle ? "translate-x-0" : "-translate-x-full"
+            } !sticky md:!fixed z-50 !w-[262px] sx:!w-[220px] bg-[#1b1b1b]  h-screen overflow-hidden md:flex hidden justify-start md:px-5 top-[0]`}
+          />
 
-              <Img
-                className="h-8 mr-[17px] w-8"
-                src="images/img_claritynotificationline.svg"
-                alt="claritynotifica"
-              />
-            </div>
-            <div className="flex flex-col font-sourcesanspro items-start justify-start mt-[34px] w-[94%] md:w-full">
+          <Sidebar1 className="!sticky !w-[262px] bg-[#1b1b1b] flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
+
+          <div
+            onClick={() => setToggle(!toggle)}
+            className={`md:block transition-transform ${
+              toggle
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-full opacity-0"
+            } hidden fixed z-40 top-0 right-0 left-0 bottom-0 bg-[#1b1b1b80]`}
+          ></div>
+
+          <div className="flex flex-1 flex-col items-center justify-start md:px-5 w-full">
+            <Navbar setToggle={setToggle} toggle={toggle} />
+
+            <div className="flex flex-col sx:mt-24 font-sourcesanspro md:mt-28 items-start justify-start mt-[34px] w-[94%] md:w-full">
               <Text
-                className="md:text-3xl sm:text-[28px] text-[32px] text-blue_gray-900_01"
+                className="md:text-3xl sm:text-[24px] text-[32px] text-blue_gray-900_01"
                 size="txtSourceSansProRegular32"
               >
                 Settings
               </Text>
-              <div className="flex md:flex-col flex-row font-lato md:gap-10 items-end justify-between mt-5 w-full">
-                <div className="flex sm:flex-1 sm:flex-col flex-row sm:gap-10 gap-20 items-start justify-start md:mt-0 mt-6 w-auto sm:w-full">
+
+              <div className="flex md:flex-wrap flex-row font-lato md:gap-10 items-end justify-between mt-5 md:mt-3 w-full">
+                <div className="flex  md:justify-between  flex-row gap-20 md:gap-2 items-start justify-start md:mt-0 mt-6 w-auto sm:w-full">
                   <Link
                     to="/settingsone"
-                    className="text-base font-lato font-bold text-blue-700 w-auto"
+                    className="text-base  md:text-[13px] font-lato font-bold text-blue-700 w-auto"
                   >
                     General settings
                   </Link>
                   <Link
                     to="/settingstwo"
-                    className="text-base font-bold font-lato text-blue_gray-900_01 w-auto"
+                    className="text-base font-bold md:text-[13px]  font-lato text-blue_gray-900_01 w-auto"
                   >
                     Request settings
                   </Link>
                   <Link
                     to="/settings"
-                    className="text-base text-blue_gray-900_01 w-auto font-bold font-lato"
+                    className="text-base text-blue_gray-900_01 md:text-[13px]  w-auto font-bold font-lato"
                   >
                     Security settings
                   </Link>
                 </div>
-                <div className="flex md:flex-1 flex-col items-center justify-start w-[13%] md:w-full">
+                <div className="flex md:hidden md:flex-1 flex-col items-center justify-start w-[13%] md:w-full">
                   <Button
-                    className="border border-indigo-900 border-solid cursor-pointer font-bold leading-[normal] min-w-[136px] text-base text-center"
+                    className="border border-[#BF9853] bg-[#BF9853] text-white-A700 border-solid cursor-pointer font-bold leading-[normal] min-w-[136px] text-base text-center"
                     shape="round"
-                    color="indigo_900"
+                    color="#BF9853"
                     size="md"
                     variant="fill"
                     onClick={handleChange}
@@ -158,7 +141,21 @@ const SettingsOnePage = () => {
                 <Line className="bg-blue_gray-100_01 h-px mx-auto w-full" />
                 <Line className="bg-blue-700 h-0.5 mb-auto mt-[-1px] w-[11%] z-[1]" />
               </div>
-              <div className="flex flex-col font-lato gap-[9px] items-start justify-start mt-[45px]">
+
+              <div className="md:flex mt-5 hidden md:flex-1 flex-col items-end justify-start w-[13%] md:w-full">
+                <Button
+                  className="border border-[#BF9853] bg-[#BF9853] text-white-A700 border-solid cursor-pointer font-bold leading-[normal] min-w-[136px] text-base text-center"
+                  shape="round"
+                  color="#BF9853"
+                  size="md"
+                  variant="fill"
+                  onClick={handleChange}
+                >
+                  Save Changes
+                </Button>
+              </div>
+
+              <div className="flex flex-col font-lato gap-[9px] md:gap-1 items-start justify-start md:mt-5 mt-[45px]">
                 <Text
                   className="text-blue_gray-900_01 text-lg"
                   size="txtLatoBold18"
@@ -172,29 +169,35 @@ const SettingsOnePage = () => {
                   Update your company information
                 </Text>
               </div>
-              <div className="flex sm:flex-col flex-row font-lato md:gap-10 items-center justify-between mt-[13px] w-full">
+              <div className="flex sm:flex-col flex-row font-lato md:gap-4 md:items-start items-center justify-between mt-[13px] w-full">
                 <Text
                   className="text-base text-blue_gray-900_01"
                   size="txtLatoBold16"
                 >
                   Phone Number
                 </Text>
-                <div className="w-[38%]">
+                <div className="w-[38%] md:w-full">
                   <Input
-                    type="number"
+                    type="text"
                     value={phone}
                     handleChange={(e) => {
-                      setPhone(e.target.value);
+                      // Only update the state if the input value is empty or a 10-digit number
+                      if (
+                        e.target.value === "" ||
+                        /^[0-9]{1,10}$/.test(e.target.value)
+                      ) {
+                        setPhone(e.target.value);
+                      }
                     }}
                     name="group161"
-                    placeholder="+91 9313114789"
+                    placeholder={phone}
                     className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 p-0 text-base text-left w-full"
                     wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
                   ></Input>
                 </div>
               </div>
               <Line className="bg-blue_gray-100_01 h-px mt-[19px] w-full" />
-              <div className="flex sm:flex-col flex-row font-lato md:gap-10 items-center justify-between mt-[23px] w-full">
+              <div className="flex sm:flex-col flex-row font-lato md:gap-4 md:items-start items-center justify-between mt-[23px] w-full">
                 <Text
                   className="text-base text-blue_gray-900_01"
                   size="txtLatoBold16"
@@ -202,7 +205,7 @@ const SettingsOnePage = () => {
                   Email Address
                 </Text>
 
-                <div className="w-[38%]">
+                <div className="w-[38%] md:w-full">
                   <Input
                     value={email}
                     handleChange={(e) => {
@@ -217,14 +220,14 @@ const SettingsOnePage = () => {
                 </div>
               </div>
               <Line className="bg-blue_gray-100_01 h-px mt-[23px] w-full" />
-              <div className="flex sm:flex-col flex-row font-lato md:gap-10 items-center justify-between mt-6 w-full">
+              <div className="flex sm:flex-col flex-row font-lato md:gap-4 md:items-start items-center justify-between mt-6 w-full">
                 <Text
                   className="text-base text-blue_gray-900_01"
                   size="txtLatoBold16"
                 >
                   Address
                 </Text>
-                <div className="w-[38%]">
+                <div className="w-[38%] md:w-full">
                   {" "}
                   <Input
                     name="timeZone"
@@ -240,7 +243,7 @@ const SettingsOnePage = () => {
               </div>
               <Line className="bg-blue_gray-100_01 h-px mt-[26px] w-full" />
             </div>
-            <div className="flex flex-col font-lato pb-14 items-start justify-start mt-[49px] w-[94%] md:w-full">
+            <div className="flex flex-col font-lato pb-14 items-start justify-start mt-[49px] md:mt-8 w-[94%] md:w-full">
               <div className="flex flex-col gap-2.5 items-center justify-start">
                 <Text
                   className="text-blue_gray-900_01 text-lg"

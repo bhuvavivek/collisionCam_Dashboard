@@ -4,11 +4,13 @@ import { useLocation } from "react-router-dom";
 import { Button, Img, Input, Text } from "components";
 
 import Sidebar1 from "components/Sidebar1";
+import Loading from "components/loading";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { toastOptions } from "utils";
+import { convertDateFormat, toastOptions } from "utils";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
+import Navbar from "components/navbar/Navbar";
 
 const ManageFootagePage = () => {
   const [frame348value, setFrame348value] = React.useState("");
@@ -22,11 +24,14 @@ const ManageFootagePage = () => {
   const [footageDetails, setFootageDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     const fetchFootageDetails = async () => {
       try {
-        const response = await api.get(`/admin/footage/details/${footageId}`);
+        const response = await api.get(
+          `/admin/footage/details-private/${footageId}`
+        );
         setFootageDetails(response.data.result);
         setLoading(false);
       } catch (error) {
@@ -42,7 +47,7 @@ const ManageFootagePage = () => {
   }, [footageId]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <Loading />;
   }
 
   if (error) {
@@ -52,8 +57,6 @@ const ManageFootagePage = () => {
   // Assuming footageDetails has the structure of the API response
   const { name, price, id, description, date, time, thumbnail, video } =
     footageDetails;
-
-    console.log(video)
 
   const deleteFootageDetails = async () => {
     try {
@@ -71,56 +74,35 @@ const ManageFootagePage = () => {
 
   return (
     <>
-      <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full">
+      <div className={`${
+          toggle && "max-h-screen overflow-hidden"
+        }  h-screen flex flex-col font-lato items-center justify-start mx-auto w-full`}>
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
-          <Sidebar1 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
+          <Sidebar1
+            className={` transition-transform ${
+              toggle ? "translate-x-0" : "-translate-x-full"
+            } !sticky md:!fixed z-50 !w-[262px] sx:!w-[220px] bg-[#1b1b1b]  h-screen overflow-hidden md:flex hidden justify-start md:px-5 top-[0]`}
+          />
+
+          <Sidebar1 className="!sticky !w-[262px] bg-[#1b1b1b] flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
+          <div
+            onClick={() => setToggle(!toggle)}
+            className={`md:block transition-transform ${
+              toggle
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-full opacity-0"
+            } hidden fixed z-40 top-0 right-0 left-0 bottom-0 bg-[#1b1b1b80]`}
+          ></div>
           <div className="flex flex-1 flex-col md:gap-10 gap-12 items-center justify-start md:px-5 w-full">
             {/* SEarch section start */}
-            <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
-              <div className="w-[40%]">
-                {" "}
-                <Input
-                  name="frame348"
-                  placeholder="Search "
-                  value={frame348value}
-                  onChange={(e) => setFrame348value(e)}
-                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-start w-full"
-                  wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
-                  prefix={
-                    <Img
-                      className="cursor-pointer h-8 mr-2.5 my-auto"
-                      src="images/img_search_blue_gray_900_01.svg"
-                      alt="search"
-                    />
-                  }
-                  suffix={
-                    <CloseSVG
-                      fillColor="#30303090"
-                      className="cursor-pointer h-8 my-auto"
-                      onClick={() => setFrame348value("")}
-                      style={{
-                        visibility:
-                          frame348value?.length <= 0 ? "hidden" : "visible",
-                      }}
-                      height={32}
-                      width={32}
-                      viewBox="0 0 32 32"
-                    />
-                  }
-                ></Input>
-              </div>
-              <Img
-                className="h-8 mr-[17px] w-8"
-                src="images/img_claritynotificationline.svg"
-                alt="claritynotifica"
-              />
-            </div>
+
+            <Navbar setToggle={setToggle} toggle={toggle} />
             {/* Search section end */}
-            <div className="sm:h-[595px] h-auto md:h-[748px] flex flex-col space-y-24 relative w-[94%] md:w-full">
+            <div className="sm:h-auto md:pt-24 h-auto md:min-h-[508px] flex flex-col space-y-24 sx:space-y-6 relative w-[94%] md:w-full">
               {/* Car detail section start  */}
               <div className="relative  flex md:flex-col flex-row gap-9 h-max inset-[0] items-start justify-between mx-auto w-full">
                 {/* cardetails-right start */}
-                <div className="flex md:flex-1 flex-col md:gap-10 gap-10 justify-start md:mt-0 mt-2 w-[43%] md:w-full">
+                <div className="flex md:flex-1 flex-col md:gap-10  gap-10 justify-start md:mt-0 mt-2 w-[43%] md:w-full">
                   {video ? (
                     <video width="100%" height="100%" controls>
                       <source src={video} type="video/mp4" />
@@ -136,10 +118,10 @@ const ManageFootagePage = () => {
                 </div>
                 {/* carderails-right end */}
                 {/* cardetails-left start  */}
-                <div className="flex md:flex-1 flex-col font-sourcesanspro gap-6 items-start justify-start w-full">
+                <div className="flex md:flex-1 flex-col font-sourcesanspro gap-6 md:gap-3 items-start justify-start w-full">
                   <div className="flex flex-col items-start justify-start w-[55%] md:w-full">
                     <div className="flex flex-col items-center justify-start w-auto sm:w-full">
-                      <Text className="md:text-3xl sm:text-[28px] text-3xl font-semibold text-blue_gray-900_01 w-auto source-sans">
+                      <Text className="md:text-3xl sm:text-[24px] text-3xl font-semibold text-blue_gray-900_01 w-auto source-sans">
                         Name:{name}
                       </Text>
                     </div>
@@ -157,29 +139,29 @@ const ManageFootagePage = () => {
                     </div>
                   </div>
                   <div className="flex flex-col font-sourcesanspro items-center justify-start">
-                    <Text className="md:text-3xl sm:text-[28px] text-3xl font-semibold text-blue_gray-900_01 w-auto source-sans">
+                    <Text className="md:text-3xl sm:text-[24px] text-3xl font-semibold text-blue_gray-900_01 w-auto source-sans">
                       Price:${price}
                     </Text>
                   </div>
                   <div className="flex flex-col font-lato items-center justify-start w-[57%] md:w-full">
-                    <div className="flex flex-row gap-[26px] items-start justify-between w-full">
-                      <div className="flex flex-row gap-1.5 items-start justify-start w-[41%]">
-                        <Text className="text-center text-gray-900 text-lg  font-lato font-bold leading-6">
+                    <div className="flex flex-row gap-[26px] items-start justify-between w-full ">
+                      <div className="flex flex-row gap-1.5 sx:items-end items-start justify-start w-[41%] md:w-[45%]">
+                        <Text className="text-center sx:text-base text-gray-900 text-lg  font-lato font-bold leading-6">
                           Date:
                         </Text>
                         <Text
-                          className="text-blue_gray-900_01 text-lg"
+                          className="text-blue_gray-900_01 sx:text-sm sx:whitespace-nowrap text-lg"
                           size="txtLatoRegular18"
                         >
-                          {date}
+                          {convertDateFormat(date || '')}
                         </Text>
                       </div>
-                      <div className="flex flex-row items-start justify-start gap-1 w-[53%]">
-                        <Text className="mb-0.5 text-center font-lato text-gray-900 text-lg font-bold leading-6">
+                      <div className="flex flex-row sx:items-center items-start justify-start gap-1 w-[53%]">
+                        <Text className="mb-0.5 sx:text-base text-center font-lato text-gray-900 text-lg font-bold leading-6">
                           Time:
                         </Text>
                         <Text
-                          className=" text-blue_gray-900_01 text-lg text-left"
+                          className=" text-blue_gray-900_01 sx:text-sm text-lg text-left"
                           size="txtLatoRegular18"
                         >
                           {time}
@@ -196,7 +178,7 @@ const ManageFootagePage = () => {
                         className="leading-6 text-blue_gray-900_01 text-lg w-[90%]"
                         size="txtLatoRegular18"
                       >
-                        {description}
+                        {description} 
                       </Text>
                     </div>
                   </div>
@@ -207,10 +189,10 @@ const ManageFootagePage = () => {
 
               {/* setions for button and other things  */}
 
-              <div className="w-[90%] relative flex item-center justify-between">
+              <div className="w-[100%] sx:flex-wrap relative flex item-center justify-between">
                 <Link
                   to="/managefootageone"
-                  className="flex gap-4 items-center justify-center cursor-pointer  w-[12%]  pl-[5%] "
+                  className="flex gap-4 md:gap-2 items-center justify-center cursor-pointer  md:w-[28%] md:justify-start w-[12%]  pl-[5%] md:pl-0 "
                 >
                   {" "}
                   <Img
@@ -218,20 +200,20 @@ const ManageFootagePage = () => {
                     src="images/img_contrast.svg"
                     alt="contrast"
                   />
-                  <Text className="text-[#29207E] font-lato font-bold text-xl">
+                  <Text className="text-[#BF9853] font-lato font-bold text-xl">
                     {" "}
                     Back{" "}
                   </Text>
                 </Link>
 
-                <div className="  relative flex flex-row gap-4 items-center justify-end  w-[38%]">
+                <div className="  relative flex sx:w-full flex-row gap-4 md:gap-2 items-center justify-end md:w-[70%]  w-[38%]">
                   <Link
                     to={"/edit-form/" + footageId}
                     className="cursor-pointer w-[50%] p-2"
                   >
                     {" "}
                     <Button
-                      className="font-bold  flex items-center pl-4 gap-3 rounded-lg   leading-[normal] p-3 bg-[#29207E] text-white-A700 text-base  w-full  placeholder:"
+                      className="font-bold  flex items-center pl-4 gap-3 rounded-lg   leading-[normal] p-3 bg-[#BF9853] text-white-A700 text-base  w-full  placeholder:"
                       color="red_700"
                     >
                       <svg

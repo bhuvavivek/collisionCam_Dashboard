@@ -1,46 +1,47 @@
-import { Button, Img, SelectBox, Text } from "components";
+import { Button, Img, Input, SelectBox, Text } from "components";
 import Sidebar1 from "components/Sidebar1";
 import Loading from "components/loading";
-import Navbar from "components/navbar/Navbar";
 import ProductTable from "components/producttable";
 import React, { useEffect, useState } from "react";
+import { CloseSVG } from "../../assets/images";
+import Navbar from "components/navbar/Navbar";
 import { api } from "utils/api";
 
 const buttonOptionsList = [
   { label: "All", value: "" },
-  { label: "Approved", value: "approved" },
-  { label: "Rejected", value: "reject" },
-  { label: "Pending", value: "pending" },
+  { label: "Subscription", value: "Subscription" },
+  { label: "Buy", value: "Buy" },
 ];
 const buttonOneOptionsList = [
   { label: "Newest-Oldest", value: "desc" },
   { label: "Oldest-Newest", value: "asc" },
 ];
 
-const ManageAffiliatePage = () => {
+const PaymnetHistory = () => {
   const [frame348value, setFrame348value] = React.useState("");
 
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const [toggle, setToggle] = useState(false);
   const [error, setError] = useState(null);
 
   const [sort, setSort] = useState("desc");
-  const [filter, setFilter] = useState("");
+  const [type, setType] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [name, setName] = useState("");
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const PaymentHistory = async () => {
       try {
-        const response = await api.get(
-          `/user/get-affliate?page=${page}&limit=10&sortBy=createdAt&order=${sort}&status=${filter}&search=${name ? name : ""
+        const { data } = await api.get(
+          `/payment?page=${page}&sortBy=createdAt&limit=10&type=${type}&sort=${sort}&name=${
+            name ? name : ""
           }`
         );
-        setTableData(response.data.result);
-        setTotalPages(Math.ceil(response.data.totalCount / 10));
+        setTableData(data?.result);
+        setTotalPages(Math.ceil(data?.page / 10));
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -48,16 +49,15 @@ const ManageAffiliatePage = () => {
       }
     };
 
-    fetchData();
-  }, [sort, page, filter, name]);
+    PaymentHistory();
+  }, [sort, page, type, name]);
 
   const tableColumns = [
     "Name", // Replace with your actual column names
-    "Phone Number",
     "Email Address",
+    "Purchase Method",
     "Request Date",
-    "Upload Document",
-    "Approval Status",
+    "Amount",
     "Details",
   ];
 
@@ -69,29 +69,14 @@ const ManageAffiliatePage = () => {
     return <p>Error: {error.message}</p>;
   }
 
-  const formattedTableData = tableData.map((item) => {
-    if (item?.documents && item?.documents?.length > 0) {
-      return [
-        item?.full_name ?? "",
-        item?.phone ?? "",
-        item?.email ?? "",
-        formatDateFromTimestamp(item?.createdAt) ?? "",
-        item?.documents[0].url ?? "",
-        item?.status === "reject" ? "Rejected" : item.status ?? "",
-        item?._id ?? "",
-      ]
-    } else {
-      return [
-        item?.full_name ?? "",
-        item?.phone ?? "",
-        item?.email ?? "",
-        formatDateFromTimestamp(item?.createdAt) ?? "",
-        "",
-        item?.status === "reject" ? "Rejected" : item.status ?? "",
-        item?._id ?? "",
-      ]
-    }
-  });
+  const formattedTableData = tableData.map((item) => [
+    item.name ?? "",
+    item.email ?? "",
+    item.type ?? "",
+    formatDateFromTimestamp(item.createdAt) ?? "",
+    `$${item.amount ?? ""}`,
+    `${item._id ?? ""}`,
+  ]);
 
   function formatDateFromTimestamp(timestamp) {
     const dateObject = new Date(timestamp);
@@ -107,18 +92,20 @@ const ManageAffiliatePage = () => {
       <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full">
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
           <Sidebar1
-            className={` transition-transform ${toggle ? "translate-x-0" : "-translate-x-full"
-              } !sticky md:!fixed z-50 !w-[262px] sx:!w-[220px] bg-[#1b1b1b]  h-screen overflow-hidden md:flex hidden justify-start md:px-5 top-[0]`}
+            className={` transition-transform ${
+              toggle ? "translate-x-0" : "-translate-x-full"
+            } !sticky md:!fixed z-50 !w-[262px] sx:!w-[220px] bg-[#1b1b1b]  h-screen overflow-hidden md:flex hidden justify-start md:px-5 top-[0]`}
           />
 
           <Sidebar1 className="!sticky !w-[262px] bg-[#1b1b1b] flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
 
           <div
             onClick={() => setToggle(!toggle)}
-            className={`md:block transition-transform ${toggle
-              ? "translate-x-0 opacity-100"
-              : "-translate-x-full opacity-0"
-              } hidden fixed z-40 top-0 right-0 left-0 bottom-0 bg-[#1b1b1b80]`}
+            className={`md:block transition-transform ${
+              toggle
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-full opacity-0"
+            } hidden fixed z-40 top-0 right-0 left-0 bottom-0 bg-[#1b1b1b80]`}
           ></div>
 
           <div className="flex flex-1 flex-col md:gap-10 gap-12 items-center justify-start md:px-5 w-full">
@@ -131,15 +118,15 @@ const ManageAffiliatePage = () => {
 
             <div className="flex flex-col md:mt-28 sx:mt-24 items-start justify-start w-[94%] md:w-full">
               <div className="flex md:flex-col flex-row md:gap-10 items-center justify-end w-full">
-                <div className="flex gap-3 sx:flex-wrap items-center justify-center md:justify-between w-[40%] sm:w-full">
+                <div className="flex sx:flex-wrap gap-3 items-center justify-center w-[40%] sm:w-full">
                   <Text
-                    className="text-base text-blue_gray-900_01"
+                    className="text-base sx:w-full text-blue_gray-900_01"
                     size="txtLatoBold16"
                   >
                     Filter by
                   </Text>
                   <SelectBox
-                    className="!text-blue_gray-900_01 border border-gray-500_7f border-solid font-semibold text-left text-sm w-[33%] sm:w-[35%] sx:w-full"
+                    className="!text-blue_gray-900_01 sx:w-full border border-gray-500_7f border-solid font-semibold text-left text-sm w-[33%] sm:w-[35%]"
                     placeholderClassName="!text-blue_gray-900_01"
                     indicator={
                       <Img
@@ -150,22 +137,18 @@ const ManageAffiliatePage = () => {
                     }
                     isMulti={false}
                     name="button"
-                    value={filter}
+                    value={type}
                     onChange={(status) => {
-                      setFilter(status);
+                      setType(status);
                     }}
                     options={buttonOptionsList}
                     isSearchable={false}
                     placeholder={
-                      filter === ""
-                        ? "All"
-                        : filter === "approved"
-                          ? "Approved"
-                          : filter === "reject"
-                            ? "Rejected"
-                            : filter === "pending"
-                              ? "Pending"
-                              : "All"
+                      type === "Subscription"
+                        ? "Subscription"
+                        : type === "Buy"
+                        ? "Buy"
+                        : "All"
                     }
                     shape="round"
                     color="white_A700"
@@ -173,7 +156,7 @@ const ManageAffiliatePage = () => {
                     variant="fill"
                   />
                   <SelectBox
-                    className="border border-gray-500_7f border-solid font-semibold text-left text-sm w-[42%] sm:w-[40%] sx:w-full"
+                    className="border border-gray-500_7f sx:w-full border-solid font-semibold text-left text-sm w-[42%] sm:w-[40%]"
                     placeholderClassName="text-blue_gray-900_a2"
                     indicator={
                       <Img
@@ -202,11 +185,11 @@ const ManageAffiliatePage = () => {
               </div>
               <div className="overflow-auto mt-12 md:mt-10 w-[95%] md:w-full mx-auto">
                 <ProductTable
+                  paymentHistory={true}
                   columns={tableColumns}
                   data={formattedTableData}
                 ></ProductTable>
               </div>
-
               <div className="flex flex-col items-center justify-start md:ml-[0] ml-[50%] my-14 md:my-10  w-[46%] md:w-full">
                 <div className="flex sm:flex-wrap gap-5 flex-row sm:gap-4 items-center justify-end md:justify-between w-full">
                   <Button
@@ -215,7 +198,7 @@ const ManageAffiliatePage = () => {
                         setPage(page - 1);
                       }
                     }}
-                    className="bg-white-A700 border-2 border-[#BF9853] border-solid  flex flex-col items-center justify-start p-3 rounded-[16px] w-[30%] sm:w-[45%] sx:w-[40%]"
+                    className="bg-white-A700 border-2 sx:w-[40%] border-[#BF9853] border-solid  flex flex-col items-center justify-start p-3 rounded-[16px] w-[30%] sm:w-[45%]"
                   >
                     <Img
                       className="h-6 w-6"
@@ -224,7 +207,7 @@ const ManageAffiliatePage = () => {
                     />
                   </Button>
                   <Button
-                    className="cursor-pointer sx:text-sm bg-[#BF9853] text-white-A700 flex items-center justify-center w-[70%]  md:w-[45%] sx:w-[50%]"
+                    className="cursor-pointer sx:w-1/2  flex items-center justify-center bg-[#BF9853] w-[70%] md:w-[45%]"
                     onClick={() => {
                       if (page < totalPages) {
                         setPage(page + 1);
@@ -242,7 +225,7 @@ const ManageAffiliatePage = () => {
                     size="md"
                     variant="fill"
                   >
-                    <div className="font-bold text-base text-left">
+                    <div className="font-bold text-base text-left text-white-A700">
                       Next page
                     </div>
                   </Button>
@@ -273,4 +256,4 @@ const ManageAffiliatePage = () => {
   );
 };
 
-export default ManageAffiliatePage;
+export default PaymnetHistory;

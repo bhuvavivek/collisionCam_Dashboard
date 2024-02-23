@@ -1,5 +1,7 @@
-import { Text, TextArea } from "components";
+import { Cities, States } from "assets/state-city";
+import { Img, SelectBox, Text, TextArea } from "components";
 import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { toastOptions } from "utils";
 import { api } from "utils/api";
@@ -7,6 +9,7 @@ import { api } from "utils/api";
 const UploadForm = () => {
   const [inputs, setInputs] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { value, name } = e.target;
@@ -52,63 +55,95 @@ const UploadForm = () => {
     }
   };
 
+  const validation = () => {
+    if (!inputs.name) {
+      ToastMessage("Name is Required");
+      return false
+    } else if (!inputs.price) {
+      ToastMessage("Price is Required");
+      return false
+    } else if (!inputs.id) {
+      ToastMessage("FootageID is Required");
+      return false
+    } else if (!inputs.state) {
+      ToastMessage("State is Required");
+      return false
+    } else if (!inputs.id) {
+      ToastMessage("City is Required");
+      return false
+    } else if (!image) {
+      ToastMessage("Image is Required");
+      return false
+    } else if (!video) {
+      ToastMessage("Video is Required");
+      return false
+    }
+    return true;
+  }
+
+  const ToastMessage = (message) => {
+    toast.warning(message, toastOptions);
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form submitted with name:", inputs, videoSrc, imageSrc);
+    if (validation()) {
+      setIsLoading(true);
+      try {
+        const form = new FormData();
+        form.append("photo", image);
+        form.append("video", video);
+        form.append("thumbnail", "adas");
+        form.append("thumbnailPublicKey", "adas");
+        form.append("name", inputs.name);
+        form.append("price", inputs.price);
+        form.append("id", inputs.id);
+        form.append("state", inputs.state);
+        form.append("city", inputs.city);
+        form.append("date", inputs.date);
+        form.append("time", inputs.time);
+        form.append("description", inputs.description);
 
-    setIsLoading(true);
-    try {
-      const form = new FormData();
-      form.append("photo", image);
-      form.append("video", video);
-      form.append("thumbnail", "adas");
-      form.append("thumbnailPublicKey", "adas");
-      form.append("name", inputs.name);
-      form.append("price", inputs.price);
-      form.append("id", inputs.id);
-      form.append("state", inputs.state);
-      form.append("city", inputs.city);
-      form.append("date", inputs.date);
-      form.append("time", inputs.time);
-      form.append("description", inputs.description);
+        const { data } = await api.post("/admin/footage/upload", form);
+        toast.success(data?.message, toastOptions);
+        navigate("/managefootageone");
+        setImage("");
+        setImageSrc("");
+        setVideo("");
+        setVideoSrc("");
+        setInputs({
+          name: "",
+          state: "",
+          city: "",
+          id: "",
+          price: "",
+          time: "",
+          date: "",
+          description: "",
+        });
 
-      const { data } = await api.post("/admin/footage/upload", form);
-      toast.success(data?.message, toastOptions);
-      setImage("");
-      setImageSrc("");
-      setVideo("");
-      setVideoSrc("");
-      setInputs({
-        name: "",
-        state: "",
-        city: "",
-        id: "",
-        price: "",
-        time: "",
-        date: "",
-        description: "",
-      });
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        toast.error(
+          error?.response?.data?.message || "Internal server error",
+          toastOptions
+        );
 
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      toast.error(
-        error?.response?.data?.message || "Internal server error",
-        toastOptions
-      );
-
-      setIsLoading(false);
+        setIsLoading(false);
+      }
     }
+
   };
 
   return (
-    <div className="w-[30%] mx-auto mt-7 flex flex-col">
+    <div className="w-[30%] md:w-[90%] mx-auto mt-7 flex flex-col">
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <h2 className="text-center text-[#052029] text-2xl font-semibold Montserrat">
           Upload New Footage
         </h2>
 
-        <div className="flex flex-col gap-3 mt-5">
+        <div className="flex flex-col gap-3 mt-5 md:mt-4">
           {/* name */}
           <div>
             <label
@@ -127,7 +162,7 @@ const UploadForm = () => {
             />
           </div>
           {/* price and id */}
-          <div className="flex w-full gap-7 ">
+          <div className="flex w-full gap-7 md:gap-4">
             <div className="w-full">
               <label
                 htmlFor="price"
@@ -141,9 +176,15 @@ const UploadForm = () => {
                 name="price"
                 value={inputs.price}
                 onChange={handleChange}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
                 className="mt-1 p-2 border border-solid   bg-[#fff] focus:border-[#D9D9D9] border-[#D9D9D9] rounded-lg w-full"
               />
             </div>
+
             <div className="w-full">
               <label
                 htmlFor="id"
@@ -157,13 +198,18 @@ const UploadForm = () => {
                 name="id"
                 value={inputs.id}
                 onChange={handleChange}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
                 className="mt-1 p-2 border border-solid bg-[#fff] focus:border-[#D9D9D9] border-[#D9D9D9] rounded-lg w-full"
               />
             </div>
           </div>
 
           {/* State and city */}
-          <div className="flex w-full gap-7 ">
+          <div className="flex w-full sx:flex-wrap gap-7 sx:gap-3 md:gap-4">
             <div className="w-full">
               <label
                 htmlFor="state"
@@ -171,13 +217,24 @@ const UploadForm = () => {
               >
                 State
               </label>
-              <input
-                type="text"
-                id="state"
-                name="state"
-                value={inputs.state}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-solid   bg-[#fff] focus:border-[#D9D9D9] border-[#D9D9D9] rounded-lg w-full"
+              <SelectBox
+                className="border mt-1 p-2 border-gray-500_7f border-solid font-semibold text-left text-sm w-full"
+                placeholderClassName="text-blue_gray-900_a2"
+                isMulti={false}
+                name="button"
+                options={States}
+                isSearchable={false}
+                placeholder={
+                  inputs.state === null ? "Select State " : inputs.state
+                }
+                shape="round"
+                color="white_A700"
+                size="xs"
+                variant="fill"
+                value={setInputs.state}
+                onChange={(selectedOption) => {
+                  setInputs({ ...inputs, state: selectedOption, city: null });
+                }}
               />
             </div>
             <div className="w-full">
@@ -187,18 +244,29 @@ const UploadForm = () => {
               >
                 City
               </label>
-              <input
-                type="text"
-                id="city"
-                name="city"
-                value={inputs.city}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-solid bg-[#fff] focus:border-[#D9D9D9] border-[#D9D9D9] rounded-lg w-full"
+              <SelectBox
+                className="border mt-1 p-2 border-gray-500_7f border-solid font-semibold text-left text-sm w-full"
+                placeholderClassName="text-blue_gray-900_a2"
+                isMulti={false}
+                name="button"
+                options={Cities[inputs.state?.replace(/\s/g, "")]}
+                isSearchable={false}
+                placeholder={
+                  inputs.city === null ? "Select City " : inputs.city
+                }
+                shape="round"
+                color="white_A700"
+                size="xs"
+                variant="fill"
+                value={setInputs.city}
+                onChange={(selectedOption) => {
+                  setInputs({ ...inputs, city: selectedOption });
+                }}
               />
             </div>
           </div>
           {/* Date  and time */}
-          <div className="flex w-full gap-7 ">
+          <div className="flex w-full sx:flex-wrap gap-7 sx:gap-3 md:gap-4">
             <div className="w-full">
               <label
                 htmlFor="date"
@@ -259,10 +327,10 @@ const UploadForm = () => {
                 justifyContent: "space-around",
               }}
             >
-              <Text className="font-lato  text-[#1976D2] font-bold w-auto ">
+              <Text className="font-lato md:text-sm  text-[#1976D2] font-bold w-auto ">
                 Click to Edit Thumbnail Image
               </Text>
-              <Text className="font-lato  text-[#1976D2] w-auto font-bold">
+              <Text className="font-lato md:text-sm  text-[#1976D2] w-auto font-bold">
                 Click to Edit Thumbnail video
               </Text>
             </div>
@@ -348,7 +416,7 @@ const UploadForm = () => {
                 </svg>
 
                 {videoSrc && (
-                  <div className="absolute top-0 bottom-0 left-0 right-0 h-full w-full bg-white-A700 ">
+                  <div className="absolute top-0 bottom-0 left-0 right-0 h-full w-full bg-white-A700 overflow-hidden ">
                     <video controls width="100%" height="100%" src={videoSrc} />
                   </div>
                 )}
@@ -363,11 +431,30 @@ const UploadForm = () => {
             </div>
           </div>
           {/* Button */}
-          <div className="flex justify-center my-7">
+          <div className="flex justify-between my-7 md:mt-5 mx-2 md:mx-0">
+            <button
+              type="none"
+              className="rounded-lg w-44 md:w-40 sx:w-28 p-3 border-[#BF9853] border-2  text-center ">
+              <Link
+                to="/managefootageone"
+                className="flex gap-4 items-center justify-center cursor-pointer "
+              >
+                {" "}
+                <Img
+                  className=" h-6  w-6"
+                  src="/images/img_contrast.svg"
+                  alt="contrast"
+                />
+                <Text className="text-[#BF9853] font-lato font-bold md:text-base text-xl">
+                  {" "}
+                  Back{" "}
+                </Text>
+              </Link>
+            </button>
             <button
               disabled={isLoading}
               type="submit"
-              className="rounded-lg w-44 p-3 bg-[#29207E] text-[#fff] font-lato font-bold text-base text-center disabled:bg-slate-500 disabled:cursor-not-allowed"
+              className="rounded-lg w-44 md:w-40 p-3 sx:w-28 bg-[#BF9853] text-[#fff] font-lato font-bold text-base text-center disabled:bg-slate-500 disabled:cursor-not-allowed"
             >
               {isLoading ? "Submitting..." : "Submit"}
             </button>

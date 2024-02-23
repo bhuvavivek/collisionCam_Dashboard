@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const SellClaimTable = ({ columns, data, category }) => {
+const SellClaimTable = ({ columns, data }) => {
   return (
     <div className="relative overflow-x-auto m-auto">
       <table
@@ -31,33 +31,29 @@ const SellClaimTable = ({ columns, data, category }) => {
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={`px-1 py-3 text-center  ${
-                    cellIndex === row.length - 1 && "text-[#1976D2]"
-                  }`}
+                  className={`px-1 py-3 text-center md:min-w-[180px] ${cellIndex === row.length - 2 && "capitalize"
+                    }   ${cellIndex === row.length - 1 && "text-[#1976D2]"
+                    }`}
                   style={{ border: "1px solid #B9B9B9" }}
                 >
                   {cellIndex === row.length - 1 ? (
                     <Link
-                      to={`${
-                        category === "old"
-                          ? "/reviewrequesttwo?id=" + cell
-                          : "/reviewrequest?id=" + cell
-                      }`}
+                
+
+                      to={`/reviewrequesttwo?id=${cell}`}
                       className="underline "
                     >
                       View Details
                     </Link>
                   ) : cellIndex === row.length - 3 ? (
-                    <Link
-                      to={`${
-                        category === "old"
-                          ? "/reviewrequesttwo?id=" + cell
-                          : "/reviewrequest?id=" + cell
-                      }`}
-                      className="underline "
+                    <a
+                      href={`${cell}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline"
                     >
-                      {cell}
-                    </Link>
+                      {cell?.split("/")?.pop()}
+                    </a>
                   ) : (
                     cell
                   )}

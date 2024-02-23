@@ -1,12 +1,11 @@
+import Loading from "components/loading";
 import { AppContext } from "pages/store/AppContext";
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Protected = ({ children, returnTo }) => {
   const { isDataLoaded, user } = useContext(AppContext);
   const navigate = useNavigate();
-  console.log("user");
-  console.log(user);
 
   useEffect(() => {
     if (!isDataLoaded) {
@@ -18,7 +17,7 @@ const Protected = ({ children, returnTo }) => {
   }, [user, isDataLoaded]);
 
   if (!isDataLoaded) {
-    return <h1>Loading...</h1>;
+    return <Loading />;
   }
 
   return <>{children}</>;

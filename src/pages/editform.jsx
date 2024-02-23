@@ -1,12 +1,14 @@
-import { Text, TextArea } from "components";
+import { Cities, States } from "assets/state-city";
+import { Img, SelectBox, Text, TextArea } from "components";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { toastOptions } from "utils";
 import { api } from "utils/api";
 
 const EditForm = () => {
   const [inputs, setInputs] = useState({});
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useParams();
@@ -57,7 +59,8 @@ const EditForm = () => {
 
   const getDetails = async () => {
     try {
-      const { data } = await api.get(`/admin/footage/details/${id}`);
+      const { data } = await api.get(`/admin/footage/details-private/${id}`);
+
       console.log(data);
       setInputs(data?.result);
       setImageSrc(data?.result?.thumbnail);
@@ -71,47 +74,75 @@ const EditForm = () => {
     getDetails();
   }, [id]);
 
+  const validation = () => {
+    if (!inputs.name) {
+      ToastMessage("Name is Required");
+      return false
+    } else if (!inputs.price) {
+      ToastMessage("Price is Required");
+      return false
+    } else if (!inputs.id) {
+      ToastMessage("FootageID is Required");
+      return false
+    } else if (!inputs.state) {
+      ToastMessage("State is Required");
+      return false
+    } else if (!inputs.id) {
+      ToastMessage("City is Required");
+      return false
+    }
+    return true;
+  }
+
+  const ToastMessage = (message) => {
+    toast.warning(message, toastOptions);
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle the form submission logic here
-    console.log("Form submitted with name:");
-    setIsLoading(true);
-    try {
-      const form = new FormData();
-      form.append("photo", image);
-      form.append("video", video);
-      form.append("thumbnail", inputs?.thumbnail);
-      form.append("thumbnailPublicKey", inputs?.thumbnailPublicKey);
-      form.append("video", inputs?.video);
-      form.append("videoPublicKey", inputs?.videoPublicKey);
-      form.append("name", inputs.name);
-      form.append("price", inputs.price);
-      form.append("id", inputs.id);
-      form.append("state", inputs.state);
-      form.append("city", inputs.city);
-      form.append("date", inputs.date);
-      form.append("time", inputs.time);
-      form.append("description", inputs.description);
 
-      const { data } = await api.post("/admin/footage/edit/" + id, form, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      toast.success(data?.message, toastOptions);
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      toast.error(
-        error?.response?.data?.message || "Internal server error",
-        toastOptions
-      );
-      setIsLoading(false);
+    if (validation()) {
+      setIsLoading(true);
+      try {
+        const form = new FormData();
+        form.append("photo", image);
+        form.append("video", video);
+        form.append("thumbnail", inputs?.thumbnail);
+        form.append("thumbnailPublicKey", inputs?.thumbnailPublicKey);
+        form.append("video", inputs?.video);
+        form.append("videoPublicKey", inputs?.videoPublicKey);
+        form.append("name", inputs.name);
+        form.append("price", inputs.price);
+        form.append("id", inputs.id);
+        form.append("state", inputs.state);
+        form.append("city", inputs.city);
+        form.append("date", inputs.date);
+        form.append("time", inputs.time);
+        form.append("description", inputs.description);
+
+        const { data } = await api.post("/admin/footage/edit/" + id, form, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        toast.success(data?.message, toastOptions);
+        navigate("/managefootageone");
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        toast.error(
+          error?.response?.data?.message || "Internal server error",
+          toastOptions
+        );
+        setIsLoading(false);
+      }
     }
+
   };
 
   return (
-    <div className="w-[30%] mx-auto mt-7 flex flex-col">
+    <div className="w-[30%] md:w-[90%] mx-auto mt-7 flex flex-col">
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <h2 className="text-center text-[#052029] text-2xl font-semibold Montserrat">
           Edit New Footage
@@ -136,7 +167,7 @@ const EditForm = () => {
             />
           </div>
           {/* price and id */}
-          <div className="flex w-full gap-7 ">
+          <div className="flex w-full gap-7 md:gap-4 ">
             <div className="w-full">
               <label
                 htmlFor="price"
@@ -150,7 +181,12 @@ const EditForm = () => {
                 name="price"
                 value={inputs.price}
                 onChange={handleChange}
-                className="mt-1 p-2 border border-solid   bg-[#fff] focus:border-[#D9D9D9] border-[#D9D9D9] rounded-lg w-full"
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
+                className="mt-1 p-2 border border-solid bg-[#fff] focus:border-[#D9D9D9] border-[#D9D9D9] rounded-lg w-full"
               />
             </div>
             <div className="w-full">
@@ -166,13 +202,18 @@ const EditForm = () => {
                 name="id"
                 value={inputs.id}
                 onChange={handleChange}
+                onKeyPress={(event) => {
+                  if (!/[0-9]/.test(event.key)) {
+                    event.preventDefault();
+                  }
+                }}
                 className="mt-1 p-2 border border-solid bg-[#fff] focus:border-[#D9D9D9] border-[#D9D9D9] rounded-lg w-full"
               />
             </div>
           </div>
 
           {/* State and city */}
-          <div className="flex w-full gap-7 ">
+          <div className="flex w-full sx:flex-wrap gap-7 sx:gap-3 md:gap-4 ">
             <div className="w-full">
               <label
                 htmlFor="state"
@@ -180,15 +221,25 @@ const EditForm = () => {
               >
                 State
               </label>
-              <input
-                type="text"
-                id="state"
-                name="state"
+              <SelectBox
+                className="border mt-1 p-2 border-gray-500_7f border-solid font-semibold text-left text-sm w-full"
+                placeholderClassName="text-blue_gray-900_a2"
+                isMulti={false}
+                name="button"
+                options={States}
+                isSearchable={false}
+                placeholder={inputs.state ? inputs.state : "Select State "}
+                shape="round"
+                color="white_A700"
+                size="xs"
+                variant="fill"
                 value={inputs.state}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-solid   bg-[#fff] focus:border-[#D9D9D9] border-[#D9D9D9] rounded-lg w-full"
+                onChange={(selectedOption) => {
+                  setInputs({ ...inputs, state: selectedOption, city: null });
+                }}
               />
             </div>
+
             <div className="w-full">
               <label
                 htmlFor="city"
@@ -196,18 +247,27 @@ const EditForm = () => {
               >
                 City
               </label>
-              <input
-                type="text"
-                id="city"
-                name="city"
+              <SelectBox
+                className="border mt-1 p-2 border-gray-500_7f border-solid font-semibold text-left text-sm w-full"
+                placeholderClassName="text-blue_gray-900_a2"
+                isMulti={false}
+                name="button"
+                options={Cities[inputs.state?.replace(/\s/g, "")]}
+                isSearchable={false}
+                placeholder={inputs.city ? inputs.city : "Select City "}
+                shape="round"
+                color="white_A700"
+                size="xs"
+                variant="fill"
                 value={inputs.city}
-                onChange={handleChange}
-                className="mt-1 p-2 border border-solid bg-[#fff] focus:border-[#D9D9D9] border-[#D9D9D9] rounded-lg w-full"
+                onChange={(selectedOption) => {
+                  setInputs({ ...inputs, city: selectedOption });
+                }}
               />
             </div>
           </div>
           {/* Date  and time */}
-          <div className="flex w-full gap-7 ">
+          <div className="flex w-full sx:flex-wrap gap-7 sx:gap-3 md:gap-4 ">
             <div className="w-full">
               <label
                 htmlFor="date"
@@ -268,10 +328,10 @@ const EditForm = () => {
                 justifyContent: "space-around",
               }}
             >
-              <Text className="font-lato  text-[#1976D2] font-bold w-auto ">
+              <Text className="font-lato  text-[#1976D2] font-bold w-auto md:text-sm ">
                 Click to Edit Thumbnail Image
               </Text>
-              <Text className="font-lato  text-[#1976D2] w-auto font-bold">
+              <Text className="font-lato  text-[#1976D2] w-auto font-bold md:text-sm">
                 Click to Edit Thumbnail video
               </Text>
             </div>
@@ -326,7 +386,7 @@ const EditForm = () => {
                   onChange={handleFileChange}
                 />
               </div>
-              <div className="w-[200px] relative h-[200px] flex justify-center items-center mx-auto border border-solid border-[#A5A5A5] bg-[#fff] ">
+              <div className="w-[200px] relative h-[200px] flex justify-center overflow-hidden items-center mx-auto border border-solid border-[#A5A5A5] bg-[#fff] ">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="51"
@@ -373,11 +433,30 @@ const EditForm = () => {
             </div>
           </div>
           {/* Button */}
-          <div className="flex justify-center my-7">
+          <div className="flex justify-around my-7 gap-2">
+            <button
+              type="none"
+              className="rounded-lg w-44 md:w-40 p-3 border-[#BF9853] border-2  text-center ">
+              <Link
+                to="/managefootageone"
+                className="flex gap-4 items-center justify-center cursor-pointer "
+              >
+                {" "}
+                <Img
+                  className=" h-6  w-6"
+                  src="/images/img_contrast.svg"
+                  alt="contrast"
+                />
+                <Text className="text-[#BF9853] font-lato font-bold text-xl">
+                  {" "}
+                  Back{" "}
+                </Text>
+              </Link>
+            </button>
             <button
               disabled={isLoading}
               type="submit"
-              className="rounded-lg w-44 p-3 bg-[#29207E] text-[#fff] font-lato font-bold text-base text-center disabled:bg-slate-500 disabled:cursor-not-allowed"
+              className="rounded-lg w-44 md:w-40 p-3 bg-[#BF9853] text-[#fff] font-lato font-bold text-base text-center disabled:bg-slate-500 disabled:cursor-not-allowed"
             >
               {isLoading ? "Submitting..." : "Submit"}
             </button>

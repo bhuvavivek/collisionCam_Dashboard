@@ -26,9 +26,9 @@ export const toastOptions = {
 export const formatDateTime = (timestamp) => {
   const dateObject = new Date(timestamp);
 
-  const formattedDate = `${dateObject.getDate()}/${
+  const formattedDate = `${
     dateObject.getMonth() + 1
-  }/${dateObject.getFullYear()}`;
+  }/${dateObject.getDate()}/${dateObject.getFullYear()}`;
 
   const hours = dateObject.getHours();
   const minutes = dateObject.getMinutes();
@@ -39,3 +39,13 @@ export const formatDateTime = (timestamp) => {
 
   return `${formattedDate} - ${formattedTime}`;
 };
+
+export function convertDateFormat(inputDate) {
+  // Split the input date by '-'
+  var parts = inputDate.split('-');
+  
+  // Rearrange the parts to form the new date format
+  var newDateFormat = parts[1] + '/' + parts[2] + '/' + parts[0];
+  
+  return newDateFormat;
+}

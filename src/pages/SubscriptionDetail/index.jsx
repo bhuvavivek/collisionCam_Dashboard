@@ -1,4 +1,4 @@
-import { Button, Img, Input, SelectBox, Text } from "components";
+import { Button, Img, Input, List, SelectBox, Text } from "components";
 import React, { useRef, useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
@@ -13,24 +13,23 @@ import { api } from "utils/api";
 
 const buttonOptionsList = [
   { label: "Approved", value: "approved" },
-  { label: "Rejected", value: "reject" },
   { label: "Pending", value: "pending" },
+  { label: "Rejected", value: "rejected" },
 ];
 
-const ManageAffiliateOnePage = () => {
+const SubscriptionDetails = () => {
   const [frame348value, setFrame348value] = React.useState("");
   const nevigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
-  const [AffiliateDetails, setAffiliateDetails] = useState(null);
+  const [SubscriptionDetails, setSubscriptionDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("");
-  const [affiliateID, setAffiliateID] = useState("");
-
   const [editbtn, setEditbtn] = useState(true);
-  const [description, setDescription] = useState("");
+  const [amount, setAmount] = useState("");
+  const [duration, setDuration] = useState("");
   const [toggle, setToggle] = useState(false);
 
   const pdfRef = useRef();
@@ -40,12 +39,10 @@ const ManageAffiliateOnePage = () => {
   });
 
   useEffect(() => {
-    const fetchAffiliateDetails = async () => {
+    const fetchSubscriptionDetails = async () => {
       try {
-        const response = await api.get(`/user/get-single-affliate/${id}`);
-        setAffiliateDetails(response.data.result);
-        setDescription(response.data.result.description);
-        setAffiliateID(response.data.result.affliate_id);
+        const response = await api.get(`/subscription/details/${id}`);
+        setSubscriptionDetails(response.data.result);
         setFilter(response.data.result.status);
         setLoading(false);
       } catch (error) {
@@ -55,7 +52,7 @@ const ManageAffiliateOnePage = () => {
     };
 
     if (id) {
-      fetchAffiliateDetails();
+      fetchSubscriptionDetails();
     }
   }, [id]);
 
@@ -67,26 +64,72 @@ const ManageAffiliateOnePage = () => {
     return <p>Error: {error.message}</p>;
   }
 
-  const { email, full_name, phone, documents, aboutUs, comments, address } =
-    AffiliateDetails;
+  const {
+    email,
+    full_name,
+    phone,
+    companyName,
+    website,
+    aboutUs,
+    documents,
+    address,
+    comments,
+  } = SubscriptionDetails;
 
-  const updateAffiliate = async () => {
+  const updateSubscription = async () => {
+
+    if (filter === "rejected") {
+      try {
+        const response = await api.put(`/subscription/approve/${id}`, {
+          status: filter,
+        });
+        setEditbtn(true);
+        setLoading(false);
+        toast.success(
+          "Request Has Been Rejected" || "Internal server error",
+          toastOptions
+        );
+        nevigate("/manage-subscriptions");
+      } catch (error) {
+        setEditbtn(true);
+        setError(error);
+        setLoading(false);
+        toast.error(
+          error?.response?.data?.message || "Internal server error",
+          toastOptions
+        );
+      }
+
+      return;
+    }
+
+
+    if (filter !== "approved") {
+      return toast.warning("Please Approve Status", toastOptions);
+    }
+
+    if (!amount) {
+      return toast.warning("Fill Amount ", toastOptions);
+    }
+
+    if (!duration) {
+      return toast.warning("Fill  Duration", toastOptions);
+    }
+
     try {
-      const response = await api.put(`/user/update-affliate/${id}`, {
+      const response = await api.put(`/subscription/approve/${id}`, {
+        amount: amount,
+        duration: duration,
         status: filter,
-        description: description,
-        affliate_id: affiliateID,
       });
       setEditbtn(true);
       setLoading(false);
 
-      if (response.data.success) {
-        toast.success(
-          response.data?.message || "Internal server error",
-          toastOptions
-        );
-        nevigate("/manageaffiliate");
-      }
+      toast.success(
+        response.data?.message || "Internal server error",
+        toastOptions
+      );
+      nevigate("/manage-subscriptions");
     } catch (error) {
       setEditbtn(true);
       setError(error);
@@ -98,42 +141,50 @@ const ManageAffiliateOnePage = () => {
     }
   };
 
-  const deleteAffiliate = async () => {
+  const deleteSubscription = async () => {
     try {
+
+      console.log('object')
+      // return
       setLoading(true);
-      const response = await api.delete(`/user/delete-affliate/${id}`);
+      const response = await api.delete(`/subscription/delete/${id}`,);
       setLoading(false);
 
       if (response.data.success) {
-        // Handle success, you can navigate or perform any other actions
-        nevigate("/manageaffiliate");
+
+        nevigate("/manage-subscriptions");
+
         toast.success(
           response.data?.message || "Internal server error",
           toastOptions
         );
       } else {
         // Handle failure
-        console.error("Failed to delete affiliate");
+
         toast.error(
           error?.response?.data?.message || "Internal server error",
           toastOptions
         );
       }
     } catch (error) {
-      setError(error);
+      // setError(error);
       setLoading(false);
       // Handle error
-      console.error("Error deleting affiliate:", error);
+      console.error("Error deleting subscription:", error);
+      toast.error(
+        error || "Internal server error",
+        toastOptions
+      );
     }
   };
 
   return (
     <>
-      <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto  w-full">
+      <div className="bg-gray-100 flex flex-col font-lato overflow-x-hidden items-center justify-start h-screen mx-auto  w-full">
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
           <Sidebar1
             className={` transition-transform ${toggle ? "translate-x-0" : "-translate-x-full"
-              } !sticky md:!fixed z-50 !w-[262px] sx:!w-[220px] bg-[#1b1b1b]  h-screen overflow-hidden md:flex hidden justify-start md:px-5 top-[0]`}
+              } !sticky md:!fixed z-50 sx:!w-[220px] !w-[262px] bg-[#1b1b1b]  h-screen overflow-hidden md:flex hidden justify-start md:px-5 top-[0]`}
           />
 
           <Sidebar1 className="!sticky !w-[262px] bg-[#1b1b1b] flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
@@ -145,17 +196,18 @@ const ManageAffiliateOnePage = () => {
               : "-translate-x-full opacity-0"
               } hidden fixed z-40 top-0 right-0 left-0 bottom-0 bg-[#1b1b1b80]`}
           ></div>
+
+
           <div className="flex flex-1 flex-col md:gap-10 gap-[72px] items-center justify-start md:px-5 w-full">
             <div className="flex flex-col  justify-start w-full">
               <Navbar setToggle={setToggle} toggle={toggle} />
-              {/* this is show document div */}
 
-              <div className="flex md:mt-28 sx:mt-24 justify-between items-center px-7 md:px-0 mt-[43px] mb-3">
+              <div className="flex justify-between md:mt-28 sx:mt-24  md:px-0 items-center px-7 mt-[43px] mb-3">
                 <div
-                  className="font-bold flex leading-[normal] text-base  text-blue_gray-900_01 text-left w-[17%] md:w-[50%]"
+                  className="font-bold flex  leading-[normal] text-base  text-blue_gray-900_01 text-left w-[17%] md:w-[45%]"
                   placeholderClassName="text-blue_gray-900_01"
                 >
-                  <Text className="text-blue_gray-900_01 sx:text-sm sx:whitespace-nowrap ml-3 font-lato text-base font-bold">
+                  <Text className="text-blue_gray-900_01 sx:text-sm sx:whitespace-nowrap ml-3 md:ml-0 font-lato text-base font-bold">
                     Show document
                   </Text>
                   <svg
@@ -190,25 +242,25 @@ const ManageAffiliateOnePage = () => {
                 </div>
               </div>
 
-              {/* this is a form section */}
               <div className="flex md:flex-col flex-row gap-9 md:gap-0 items-start justify-start ml-10 md:ml-[0] w-[78%] md:w-full">
                 <div className="w-[17%]"></div>
-                <div className="flex flex-col gap-[17px] md:gap-2 items-end justify-start md:mt-0 mt-1.5 w-5/6 md:w-full">
+
+                <div className="flex flex-col gap-[17px] items-end justify-start md:mt-0 mt-1.5 w-5/6 md:w-full">
                   <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid  shadow-bs7 w-full">
                     <div
                       ref={pdfRef}
-                      className="flex flex-col gap-9 md:gap-2  justify-start p-10 md:p-5 w-full"
+                      className="flex flex-col gap-9 md:gap-5  justify-start p-10 md:p-4 w-full"
                     >
-                      <Text className="mt-0.5 md:text-3xl text-center sm:text-[28px] text-3xl font-normal source-sans  text-blue_gray-900_01">
-                        Affiliate Request
+                      <Text className="mt-0.5 sx:text-xl md:text-3xl sx:te text-center sm:text-[28px] text-3xl font-normal source-sans  text-blue_gray-900_01">
+                        Subscription Request
                       </Text>
-                      <div className="flex flex-col font-lato  items-center justify-start mb-[57px] md:mb-2 w-full">
+                      <div className="flex flex-col font-lato gap-4 items-center justify-start mb-[57px] md:mb-0 w-full">
                         <div className="flex flex-col items-center justify-start w-full">
                           <div className="flex flex-col items-start justify-start w-full">
                             <Text className="text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
                               Personal Information
                             </Text>
-                            <div className="flex flex-col gap-2 font-lato items-start justify-start ml-1 md:ml-[0] mt-3.5 md:w-full">
+                            <div className="flex flex-col gap-2 font-lato items-start justify-start ml-1 md:ml-[0] mt-3.5  md:w-full">
                               <div className="flex flex-col items-start justify-start w-full">
                                 <Text className="text-base text-blue_gray-900_01">
                                   Full Name:
@@ -220,9 +272,9 @@ const ManageAffiliateOnePage = () => {
                                 </Text>
                               </div>
                             </div>
-                            <div className="flex flex-row sx:gap-3 sx:flex-wrap items-center justify-between ml-1 md:ml-[0] mt-[17px] w-[71%] md:w-full">
-                              <div className="flex flex-col gap-[9px] items-start justify-start w-full ">
-                                <div className="flex flex-col items-start justify-start w-full">
+                            <div className="flex sx:flex-wrap sx:gap-2 flex-row items-center justify-between ml-1 md:ml-[0] mt-[17px] w-[71%] md:w-full">
+                              <div className="flex sx:w-full flex-col gap-[9px] items-start justify-start w-[31%]">
+                                <div className="flex flex-col items-start justify-start">
                                   <Text className="text-base text-blue_gray-900_01 font-medium font-lato">
                                     Email address:
                                   </Text>
@@ -233,14 +285,13 @@ const ManageAffiliateOnePage = () => {
                                   </Text>
                                 </div>
                               </div>
-
-                              <div className="flex sx:w-full sx:items-start  flex-col gap-2 items-center justify-start w-full ">
-                                <div className="flex flex-col sx:items-start items-center justify-start w-full">
+                              <div className="flex flex-col gap-2 items-center justify-start ">
+                                <div className="flex flex-col items-center justify-start w-full">
                                   <Text className="text-base text-blue_gray-900_01 font-medium font-lato">
                                     Phone Number:
                                   </Text>
                                 </div>
-                                <div className="flex sx:items-start flex-col items-center justify-start w-full">
+                                <div className="flex flex-col items-center justify-start w-full">
                                   <Text
                                     className="text-blue_gray-900_01 text-sm"
                                     size="txtLatoRegular14"
@@ -251,89 +302,111 @@ const ManageAffiliateOnePage = () => {
                               </div>
                             </div>
 
-                            <div className="flex flex-col gap-2 items-start justify-start w-full mt-4">
+                            <Text className="mt-10 text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
+                              Business information
+                            </Text>
+                            <div className="flex flex-col gap-1.5 items-start justify-start mt-4  md:w-full">
                               <div className="flex flex-col items-start justify-start w-full">
-                                <Text
-                                  className="text-base text-blue_gray-900_01"
-                                  size="txtLatoMedium16"
-                                >
-                                  Address:
+                                <Text className="text-base text-blue_gray-900_01">
+                                  Company Name:
                                 </Text>
                               </div>
-                              <div className="flex flex-col items-start justify-start">
-                                <Text
-                                  className="text-blue_gray-900_01 text-sm"
-                                  size="txtLatoRegular14"
-                                >
-                                  {address}
+                              <div className="flex flex-col items-start justify-start w-full md:w-full">
+                                <Text className="text-blue_gray-900_01 font-normal text-sm">
+                                  {companyName}
                                 </Text>
                               </div>
                             </div>
+                            <List
+                              className="sm:flex-col  flex-row md:gap-10 sx:gap-2 sx:space-x-0 space-x-24 grid sm:grid-cols-1 grid-cols-2 my-[17px] w-[70%]]"
+                              orientation="horizontal"
+                            >
+                              <div className="flex  flex-col gap-2 items-start justify-start w-full">
+                                <div className="flex flex-col items-start justify-start w-full">
+                                  <Text className="text-base text-blue_gray-900_01">
+                                    Website:
+                                  </Text>
+                                </div>
+                                <div className="flex flex-col items-start justify-start md:w-full">
+                                  <Text className="text-blue_gray-900_01 font-normal text-sm">
+                                    {website}
+                                  </Text>
+                                </div>
+                              </div>
 
-                            <div className="flex flex-col gap-2 items-start justify-start w-full mt-4">
+                              <div className="flex  sx:w-full flex-col gap-2 items-start justify-start w-full ">
+                                <div className="flex flex-col items-start justify-start w-full">
+                                  <Text
+                                    className="text-base text-blue_gray-900_01"
+                                    size="txtLatoMedium16"
+                                  >
+                                    How did you hear about us :
+                                  </Text>
+                                </div>
+                                <div className="flex flex-col items-start justify-start">
+                                  <Text
+                                    className="text-blue_gray-900_01 text-sm"
+                                    size="txtLatoRegular14"
+                                  >
+                                    {aboutUs}
+                                  </Text>
+                                </div>
+                              </div>
+                            </List>
+                            <div className="flex flex-col gap-[13px] items-start justify-start mt-2.5 w-[98%] md:w-full">
                               <div className="flex flex-col items-start justify-start w-full">
-                                <Text
-                                  className="text-base text-blue_gray-900_01"
-                                  size="txtLatoMedium16"
-                                >
-                                  How did you hear about us :
+                                <Text className="text-base text-blue_gray-900_01">
+                                  Company Address:
                                 </Text>
                               </div>
-                              <div className="flex flex-col items-start justify-start">
-                                <Text
-                                  className="text-blue_gray-900_01 text-sm"
-                                  size="txtLatoRegular14"
-                                >
-                                  {aboutUs}
+                              <Text className="  text-blue_gray-900_01 mb-1 font-normal text-sm w-[98%]">
+                                {address}
+                              </Text>
+                            </div>
+                            <div className="flex flex-col gap-2 items-start justify-start mt-[19px] md:w-full">
+                              <div className="flex flex-col items-start justify-start w-full">
+                                <Text className="text-base text-blue_gray-900_01">
+                                  Upload Document:
                                 </Text>
                               </div>
+
+                              {documents && documents?.length > 0 && documents?.map((document) => (
+                                <a
+                                  href={`${document?.url}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {" "}
+                                  <Text
+                                    className="text-blue-700 text-sm underline"
+                                    size="txtLatoRegular14Blue700"
+                                  >
+                                    {document?.url}
+                                  </Text>
+                                </a>
+                              ))}
+
                             </div>
 
-                            {/* additional informations */}
-                            <div className="flex flex-col gap-3 items-start justify-start mt-4  w-full">
+                            <div className="flex flex-col gap-3.5 items-start justify-start mt-10 w-full">
                               <Text className="text-2xl font-lato font-medium text-blue_gray-900_01 sm:text-lg md:text-xl">
                                 Additional Information
                               </Text>
                             </div>
                           </div>
                         </div>
-                        <div className="flex flex-col items-start justify-start w-full mt-2">
+                        <div className="flex flex-col items-start justify-start w-full">
                           <div className="flex flex-col gap-2.5 items-start justify-start mb-[3px] w-[70%] md:w-full">
                             <div className="flex flex-col items-start justify-start w-full">
                               <Text className="text-base text-blue_gray-900_01">
                                 Additional Comment or Question:
                               </Text>
                             </div>
-                            <div className="flex  h-[17px] mt-1 items-start justify-start ">
+                            <div className="flex  h-[17px] items-start justify-start ">
                               <Text className="h-[17px] text-blue_gray-900_01 font-normal text-sm">
                                 {comments}
                               </Text>
                             </div>
-                          </div>
-                          {/* upload document */}
-                          <div className="flex flex-col gap-2 items-start justify-start mt-3 md:w-full">
-                            <div className="flex flex-col items-start justify-start w-full">
-                              <Text className="text-base text-blue_gray-900_01">
-                                Upload Document:
-                              </Text>
-                            </div>
-
-                            {documents && documents?.length > 0 && documents?.map((document) => (
-                              <a
-                                href={`${document?.url}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                {" "}
-                                <Text
-                                  className="text-blue-700 text-sm underline"
-                                  size="txtLatoRegular14Blue700"
-                                >
-                                  {document?.url}
-                                </Text>
-                              </a>
-                            ))}
-
                           </div>
                         </div>
                       </div>
@@ -342,39 +415,23 @@ const ManageAffiliateOnePage = () => {
                 </div>
               </div>
             </div>
-
             <div className="flex flex-col items-center justify-start w-[94%] md:w-full">
               <div className="flex flex-col md:gap-10 gap-[70px] items-center justify-start w-full">
                 <div className="flex flex-col items-center justify-start w-full">
                   <div className="flex flex-col items-center justify-start w-full">
-                    <div className="flex flex-col md:gap-4 gap-[63px] items-center justify-start w-full">
-                      <div className="flex sm:flex-col flex-row md:gap-4 items-center md:items-start justify-between w-full">
-                        <Text className="md:text-3xl sx:text-xl sm:text-[28px] text-[32px] font-normal source-sans  text-blue_gray-900_01">
-                          Affiliate ID:
-                        </Text>
-                        <div className="w-[40%] md:w-full">
-                          {" "}
-                          <Input
-                            readOnly={editbtn}
-                            name="group161"
-                            value={affiliateID}
-                            handleChange={(e) => setAffiliateID(e.target.value)}
-                            placeholder="Input text here"
-                            className="!placeholder:text-blue_gray-900_87 !text-blue_gray-900_87 font-lato leading-[normal] p-0 text-base text-left w-full"
-                            wrapClassName="border border-blue_gray-100_01 border-solid sm:flex-1 sm:w-full"
-                          ></Input>
-                        </div>
-                      </div>
+                    <div className="flex flex-col md:gap-10 gap-[63px] items-center justify-start w-full">
+                      {/* administarative use
+                       */}
                       <div className="flex flex-col items-start justify-start w-full">
                         <Text className="md:text-3xl sx:text-xl sm:text-[28px] text-[32px] font-normal source-sans text-blue_gray-900_01">
                           Administration Use
                         </Text>
-                        <div className="flex flex-row font-lato gap-2 items-center justify-start md:justify-between mt-[15px] w-[28%] md:w-full">
-                          <Text className="text-base sx:text-sm font-lato font-bold  text-blue_gray-900_01">
+                        <div className="flex flex-row font-lato gap-2 items-center justify-start mt-[15px] w-[28%] md:w-full">
+                          <Text className="text-base sx:text-sm sx:whitespace-nowrap font-lato font-bold  text-blue_gray-900_01">
                             Approval Status{" "}
                           </Text>
                           <SelectBox
-                            className="!text-blue_gray-900_01 border border-gray-500_7f border-solid font-semibold text-left text-sm w-3/5 sx:w-1/2 sm:w-[705]"
+                            className="!text-blue_gray-900_01 border border-gray-500_7f border-solid font-semibold text-left text-sm w-3/5 sm:w-[60%]"
                             placeholderClassName="!text-blue_gray-900_01"
                             indicator={
                               <Img
@@ -392,49 +449,75 @@ const ManageAffiliateOnePage = () => {
                             }}
                             options={buttonOptionsList}
                             isSearchable={false}
-                            placeholder={
-                              filter === "reject" ? "Rejected" : filter
-                            }
+                            placeholder={filter}
                             shape="round"
                             color="white_A700"
                             size="xs"
                             variant="fill"
                           />
                         </div>
-
-                        {/* this is a image and text of amount and Duration */}
-
-                        <div className="flex flex-row font-lato gap-2 items-center justify-start mt-7 sx:mt-4 w-[14%] md:w-full">
-                          <Img
-                            className="h-8 w-8"
-                            src="images/img_solarhamburgermenubroken.svg"
-                            alt="solarhamburgerm"
-                          />
-                          <Text className="text-[22px] text-blue_gray-900_01 font-medium font-lato sm:text-lg md:text-xl">
-                            Description
-                          </Text>
-                        </div>
-                        <div className="w-full  ">
-                          <Input
-                            name="groupFortySeven"
-                            readOnly={editbtn}
-                            value={description}
-                            handleChange={(e) => setDescription(e.target.value)}
-                            placeholder="Enter Description.."
-                            className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 font-lato leading-[normal] py-4 text-base text-left w-full"
-                            wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[90%] md:w-full"
-                            size="md"
-                          ></Input>
+                        <div className="grid grid-cols-2 sx:grid-cols-1 w-full">
+                          <div className="flex flex-col">
+                            <div className="flex flex-row font-lato gap-2 items-center justify-start mt-7  md:w-full">
+                              <Img
+                                className="h-8 w-8"
+                                src="images/img_solarhamburgermenubroken.svg"
+                                alt="solarhamburgerm"
+                              />
+                              <Text className="text-[22px] text-blue_gray-900_01 font-medium font-lato sm:text-lg md:text-xl">
+                                Amount (USD)
+                              </Text>
+                            </div>
+                            <div className="w-full  ">
+                              <Input
+                                name="groupFortySeven"
+                                readOnly={editbtn}
+                                value={amount}
+                                handleChange={(e) => setAmount(e.target.value)}
+                                placeholder="Enter Amount"
+                                className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 font-lato leading-[normal] text-base text-left w-full"
+                                wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[90%]"
+                                size="md"
+                              ></Input>
+                            </div>
+                          </div>
+                          <div className="flex flex-col">
+                            <div className="flex flex-row font-lato gap-2 items-center justify-start mt-7  md:w-full">
+                              <Img
+                                className="h-8 w-8"
+                                src="images/img_solarhamburgermenubroken.svg"
+                                alt="solarhamburgerm"
+                              />
+                              <Text className="text-[22px] text-blue_gray-900_01 font-medium font-lato sm:text-lg md:text-xl">
+                                Duration (Days)
+                              </Text>
+                            </div>
+                            <div className="w-full  ">
+                              <Input
+                                name="groupFortySeven"
+                                readOnly={editbtn}
+                                value={duration}
+                                handleChange={(e) =>
+                                  setDuration(e.target.value)
+                                }
+                                placeholder="Enter duration"
+                                className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 font-lato leading-[normal]  text-base text-left w-full"
+                                wrapClassName="border border-blue_gray-100_01 border-solid ml-10 md:ml-[0] mt-4 w-[90%]"
+                                size="md"
+                              ></Input>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="w-[90%] md:w-full relative mb-10 md:flex-col-reverse flex item-center justify-between">
+
+                <div className="w-[90%] relative mb-10 flex item-center md:flex-col-reverse md:w-[95%] justify-between">
                   <Link
-                    to="/manageaffiliate"
-                    className="flex gap-4 items-center justify-center md:justify-start md:mt-5 cursor-pointer  md:w-[36%]  w-[12%]  pl-[5%] md:pl-0"
+                    to="/manage-subscriptions"
+                    className="flex gap-4 items-center justify-center md:justify-start md:mt-4 cursor-pointer  w-[12%]  pl-[5%] md:w-[50%]"
                   >
                     {" "}
                     <Img
@@ -448,26 +531,26 @@ const ManageAffiliateOnePage = () => {
                     </Text>
                   </Link>
 
-                  <div className="  sx:justify-between relative sx:flex-wrap flex flex-row gap-4 items-center justify-end md:justify-between   w-[58%] md:w-full">
-                    <div className="cursor-pointer sx:w-[45%] w-[50%] p-2 md:w-[30%] md:p-0">
+                  <div className="relative sx:flex-wrap  flex flex-row gap-4 items-center justify-end md:justify-between  w-[60%] md:w-full">
+                    <div className="cursor-pointer w-[50%] sx:w-[45%] p-2 md:p-0">
                       {" "}
                       <Button
-                        onClick={updateAffiliate}
-                        className="font-bold flex items-center justify-center pl-4 gap-3 rounded-lg leading-[normal] p-3 md:p-[14px] bg-[#BF9853] text-white-A700 text-base w-full  placeholder:"
+                        onClick={updateSubscription}
+                        className="font-bold flex justify-center items-center pl-4 gap-3 rounded-lg leading-[normal] p-3 bg-[#BF9853] text-white-A700 text-base w-full  placeholder:"
                         color="#BF9853"
                       >
                         <Text className="text-center"> Save </Text>
                       </Button>
                     </div>
 
-                    <div className="cursor-pointer sx:w-[45%] w-[50%] p-2 md:w-[35%] md:p-0">
+                    <div className="cursor-pointer sx:w-[45%] w-[50%] p-2 md:p-0">
                       {" "}
                       <Button
                         onClick={() => {
                           setEditbtn(false);
                         }}
-                        className="font-bold   flex items-center pl-4 gap-3 rounded-lg   leading-[normal] p-3 bg-[#BF9853] text-white-A700 text-base  w-full  placeholder:"
-                        color="red_700"
+                        className="font-bold   flex items-center justify-center pl-4 gap-3 rounded-lg   leading-[normal] p-3  bg-[#BF9853] text-white-A700 text-base  w-full  placeholder:"
+                        color="#BF9853"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -488,10 +571,10 @@ const ManageAffiliateOnePage = () => {
                       </Button>
                     </div>
 
-                    <div className="cursor-pointer sx:w-full w-[50%] p-2 md:w-[35%] md:p-0">
+                    <div className="cursor-pointer sx:w-full w-[50%] p-2 md:p-0">
                       {" "}
                       <Button
-                        onClick={deleteAffiliate}
+                        onClick={deleteSubscription}
                         className="font-bold  flex rounded-lg pl-4 gap-3 items-center leading-[normal] p-3 bg-red-700 text-white-A700 text-base text-left w-full  placeholder:"
                         color="red_700"
                       >
@@ -521,4 +604,4 @@ const ManageAffiliateOnePage = () => {
   );
 };
 
-export default ManageAffiliateOnePage;
+export default SubscriptionDetails;

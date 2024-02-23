@@ -17,13 +17,13 @@ const buttonOneOptionsList = [
   { label: "Oldest-Newest", value: "asc" },
 ];
 
-const ManageAffiliatePage = () => {
+const Subscriptions = () => {
   const [frame348value, setFrame348value] = React.useState("");
 
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [toggle, setToggle] = useState(false);
+
   const [error, setError] = useState(null);
 
   const [sort, setSort] = useState("desc");
@@ -36,11 +36,12 @@ const ManageAffiliatePage = () => {
     const fetchData = async () => {
       try {
         const response = await api.get(
-          `/user/get-affliate?page=${page}&limit=10&sortBy=createdAt&order=${sort}&status=${filter}&search=${name ? name : ""
+          `/subscription?page=${page}&limit=10&sortBy=createdAt&sortOrder=${sort}&status=${filter}&name=${name ? name : ""
           }`
         );
-        setTableData(response.data.result);
-        setTotalPages(Math.ceil(response.data.totalCount / 10));
+
+        setTableData(response.data.subscriptions);
+        setTotalPages(Math.ceil(response.data.pageInfo["totalPages"] / 10));
         setLoading(false);
       } catch (error) {
         setError(error);
@@ -49,7 +50,7 @@ const ManageAffiliatePage = () => {
     };
 
     fetchData();
-  }, [sort, page, filter, name]);
+  }, [loading, error, sort, page, filter, name]);
 
   const tableColumns = [
     "Name", // Replace with your actual column names
@@ -70,24 +71,24 @@ const ManageAffiliatePage = () => {
   }
 
   const formattedTableData = tableData.map((item) => {
-    if (item?.documents && item?.documents?.length > 0) {
+    if (item?.documents && item.documents.length > 0) {
       return [
-        item?.full_name ?? "",
-        item?.phone ?? "",
-        item?.email ?? "",
-        formatDateFromTimestamp(item?.createdAt) ?? "",
-        item?.documents[0].url ?? "",
-        item?.status === "reject" ? "Rejected" : item.status ?? "",
+        item.full_name ?? "",
+        item.phone ?? "",
+        item.email ?? "",
+        formatDateFromTimestamp(item.createdAt) ?? "",
+        item.documents[0].url ?? "",
+        item.status ?? "",
         item?._id ?? "",
       ]
     } else {
       return [
-        item?.full_name ?? "",
-        item?.phone ?? "",
-        item?.email ?? "",
-        formatDateFromTimestamp(item?.createdAt) ?? "",
+        item.full_name ?? "",
+        item.phone ?? "",
+        item.email ?? "",
+        formatDateFromTimestamp(item.createdAt) ?? "",
         "",
-        item?.status === "reject" ? "Rejected" : item.status ?? "",
+        item.status ?? "",
         item?._id ?? "",
       ]
     }
@@ -108,7 +109,7 @@ const ManageAffiliatePage = () => {
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
           <Sidebar1
             className={` transition-transform ${toggle ? "translate-x-0" : "-translate-x-full"
-              } !sticky md:!fixed z-50 !w-[262px] sx:!w-[220px] bg-[#1b1b1b]  h-screen overflow-hidden md:flex hidden justify-start md:px-5 top-[0]`}
+              } !sticky md:!fixed z-50 sx:!w-[220px] !w-[262px] bg-[#1b1b1b]  h-screen overflow-hidden md:flex hidden justify-start md:px-5 top-[0]`}
           />
 
           <Sidebar1 className="!sticky !w-[262px] bg-[#1b1b1b] flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
@@ -128,18 +129,17 @@ const ManageAffiliatePage = () => {
               setToggle={setToggle}
               toggle={toggle}
             />
-
             <div className="flex flex-col md:mt-28 sx:mt-24 items-start justify-start w-[94%] md:w-full">
-              <div className="flex md:flex-col flex-row md:gap-10 items-center justify-end w-full">
-                <div className="flex gap-3 sx:flex-wrap items-center justify-center md:justify-between w-[40%] sm:w-full">
+              <div className="flex  flex-row md:gap-10 items-center justify-end w-full">
+                <div className="flex sx:flex-wrap gap-3 items-center justify-center w-[40%] sm:w-full">
                   <Text
-                    className="text-base text-blue_gray-900_01"
+                    className="text-base sx:w-full text-blue_gray-900_01 "
                     size="txtLatoBold16"
                   >
                     Filter by
                   </Text>
                   <SelectBox
-                    className="!text-blue_gray-900_01 border border-gray-500_7f border-solid font-semibold text-left text-sm w-[33%] sm:w-[35%] sx:w-full"
+                    className="!text-blue_gray-900_01 sx:w-full border border-gray-500_7f border-solid font-semibold text-left text-sm w-[33%] sm:w-[35%]"
                     placeholderClassName="!text-blue_gray-900_01"
                     indicator={
                       <Img
@@ -173,7 +173,7 @@ const ManageAffiliatePage = () => {
                     variant="fill"
                   />
                   <SelectBox
-                    className="border border-gray-500_7f border-solid font-semibold text-left text-sm w-[42%] sm:w-[40%] sx:w-full"
+                    className="border border-gray-500_7f sx:w-full border-solid font-semibold text-left text-sm w-[42%] sm:w-[40%]"
                     placeholderClassName="text-blue_gray-900_a2"
                     indicator={
                       <Img
@@ -200,15 +200,17 @@ const ManageAffiliatePage = () => {
                   />
                 </div>
               </div>
-              <div className="overflow-auto mt-12 md:mt-10 w-[95%] md:w-full mx-auto">
+              <div className="overflow-auto mt-12 md:mt-10 md:w-full w-[95%] mx-auto">
                 <ProductTable
+                  subscription={true}
                   columns={tableColumns}
                   data={formattedTableData}
                 ></ProductTable>
               </div>
 
+
               <div className="flex flex-col items-center justify-start md:ml-[0] ml-[50%] my-14 md:my-10  w-[46%] md:w-full">
-                <div className="flex sm:flex-wrap gap-5 flex-row sm:gap-4 items-center justify-end md:justify-between w-full">
+                <div className="flex sm:flex-wrap gap-5 flex-row md:gap-4 items-center justify-end md:justify-between w-full">
                   <Button
                     onClick={() => {
                       if (page > 1) {
@@ -224,7 +226,7 @@ const ManageAffiliatePage = () => {
                     />
                   </Button>
                   <Button
-                    className="cursor-pointer sx:text-sm bg-[#BF9853] text-white-A700 flex items-center justify-center w-[70%]  md:w-[45%] sx:w-[50%]"
+                    className="cursor-pointer sx:text-sm  flex items-center justify-center bg-[#BF9853] text-white-A700 w-[70%] md:w-[45%] sx:w-1/2"
                     onClick={() => {
                       if (page < totalPages) {
                         setPage(page + 1);
@@ -273,4 +275,4 @@ const ManageAffiliatePage = () => {
   );
 };
 
-export default ManageAffiliatePage;
+export default Subscriptions;

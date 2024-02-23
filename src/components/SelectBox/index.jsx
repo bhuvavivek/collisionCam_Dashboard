@@ -32,7 +32,7 @@ const SelectBox = React.forwardRef(
     ref
   ) => {
 
-    console.log(value)
+
     const [selectedVal, setSelectedVal] = React.useState(value);
     const handleChange = (data) => {
       onChange(data);
@@ -48,11 +48,10 @@ const SelectBox = React.forwardRef(
         <Select
           ref={ref}
           options={options}
-          className={`${className} ${(shape && shapes[shape]) || ""} ${
-            (size && sizes[size]) || ""
-          } ${(variant && variants[variant]?.[color]) || ""}`}
+          className={`${className} ${(shape && shapes[shape]) || ""} ${(size && sizes[size]) || ""
+            } ${(variant && variants[variant]?.[color]) || ""}`}
           placeholder={
-            <div className={placeholderClassName} style={{textTransform: 'capitalize'}}>{placeholder}</div>
+            <div className={placeholderClassName} style={{ textTransform: 'capitalize' }}>{placeholder}</div>
           }
           isSearchable={isSearchable}
           isMulti={isMulti}
@@ -80,8 +79,8 @@ const SelectBox = React.forwardRef(
             option: (provided, state) => ({
               ...provided,
               color: state.isSelected && "#303030a2",
-              backgroundColor: state.isSelected && "#ffffff",
-              "&:hover": { backgroundColor: "#ffffff", color: "#303030a2" },
+              backgroundColor: state.isSelected && "#1b1b1b",
+              "&:hover": { backgroundColor: "#1b1b1b", color: "#ffffff" },
             }),
             singleValue: (provided) => ({
               ...provided,
@@ -157,6 +156,7 @@ SelectBox.defaultProps = {
   color: "",
   size: "",
   options: [],
-  onChange: () => {},
+  onChange: () => { },
 };
 export { SelectBox };
+

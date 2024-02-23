@@ -7,6 +7,8 @@ import Sidebar1 from "components/Sidebar1";
 import { Link } from "react-router-dom";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
+import Navbar from "components/navbar/Navbar";
+import { convertDateFormat } from "utils";
 
 const buttonTwoOptionsList = [
   { label: "Newest-Oldest", value: "new" },
@@ -14,8 +16,6 @@ const buttonTwoOptionsList = [
 ];
 
 const ManageFootageOnePage = () => {
-  const [frame348value, setFrame348value] = React.useState("");
-
   const [state, setState] = useState(null);
   const [city, setCity] = useState(null);
 
@@ -32,7 +32,7 @@ const ManageFootageOnePage = () => {
   const fetchData = async () => {
     try {
       const response = await api.get(
-        `/admin/footage?state=${state ? state : ""}&city=${
+        `/admin/footage/private?state=${state ? state : ""}&city=${
           city ? city : ""
         }&name=${name ? name : ""}&sortBy=${sort}&page=${page}&limit=15`
       );
@@ -44,58 +44,48 @@ const ManageFootageOnePage = () => {
     }
   };
 
+  const [toggle, setToggle] = useState(false);
+
   return (
     <>
-      <div className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto w-full h-[100vh]">
+      <div
+        className={`bg-gray-100 ${
+          toggle && "max-h-screen overflow-hidden"
+        }  flex flex-col font-lato items-center justify-start mx-auto w-full h-screen`}
+      >
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
-          <Sidebar1 className="!sticky !w-[262px] bg-indigo-900 flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
+          <Sidebar1
+            className={` transition-transform ${
+              toggle ? "translate-x-0" : "-translate-x-full"
+            } !sticky md:!fixed z-50 !w-[262px] sx:!w-[220px] bg-[#1b1b1b]  h-screen overflow-hidden md:flex hidden justify-start md:px-5 top-[0]`}
+          />
+
+          <Sidebar1 className="!sticky !w-[262px] bg-[#1b1b1b] flex h-screen md:hidden justify-start overflow-auto md:px-5 top-[0]" />
+
+          <div
+            onClick={() => setToggle(!toggle)}
+            className={`md:block transition-transform ${
+              toggle
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-full opacity-0"
+            } hidden fixed z-40 top-0 right-0 left-0 bottom-0 bg-[#1b1b1b80]`}
+          ></div>
+
           <div className="flex flex-1 flex-col md:gap-10 gap-9 justify-start md:px-5 w-full">
-            <div className="flex flex-col md:gap-10 gap-9 items-center justify-start w-full">
-              <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
-                <div className="w-[43%]">
-                  <Input
-                    name="frame348"
-                    placeholder="Search "
-                    value={name}
-                    handleChange={(e) => setName(e.target.value)}
-                    className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-left w-full"
-                    wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
-                    prefix={
-                      <Img
-                        className="cursor-pointer h-8 mr-2.5 my-auto"
-                        src="images/img_search_blue_gray_900_01.svg"
-                        alt="search"
-                      />
-                    }
-                    suffix={
-                      <CloseSVG
-                        fillColor="#30303090"
-                        className="cursor-pointer h-8 my-auto"
-                        onClick={() => setFrame348value("")}
-                        style={{
-                          visibility:
-                            frame348value?.length <= 0 ? "hidden" : "visible",
-                        }}
-                        height={32}
-                        width={32}
-                        viewBox="0 0 32 32"
-                      />
-                    }
-                  ></Input>
-                </div>
-                <Img
-                  className="h-8 mr-[17px] w-8"
-                  src="images/img_claritynotificationline.svg"
-                  alt="claritynotifica"
-                />
-              </div>
-              <div className="flex flex-col md:gap-10 gap-[30px] items-center justify-start w-[90%] md:w-full">
-                <div className="flex md:flex-col flex-row md:gap-10 items-center justify-between w-full">
+            <Navbar
+              onChange={setName}
+              value={name}
+              setToggle={setToggle}
+              toggle={toggle}
+            />
+            <div className="flex md:pt-28 sx:pt-24 flex-col md:gap-5 gap-9 items-center justify-start w-full">
+              <div className="flex flex-col md:gap-5 gap-[30px] items-center justify-start w-[90%] md:w-full">
+                <div className="flex md:flex-col flex-row md:gap-10 sx:gap-5 items-center justify-between w-full">
                   <Link to="/upload-form">
                     <Button
-                      className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center"
+                      className="cursor-pointer font-bold leading-[normal] min-w-[176px] text-base text-center text-white-A700 bg-[#BF9853]"
                       shape="round"
-                      color="indigo_900"
+                      color="#BF9853"
                       size="md"
                       variant="fill"
                     >
@@ -181,18 +171,18 @@ const ManageFootageOnePage = () => {
                 {/* cards */}
 
                 <List
-                  className="flex flex-col font-lato gap-6 items-start max-w-[1256px] mt-[35px] mx-auto md:px-5 w-full"
+                  className="flex flex-col font-lato gap-6 items-start max-w-[1256px] mt-[35px] md:mt-5 sx:mt-2 mx-auto w-full"
                   orientation="vertical"
                 >
                   <div className="flex flex-1 flex-col gap-2 items-center justify-start w-full ">
-                    <div className="gap-10 grid sm:grid-cols-1 md:grid-cols-3 grid-cols-5 items-center justify-between w-full">
+                    <div className="gap-10 md:gap-5 sx:gap-3 grid sm:grid-cols-2 md:grid-cols-3 grid-cols-5 items-center justify-between w-full">
                       {data.map((item, i) => (
                         <Link
                           to={`/manage-footage?footageid=${item._id}`}
                           key={i}
                         >
                           <Img
-                            className="common-pointer flex-1 h-[157px] md:h-auto object-cover rounded-[16px] w-full"
+                            className="common-pointer flex-1 h-[157px] md:h-auto md:aspect-square object-cover rounded-[16px] w-full"
                             src={item.thumbnail}
                             alt={`Thumbnail for ${item.name}`}
                           />
@@ -206,7 +196,7 @@ const ManageFootageOnePage = () => {
                                 <br />
                               </>
                             </span>
-                            <span className="text-blue-700 font-lato text-left font-medium">
+                            <span className="text-[#1b1b1b] font-lato text-left font-medium">
                               ${item.price}
                             </span>
                             <span className="text-gray-900_01 font-lato text-left font-medium">
@@ -215,8 +205,8 @@ const ManageFootageOnePage = () => {
                                 <br />
                               </span>
                             </span>
-                            <span className="text-gray-900_01 font-lato text-left text-sm font-medium">
-                              {item.date} {item.time}
+                            <span className="text-gray-900_01 sx:text-xs font-lato text-left text-sm font-medium">
+                              {convertDateFormat(item?.date || '')} {item.time}
                             </span>
                             <span className="text-gray-900_01 font-lato text-left font-medium">
                               <>
@@ -233,24 +223,26 @@ const ManageFootageOnePage = () => {
                 {/* cards */}
               </div>
             </div>
-            <div className="flex flex-col items-center justify-start md:ml-[0] ml-[53%] w-[43%] md:w-full mb-10">
-              <div className="flex sm:flex-col gap-10 flex-row sm:gap-14 items-center justify-between w-full">
+
+            <div className="flex flex-col items-center justify-start md:ml-[0] ml-[53%] my-14 md:my-5  w-[43%] md:w-full">
+              <div className="flex md:flex-wrap gap-5 flex-row items-center justify-end w-full">
                 <Button
                   onClick={() => {
                     if (page > 1) {
                       setPage(page - 1);
                     }
                   }}
-                  className="bg-white-A700 border-2 border-indigo-900 border-solid  flex flex-col items-center justify-start p-3 rounded-[16px] w-[30%] sm:w-full"
+                  className="bg-white-A700 border-2 border-[#BF9853] border-solid  flex flex-col items-center justify-start p-3 md:p-2 rounded-[16px] md:rounded-[10px] w-[30%] sm:w-[47%] sx:w-[44%]"
                 >
                   <Img
-                    className="h-6 w-6"
+                    className="h-8 w-8 md:h-7"
                     src="images/img_arrowdown.svg"
                     alt="arrowdown"
                   />
                 </Button>
+
                 <Button
-                  className="cursor-pointer flex items-center justify-center min-w-[150px]"
+                  className="cursor-pointer  flex items-center bg-[#BF9853] justify-center w-[70%] md:w-[47%] "
                   onClick={() => {
                     if (page < totalPages) {
                       setPage(page + 1);
@@ -258,24 +250,27 @@ const ManageFootageOnePage = () => {
                   }}
                   rightIcon={
                     <Img
-                      className="h-6 ml-[5px]"
+                      className="h-6 md:h-4 ml-[5px]"
                       src="images/img_arrowright.svg"
                       alt="arrow_right"
                     />
                   }
                   shape="round"
-                  color="indigo_900"
+                  color="#BF9853"
                   size="md"
                   variant="fill"
                 >
-                  <div className="font-bold text-base text-left">Next page</div>
+                  <div className="font-bold text-base text-left sx:text-sm  text-white-A700">
+                    Next page
+                  </div>
                 </Button>
-                <div className="flex flex-row items-center justify-around w-full">
-                  <Text className="text-base text-center leading-6 font-lato  font-semibold text-[#212121] -mr-1">
+
+                <div className="flex flex-row items-center gap-5  justify-end w-full">
+                  <Text className="text-base text-center mr-3 sx:mr-1 leading-6 font-lato  font-semibold text-[#212121] ">
                     page
                   </Text>
                   <Button
-                    className="!text-[#212121] border font-semibold border-gray-500 border-solid cursor-pointer min-w-[94px] text-base text-center"
+                    className="!text-[#212121] border font-semibold border-gray-500 border-solid cursor-auto min-w-[94px] text-base text-center"
                     shape="round"
                     color="white_A700"
                     size="sm"
@@ -283,7 +278,7 @@ const ManageFootageOnePage = () => {
                   >
                     {page}
                   </Button>
-                  <Text className="text-base text-center font-semibold text-[#212121] -ml-5 ">
+                  <Text className="text-base text-center font-semibold text-[#212121] -ml-3">
                     <pre>of {totalPages}</pre>
                   </Text>
                 </div>

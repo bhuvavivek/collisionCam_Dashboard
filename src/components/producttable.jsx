@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const ProductTable = ({ columns, data }) => {
+const ProductTable = ({ columns, data, subscription, paymentHistory }) => {
   return (
     <div className="relative overflow-x-auto m-auto">
       <table
@@ -31,25 +31,36 @@ const ProductTable = ({ columns, data }) => {
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={`px-2 py-3 text-center ${
-                    cellIndex === row.length - 1 && "text-[#1976D2]"
-                  }`}
+                  className={`px-2 py-3 text-center md:min-w-[180px] ${
+                    cellIndex === row.length - 2 ? "capitalize" : " "
+                  } ${cellIndex === row.length - 1 && "text-[#1976D2]"}`}
                   style={{ border: "1px solid #B9B9B9" }}
                 >
                   {cellIndex === row.length - 1 ? (
                     <Link
-                      to={`/manageaffiliateone?id=${cell}`}
+                      to={
+                        subscription
+                          ? `/subscription?id=${cell}`
+                          : paymentHistory
+                          ? `/payment-information?id=${cell}`
+                          : `/manageaffiliateone?id=${cell}`
+                      }
+                      onClick={() => {}}
                       className="underline"
                     >
                       View Details
                     </Link>
+                  ) : paymentHistory ? (
+                    cell
                   ) : cellIndex === row.length - 3 ? (
-                    <Link
-                      to={`/manageaffiliateone?id=${cell}`}
+                    <a
+                      href={`${cell}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="underline"
                     >
-                      {cell}
-                    </Link>
+                      {cell?.split("/")?.pop()}
+                    </a>
                   ) : (
                     cell
                   )}

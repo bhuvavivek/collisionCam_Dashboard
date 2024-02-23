@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import Sidebar1 from "components/Sidebar1";
 import AffiliateTable from "components/affiliatetable";
+import Loading from "components/loading";
 import Datepicker from "react-tailwindcss-datepicker";
 import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
@@ -25,13 +26,11 @@ const AffiliateperformancePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let url = `/user/get-affliate??page=${page}&limit=10&sortBy=createdAt&order=desc&status=&search=${
-          name ? name : ""
-        }`;
+        let url = `/user/get-affliate??page=${page}&limit=10&sortBy=createdAt&order=desc&status=&search=${name ? name : ""
+          }`;
         if (value1["startDate"] && value2["endDate"]) {
-          url += `&startDate=${
-            value1["startDate"] ? value1["startDate"] : " "
-          }&endDate=${value2["endDate"] ? value2["endDate"] : ""}`;
+          url += `&startDate=${value1["startDate"] ? value1["startDate"] : " "
+            }&endDate=${value2["endDate"] ? value2["endDate"] : ""}`;
         }
         const response = await api.get(url);
 
@@ -64,7 +63,7 @@ const AffiliateperformancePage = () => {
   ];
 
   if (loading) {
-    return <p>Loading...</p>;
+    <Loading />;
   }
 
   if (error) {

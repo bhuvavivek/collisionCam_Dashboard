@@ -1,3 +1,4 @@
+import Loading from "components/loading";
 import NotFound from "pages/NotFound";
 import EditForm from "pages/editform";
 import Protected from "pages/routers/Protected";
@@ -26,9 +27,15 @@ const SettingsOne = React.lazy(() => import("pages/SettingsOne"));
 const ManageFootageOne = React.lazy(() => import("pages/ManageFootageOne"));
 const Dashboard = React.lazy(() => import("pages/Dashboard"));
 const LoginOne = React.lazy(() => import("pages/LoginOne"));
+const Subscription = React.lazy(() => import("pages/Subscription"));
+const SubscriptionDetails = React.lazy(() => import("pages/SubscriptionDetail"));
+const PaymentHistory = React.lazy(() => import("pages/PaymentHiostory"));
+const PaymnetInfo = React.lazy(() => import("pages/PaymentInformation"))
+
+
 const ProjectRoutes = () => {
   return (
-    <React.Suspense fallback={<>Loading...</>}>
+    <React.Suspense fallback={<Loading />}>
       <Router>
         <Routes>
           <Route path="/" element={<Navigate to={"/dashboard"} />} />
@@ -131,6 +138,38 @@ const ProjectRoutes = () => {
             element={
               <Protected returnTo="/manageaffiliateone">
                 <ManageAffiliateOne />
+              </Protected>
+            }
+          />
+          <Route
+            path="/manage-subscriptions"
+            element={
+              <Protected returnTo="/manage-subscriptions">
+                <Subscription />
+              </Protected>
+            }
+          />
+          <Route
+            path="/subscription"
+            element={
+              <Protected returnTo="/subscription">
+                <SubscriptionDetails />
+              </Protected>
+            }
+          />
+          <Route
+            path="/payment-history"
+            element={
+              <Protected returnTo="/payment-history">
+                <PaymentHistory />
+              </Protected>
+            }
+          />
+          <Route
+            path="/payment-information"
+            element={
+              <Protected returnTo="/payment-information">
+                <PaymnetInfo />
               </Protected>
             }
           />

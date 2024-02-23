@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { useNavigate } from "react-router-dom";
@@ -6,12 +6,17 @@ import { useNavigate } from "react-router-dom";
 import { Button, Img, Input, Line, List, SelectBox, Text } from "components";
 
 import Sidebar1 from "components/Sidebar1";
+import { api } from "utils/api";
 import { CloseSVG } from "../../assets/images";
 
+import { Link } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import Navbar from "components/navbar/Navbar";
+
 const buttonOptionsList = [
-  { label: "All", value: "All" },
-  { label: "Total Footage Sales", value: "Total Footage Sales" },
-  { label: "Affiliate performance", value: "Affiliate performance" },
+  { label: "All", value: "all" },
+  { label: "Total Footage Sales", value: "Buy" },
+  { label: "Subscription", value: "Subscription" },
 ];
 const buttonOneOptionsList = [
   { label: "Month", value: "Month" },
@@ -25,225 +30,240 @@ const DashboardPage = () => {
   const [frame348value, setFrame348value] = React.useState("");
 
   const [isExpanded, setIsExpanded] = useState(false);
+  const [readtext, setReadText] = useState(true);
+  const [isedit, setIsEdit] = useState(true);
+  const [readtext1, setReadText1] = useState(true);
+  const [isedit1, setIsEdit1] = useState(true);
+  const [readtext2, setReadText2] = useState(true);
+  const [isedit2, setIsEdit2] = useState(true);
+  const [collisions, setCollisions] = useState("");
+  const [hitandruns, setHitAndRuns] = useState("");
+  const [connection, setConnections] = useState("");
 
-  const data = [
-    {
-      name: " Jenny pauls",
-      email: "jennypauls@gmail.com",
-      requesttype: "Submitted a Sell your Claim Request",
-      time: "10 mins ago",
-    },
+  const [footagesaledata, setFootageSaleData] = useState({});
 
-    {
-      name: " Jenny pauls",
-      email: "jennypauls@gmail.com",
-      requesttype: "Submitted an Affiliate Request",
-      time: "10 mins ago",
-    },
+  useEffect(() => {
+    fetchdata();
+    fetchcaptured();
+    fetchsales();
+  }, []);
 
-    {
-      name: " Jenny pauls",
-      email: "jennypauls@gmail.com",
-      requesttype: "Submitted an Free Footage Request",
-      time: "10 mins ago",
-    },
-
-    {
-      name: " Jenny pauls",
-      email: "jennypauls@gmail.com",
-      requesttype: "Bought Footage ID: 2343786",
-      time: "10 mins ago",
-    },
-  ];
+  const [data, setData] = useState([]);
 
   const handleButtonClick = () => {
     // Toggle the state when the button is clicked
     setIsExpanded(!isExpanded);
   };
 
+  const fetchdata = async () => {
+    try {
+      const { data } = await api.get(`/user/recent-activity`);
+      setData(data?.result);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const fetchcaptured = async () => {
+    const { data } = await api.get("/user/capture");
+
+    if (data.success) {
+      data.result.forEach((singleobject) => {
+        if (singleobject.type === "Collisions") {
+          setCollisions(singleobject.value);
+        }
+        if (singleobject.type === "Hit-and-runs") {
+          setHitAndRuns(singleobject.value);
+        }
+        if (singleobject.type === "Client-connection") {
+          setConnections(singleobject.value);
+        }
+      });
+    }
+  };
+
+  const fetchsales = async () => {
+    try {
+      const { data } = await api.get("/user/total-footage-sales");
+      setFootageSaleData(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handlecollisionSave = async () => {
+    const { data } = await api.put("/user/capture/update", {
+      type: "Collisions",
+      value: collisions,
+    });
+
+    if (data.success) {
+      toast.success("Update Sucessfully", ToastContainer);
+    }
+  };
+  const handlehitandrunSave = async () => {
+    const { data } = await api.put("/user/capture/update", {
+      type: "Hit-and-runs",
+      value: hitandruns,
+    });
+
+    if (data.success) {
+      toast.success("Update Sucessfully", ToastContainer);
+    }
+  };
+  const handleclientsave = async () => {
+    const { data } = await api.put("/user/capture/update", {
+      type: "Client-connection",
+      value: connection,
+    });
+
+    if (data.success) {
+      toast.success("Update Sucessfully", ToastContainer);
+    }
+  };
+
+  function formatTimestampWithAMPM(timestamp) {
+    const dateObj = new Date(timestamp);
+
+    const options = {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+
+    return dateObj.toLocaleString("en-US", options);
+  }
+
+  const [chartHtml, setChartHtml] = useState("");
+  const [period, setPeriod] = useState("month");
+  const [filter, setFilter] = useState("all");
+  const fetchData = async () => {
+    try {
+      const { data } = await api(
+        `/user/footage-chart?type=` + period.toLowerCase() + "&filter=" + filter
+      );
+      setChartHtml(data?.script);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [period, filter]);
+  useEffect(() => {
+    const renderChart = () => {
+      console.log("510");
+      if (chartHtml) {
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.innerHTML = chartHtml;
+        document.body.appendChild(script);
+      }
+    };
+    renderChart();
+  }, [chartHtml]);
+
+  const [name, setName] = useState("");
+
+  const [toggle, setToggle] = useState(false);
+
   return (
     <>
       <div
-        className="bg-gray-100 flex flex-col font-lato items-center justify-start mx-auto  w-full
-      "
+        className={`bg-gray-100 ${
+          toggle && "max-h-screen overflow-hidden"
+        } flex flex-col font-lato items-center justify-start mx-auto  w-full overflow-x-hidden h-screen`}
       >
         <div className="flex md:flex-col flex-row md:gap-5 items-start justify-evenly w-full">
-          <Sidebar1 className=" bottom-0 top-0 left-0 !sticky !w-[262px] flex h-[100vh] md:hidden bg-sideblue  justify-start overflow-hidden md:px-5">
-            <Img
-              className="h-[81px] md:h-auto ml-6 mr-[91px] mt-6 object-cover w-[57%]"
-              src="images/img_image14.png"
-              alt="imageFourteen"
-            />
-            <Button
-              className="common-pointer bg-transparent cursor-pointer flex items-center justify-center min-w-[158px] ml-6 mr-20 mt-[129px]"
-              onClick={() => navigate("/managefootageone")}
-              leftIcon={
-                <Img
-                  className="h-8 mr-2"
-                  src="images/img_fluentvideo24regular.svg"
-                  alt="fluent:video-24-regular"
-                />
-              }
-            >
-              <div className="font-medium leading-[normal] text-base text-left text-white-A700">
-                Manage Footage
-              </div>
-            </Button>
-            <Menu
-              menuItemStyles={{
-                button: {
-                  padding: "8px",
-                  gap: "8px",
-                  color: "#ffffff",
-                  fontWeight: 500,
-                  fontSize: "16px",
-                  borderColor: "transparent",
-                  borderWidth: "1.5px",
-                  borderStyle: "solid",
-                  borderRadius: "8px",
-                  [`&:hover, &.ps-active`]: { borderColor: "#1976d2ff" },
-                },
-              }}
-              className="flex flex-col items-center justify-start mb-[99px] pt-[15px] px-4 w-[88%]"
-            >
-              <div className="flex flex-col md:gap-10 gap-[163px] items-center justify-start w-full">
-                <MenuItem
-                  icon={
-                    <Img
-                      className="h-8 w-8"
-                      src="images/img_icoutlinedashboard.svg"
-                      alt="icoutlinedashbo"
-                    />
-                  }
-                  active={window.location.pathname === "/dashboard"}
-                  href="/dashboard"
-                >
-                  <Text className="w-auto">Dashboard</Text>
-                </MenuItem>
-                <MenuItem
-                  icon={
-                    <Img
-                      className="h-6 mb-[7px] mt-0.5 w-6"
-                      src="images/img_arrowup.svg"
-                      alt="arrowup"
-                    />
-                  }
-                  active={window.location.pathname === "/manageaffiliate"}
-                  href="/manageaffiliate"
-                >
-                  <Text className="w-auto">Manage Affiliate</Text>
-                </MenuItem>
-              </div>
-              <div className="flex flex-col items-center justify-start mt-[468px] pb-1.5 w-full">
-                <SubMenu
-                  icon={
-                    <Img
-                      className="h-8 mb-1 w-8"
-                      src="images/img_search.svg"
-                      alt="search"
-                    />
-                  }
-                  label={<Text className="w-auto">Settings</Text>}
-                >
-                  <MenuItem>Submenu Item</MenuItem>
-                </SubMenu>
-              </div>
-              <Line className="bg-white-A700 h-px mt-9 w-full" />
-            </Menu>
-          </Sidebar1>
+          <Sidebar1
+            className={` transition-transform ${
+              toggle ? "translate-x-0" : "-translate-x-full"
+            } !sticky md:!fixed z-50 !w-[262px] sx:!w-[220px] bg-[#1b1b1b]  h-screen overflow-hidden md:flex hidden justify-start md:px-5 top-[0]`}
+          />
+
+          <Sidebar1 className="bottom-0 top-0 left-0 !sticky !w-[262px] bg-[#1b1b1b] flex h-screen md:hidden justify-start overflow-auto md:px-5 " />
+
+          <div
+            onClick={() => setToggle(!toggle)}
+            className={`md:block transition-transform ${
+              toggle
+                ? "translate-x-0 opacity-100"
+                : "-translate-x-full opacity-0"
+            } hidden fixed z-40 top-0 right-0 left-0 bottom-0 bg-[#1b1b1b80]`}
+          ></div>
+
           <div className="flex flex-1 flex-col gap-[22px] items-center justify-start md:px-5 w-full">
-            <div className="bg-gray-100 flex sm:flex-col flex-row md:gap-10 items-center justify-between p-[23px] sm:px-5 shadow-bs1 w-full">
-              <div className="w-[43%]">
-                {" "}
-                <Input
-                  name="frame348"
-                  placeholder="Search "
-                  value={frame348value}
-                  onChange={(e) => setFrame348value(e)}
-                  className="!placeholder:text-blue_gray-900_90 !text-blue_gray-900_90 leading-[normal] p-0 text-base text-left w-full"
-                  wrapClassName="flex sm:flex-1 sm:ml-[0] ml-[17px] rounded-[10px] sm:w-full"
-                  prefix={
-                    <Img
-                      className="cursor-pointer h-8 mr-2.5 my-auto"
-                      src="images/img_search_blue_gray_900_01.svg"
-                      alt="search"
-                    />
-                  }
-                  suffix={
-                    <CloseSVG
-                      fillColor="#30303090"
-                      className="cursor-pointer h-8 my-auto"
-                      onClick={() => setFrame348value("")}
-                      style={{
-                        visibility:
-                          frame348value?.length <= 0 ? "hidden" : "visible",
-                      }}
-                      height={32}
-                      width={32}
-                      viewBox="0 0 32 32"
-                    />
-                  }
-                ></Input>
-              </div>
-              <Img
-                className="h-8 mr-[17px] w-8"
-                src="images/img_claritynotificationline.svg"
-                alt="claritynotifica"
-              />
-            </div>
-            <div className="flex flex-col  gap-6 items-center justify-start w-[95%] md:w-full">
+            <Navbar
+              // onChange={setName}
+              // value={name}
+              setToggle={setToggle}
+              toggle={toggle}
+            />
+
+            <div className="flex flex-col md:pt-24 sx:pt-16 gap-6 items-center justify-start w-[95%] md:w-full">
               {/* Statstic full div start */}
               <div className="flex md:flex-col flex-row gap-7 items-start justify-between w-full">
                 {/* Statastic left Div */}
                 <div className="flex md:flex-1 flex-col gap-[15px] items-start justify-start w-[65%] md:w-full">
-                  <Text className="md:text-3xl sm:text-[28px] text-[32px] text-blue_gray-900_01 source-sans ">
+                  <Text className="md:text-3xl sm:text-[24px] text-[32px] text-blue_gray-900_01 source-sans ">
                     Statistics
                   </Text>
                   <List
-                    className="sm:flex-col flex-row font-lato gap-8 grid md:grid-cols-1 grid-cols-2 justify-start w-auto md:w-full"
+                    className="font-lato gap-8 md:gap-4 grid  grid-cols-2 sx:grid-cols-1 justify-start w-auto md:w-full"
                     orientation="horizontal"
                   >
                     <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid flex flex-col justify-center p-2 rounded-2xl shadow-bs1 w-full">
-                      <div className="flex flex-row gap-4 items-center justify-start mr-[91px] mt-2 w-[74%] md:w-full">
+                      <div className="flex flex-row sm:flex-col gap-4 md:gap-2 items-center justify-start md:mr-0 mr-[91px] md:mt-1 mt-2 w-[74%] md:w-full">
                         <Img
-                          className="h-20 w-20"
+                          className="h-20 w-20 md:w-16 md:h-16"
                           src="images/img_user.svg"
                           alt="user"
                         />
-                        <div className="flex flex-col gap-2 items-start justify-start w-[63%]">
+                        <div className="flex flex-col gap-2 md:gap-0 items-start md:justify-center justify-start w-[63%] md:w-full md:text-center">
                           <div className="flex flex-col  items-center justify-start w-full">
-                            <Text className="sm:text-4xl md:text-[38px] text-[40px] text-blue_gray-900_01 source-sans font-semibold ">
-                              2500 USD
+                            <Text className="sm:text-[30px] md:text-[38px] text-[38px] text-blue_gray-900_01 source-sans font-semibold ">
+                              $
+                              {Number(
+                                footagesaledata?.totalFootageSaleAmount || 0
+                              ).toFixed(2)}
                             </Text>
                           </div>
-                          <Text className="text-base text-blue_gray-900_01 font-bold">
+                          <Text className="text-base md:text-center md:mx-auto text-blue_gray-900_01 font-bold">
                             Total Footage Sales
                           </Text>
                         </div>
                       </div>
-                      <Text className="mb-[7px] md:ml-[0] ml-[300px] mr-[9px] mt-[3px] text-base font-bold text-red-700">
+                      <Text className="mb-[7px] md:mb-0 md:pr-4 md:ml-[0]  mt-[3px] text-base md:text-sm flex justify-end  font-bold text-red-700">
                         +28%
                       </Text>
                     </div>
+
                     <div className="bg-white-A700 border border-blue_gray-100_d9 border-solid flex flex-col justify-center p-2 rounded-2xl shadow-bs1 w-full">
-                      <div className="flex flex-row gap-4 items-center justify-start mr-[91px] mt-2 w-[74%] md:w-full">
+                      <div className="flex flex-row sm:flex-col gap-4 md:gap-2 items-center justify-start md:mr-0 mr-[91px] md:mt-1 mt-2 w-[74%] md:w-full">
                         <Img
-                          className="h-20 w-20"
+                          className="h-20 w-20 md:w-16 md:h-16"
                           src="images/img_profile.svg"
                           alt="profile"
                         />
-                        <div className="flex flex-col gap-[7px] items-start justify-start w-[63%]">
+                        <div className="flex flex-col gap-2 md:gap-0 items-start md:justify-center justify-start w-[63%] md:w-full md:text-center">
                           <div className="flex flex-col  items-center justify-start w-full">
-                            <Text className="sm:text-4xl md:text-[38px] text-[40px] text-blue_gray-900_01 source-sans font-semibold ">
-                              1000 USD
+                            <Text className="sm:text-[30px] md:text-[38px] text-[38px] text-blue_gray-900_01 source-sans font-semibold ">
+                              $
+                              {Number(
+                                footagesaledata?.totalSubscriptionAmount || 0
+                              ).toFixed(2)}
                             </Text>
                           </div>
-                          <Text className="text-base text-blue_gray-900_01 font-bold ">
-                            Total Affiliate Payout
+                          <Text className="text-base md:text-center md:mx-auto text-blue_gray-900_01 font-bold">
+                            Subscription Income
                           </Text>
                         </div>
                       </div>
-                      <Text className="mb-[7px] md:ml-[0] ml-[300px] mr-[9px] mt-[3px] text-base font-bold text-indigo-900">
+                      <Text className="mb-[7px] md:mb-0 md:pr-4 md:ml-[0]  mt-[3px] text-base md:text-sm flex justify-end  font-bold text-indigo-900">
                         +28%
                       </Text>
                     </div>
@@ -252,68 +272,165 @@ const DashboardPage = () => {
                 {/* statastic left div end */}
 
                 {/* statstic right div */}
-                <div className="flex md:flex-1 flex-col items-center justify-start w-auto md:w-full">
+                <div className="flex md:flex-1  flex-col items-center justify-start w-auto md:w-full">
                   <List
-                    className="flex flex-col gap-4 items-start w-auto"
+                    className="flex flex-col gap-4 items-start w-auto md:w-full"
                     orientation="vertical"
                   >
                     <div className="flex flex-col items-center justify-start  my-0 pt-0.5 w-full">
                       <div className="flex flex-col items-center justify-start w-full">
                         <div className="flex flex-row items-center justify-between gap-1 w-full">
-                          <Text className=" text-blue_gray-900_01 sm:text-lg md:text-xl text-2xl source-sans font-semibold ">
+                          <Text className=" text-blue_gray-900_01 sm:text-lg md:text-xl text-2xl sx:text-base  source-sans font-semibold ">
                             Collisions Captured
                           </Text>
-                          <Img
-                            className="h-6 w-6"
-                            src="images/img_edit.svg"
-                            alt="edit"
-                          />
+
+                          {isedit ? (
+                            <Button
+                              onClick={() => {
+                                setIsEdit(false);
+                                setReadText(false);
+                              }}
+                            >
+                              {" "}
+                              <Img
+                                className="h-6 w-6"
+                                src="images/img_edit.svg"
+                                alt="edit"
+                              />
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={() => {
+                                setIsEdit(true);
+                                setReadText(true);
+                                handlecollisionSave();
+                              }}
+                            >
+                              <Img
+                                className="h-6 w-6"
+                                src="images/icon_save.png"
+                                alt="edit"
+                              />
+                            </Button>
+                          )}
                         </div>
+
                         <div className="h-10 md:h-11 mt-1 relative w-full">
-                          <div className="absolute bg-white-A700 border border-blue_gray-100_dd border-solid h-10 inset-[0] justify-center m-auto rounded-[5px] shadow-bs1 w-full"></div>
-                          <Text className="absolute h-full inset-y-[0] left-[8%] my-auto md:text-3xl sm:text-[28px] text-3xl source-sans font-normal text-blue_gray-900_01">
-                            100
-                          </Text>
+                          <div className="absolute bg-white-A700 border border-blue_gray-100_dd border-solid h-10 md:h-11 inset-[0] justify-center m-auto rounded-[5px] shadow-bs1 w-full"></div>
+                          <Input
+                            type="text"
+                            value={collisions}
+                            handleChange={(e) => {
+                              setCollisions(e.target.value);
+                            }}
+                            readOnly={readtext}
+                            className="absolute h-full inset-y-[0] sx:text-xl  my-auto md:text-3xl sm:text-[28px] text-3xl source-sans font-normal text-blue_gray-900_01"
+                            placeholder="100"
+                          />
                         </div>
                       </div>
                     </div>
+
                     <div className="flex flex-col items-center justify-start  my-0 pt-0.5 w-full">
                       <div className="flex flex-col items-center justify-start w-full">
                         <div className="flex flex-row items-center justify-between gap-4 w-full">
-                          <Text className="text-2xl source-sans font-semibold text-blue_gray-900_01 sm:text-lg  md:text-xl">
+                          <Text className="text-2xl sx:text-base source-sans font-semibold text-blue_gray-900_01 sm:text-lg  md:text-xl">
                             Hit-and-runs Captured
                           </Text>
-                          <Img
-                            className="h-6 w-6"
-                            src="images/img_edit.svg"
-                            alt="edit"
-                          />
+                          {isedit1 ? (
+                            <Button
+                              onClick={() => {
+                                setIsEdit1(false);
+                                setReadText1(false);
+                              }}
+                            >
+                              {" "}
+                              <Img
+                                className="h-6 w-6"
+                                src="images/img_edit.svg"
+                                alt="edit"
+                              />
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={() => {
+                                setIsEdit1(true);
+                                setReadText1(true);
+                                handlehitandrunSave();
+                              }}
+                            >
+                              <Img
+                                className="h-6 w-6"
+                                src="images/icon_save.png"
+                                alt="edit"
+                              />
+                            </Button>
+                          )}
                         </div>
                         <div className="h-10 md:h-11 mt-1 relative w-full">
-                          <div className="absolute bg-white-A700 border border-blue_gray-100_dd border-solid h-10 inset-[0] justify-center m-auto rounded-[5px] shadow-bs1 w-full"></div>
-                          <Text className="absolute h-full inset-y-[0] left-[8%] my-auto md:text-3xl sm:text-[28px] text-3xl source-sans font-normal text-blue_gray-900_01">
-                            100
-                          </Text>
+                          <div className="absolute bg-white-A700 overflow-hidden border border-blue_gray-100_dd border-solid h-10 md:h-11 inset-[0] justify-center m-auto rounded-[5px] shadow-bs1 w-full"></div>
+                          <Input
+                            type="text"
+                            value={hitandruns}
+                            handleChange={(e) => {
+                              setHitAndRuns(e.target.value);
+                            }}
+                            readOnly={readtext1}
+                            className="absolute h-full  inset-y-[0] my-auto md:text-3xl sx:text-xl sm:text-[28px] text-3xl source-sans font-normal text-blue_gray-900_01"
+                            placeholder="100"
+                          />
                         </div>
                       </div>
                     </div>
+
                     <div className="flex flex-col items-center justify-start  my-0 pt-0.5 w-full">
                       <div className="flex flex-col items-center justify-start w-full">
-                        <div className="flex flex-row items-center justify-between w-full">
-                          <Text className="text-2xl source-sans font-semibold text-blue_gray-900_01 sm:text-lg md:text-xl">
-                            Hit-and-runs Captured
+                        <div className="flex flex-row gap-1 items-center justify-between w-full">
+                          <Text className="text-2xl source-sans sx:text-base font-semibold text-blue_gray-900_01 sm:text-lg md:text-xl">
+                            Client to Lawyer Connections
                           </Text>
-                          <Img
-                            className="h-6 w-6"
-                            src="images/img_edit.svg"
-                            alt="edit"
-                          />
+                          {isedit2 ? (
+                            <Button
+                              onClick={() => {
+                                setIsEdit2(false);
+                                setReadText2(false);
+                              }}
+                            >
+                              {" "}
+                              <Img
+                                className="h-6 w-6"
+                                src="images/img_edit.svg"
+                                alt="edit"
+                              />
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={() => {
+                                setIsEdit2(true);
+                                setReadText2(true);
+                                handleclientsave();
+                              }}
+                            >
+                              <Img
+                                className="h-6 w-6"
+                                src="images/icon_save.png"
+                                alt="edit"
+                              />
+                            </Button>
+                          )}
                         </div>
                         <div className="h-10 md:h-11 mt-1 relative w-full">
-                          <div className="absolute bg-white-A700 border border-blue_gray-100_dd border-solid h-10 inset-[0] justify-center m-auto rounded-[5px] shadow-bs1 w-full"></div>
-                          <Text className="absolute h-full inset-y-[0] left-[8%] my-auto md:text-3xl sm:text-[28px] text-3xl source-sans font-normal text-blue_gray-900_01">
-                            100
-                          </Text>
+                          <div className="absolute bg-white-A700 border border-blue_gray-100_dd border-solid h-10 md:h-11 inset-[0] justify-center m-auto rounded-[5px] shadow-bs1 w-full"></div>
+                          <Input
+                            type="text"
+                            value={connection}
+                            handleChange={(e) => {
+                              setConnections(e.target.value);
+                            }}
+                            readOnly={readtext2}
+                            className="absolute h-full inset-y-[0] sx:text-xl  my-auto md:text-3xl sm:text-[28px] text-3xl source-sans font-normal text-blue_gray-900_01"
+                            placeholder="100"
+                          />
                         </div>
                       </div>
                     </div>
@@ -327,13 +444,13 @@ const DashboardPage = () => {
               <div className="flex flex-col font-inter gap-8 items-start justify-start w-full md:w-full">
                 {/* Filter section start */}
 
-                <div className="flex sm:flex-col flex-row md:gap-10 items-center justify-between w-full">
-                  <div className="flex flex-row gap-3   items-center justify-start w-3/12  ">
-                    <Text className="text-base text-blue_gray-900_01 font-bold w-auto">
+                <div className="flex flex-row sx:flex-wrap sx:items-end md:gap-5 items-center justify-between w-full ">
+                  <div className="flex flex-row gap-3 md:gap-2 sx:flex-wrap sx:items-end  items-center justify-start w-3/12 md:w-[60%] sx:w-full">
+                    <Text className="text-base text-blue_gray-900_01 font-bold w-auto md:w-[30%] sx:w-full">
                       Filter by
                     </Text>
                     <SelectBox
-                      className="border border-gray-500_7f border-solid font-semibold text-left text-sm w-3/5 sm:w-full"
+                      className="border border-gray-500_7f border-solid font-semibold text-left text-sm w-3/5 sm:w-[60%] sx:w-full"
                       placeholderClassName="text-blue_gray-900_a2"
                       indicator={
                         <Img
@@ -346,15 +463,23 @@ const DashboardPage = () => {
                       name="button"
                       options={buttonOptionsList}
                       isSearchable={false}
-                      placeholder="All"
+                      placeholder={
+                        filter === "Subscription"
+                          ? filter
+                          : filter === "Buy"
+                          ? "Total Footage Sales"
+                          : "All"
+                      }
                       shape="round"
                       color="white_A700"
                       size="xs"
                       variant="fill"
+                      onChange={(value) => setFilter(value)}
                     />
                   </div>
+
                   <SelectBox
-                    className="border border-gray-500_7f border-solid sm:flex-1 font-semibold text-left text-sm w-[13%] sm:w-full"
+                    className="border border-gray-500_7f border-solid sm:flex-1 font-semibold text-left text-sm w-[13%] sm:w-[20%] sx:w-[100%]"
                     placeholderClassName="text-blue_gray-900_a2"
                     indicator={
                       <Img
@@ -367,278 +492,25 @@ const DashboardPage = () => {
                     name="button_One"
                     options={buttonOneOptionsList}
                     isSearchable={false}
-                    placeholder="Month"
+                    placeholder={period}
                     shape="round"
                     color="white_A700"
                     size="xs"
                     variant="fill"
+                    onChange={(value) => setPeriod(value)}
                   />
                 </div>
                 {/* Filter section end */}
 
                 {/* Chart start */}
-                <div className="bg-white-A700 border border-gray-500_7f border-solid flex flex-col font-lato gap-[25px] items-start justify-start pb-2.5 rounded-[12px] shadow-bs2 w-full">
-                  <div className="bg-white-A700 flex flex-col items-start justify-start max-w-[1028px] w-full">
-                    <Line className="bg-white-A700 h-px w-full" />
-                  </div>
-                  <div className="flex flex-col items-center justify-start  w-full">
-                    <div className="flex flex-col gap-2 items-end justify-start w-full">
-                      <div className="flex flex-row gap-1 items-center justify-center w-auto">
-                        <div className="bg-indigo-900 h-4 rounded w-4 "></div>
-                        <Text
-                          className="text-blue_gray-900_01 text-center pr-4 text-xs w-auto"
-                          size="txtLatoRegular12"
-                        >
-                          Footage{" "}
-                        </Text>
-                      </div>
-                      <div className="flex md:flex-col flex-row font-plusjakartasans gap-[9px] items-start justify-between mr-0.5 w-full">
-                        <div className="flex flex-col md:mt-0 mt-[15px] relative w-[94%] md:w-full">
-                          <div className="flex flex-col items-center justify-start m-auto w-full">
-                            <div className="flex md:flex-col flex-row gap-1 h-[260px] md:h-auto items-start justify-start max-w-[980px] w-full">
-                              <div className="flex flex-col h-[260px] md:h-auto items-start justify-center pb-6">
-                                <Text
-                                  className="rotate-[90deg] text-blue_gray-900_01 text-center text-sm w-auto"
-                                  size="txtPlusJakartaSansRomanSemiBold14"
-                                >
-                                  All
-                                </Text>
-                              </div>
-
-                              <div className="flex flex-1 flex-col font-lato h-full items-start justify-start w-full">
-                                <div className="md:h-[210px] h-full relative w-full">
-                                  {/* <div className="flex flex-col h-full     items-center justify-start m-auto w-full">
-                                    <div className="flex flex-col gap-[22px] items-center justify-start w-full">
-                                      <div className="flex flex-col h-[22px] md:h-auto items-center justify-start w-full">
-                                        <Text
-                                          className="text-blue_gray-900_01 text-right text-xs w-auto"
-                                          size="txtLatoRegular12"
-                                        >
-                                          100
-                                        </Text>
-                                      </div>
-                                      <div className="flex flex-col h-[17px] md:h-auto items-center justify-start w-full">
-                                        <Text
-                                          className="text-blue_gray-900_01 text-right text-xs"
-                                          size="txtLatoRegular12"
-                                        >
-                                          80
-                                        </Text>
-                                      </div>
-                                      <div className="flex flex-col h-[17px] md:h-auto items-center justify-start w-full">
-                                        <Text
-                                          className="text-blue_gray-900_01 text-right text-xs"
-                                          size="txtLatoRegular12"
-                                        >
-                                          60
-                                        </Text>
-                                      </div>
-                                      <div className="flex flex-col h-[17px] md:h-auto items-center justify-start w-full">
-                                        <Text
-                                          className="text-blue_gray-900_01 text-right text-xs"
-                                          size="txtLatoRegular12"
-                                        >
-                                          40
-                                        </Text>
-                                      </div>
-                                      <div className="flex flex-col h-[17px] md:h-auto items-center justify-start w-full">
-                                        <Text
-                                          className="text-blue_gray-900_01 text-right text-xs"
-                                          size="txtLatoRegular12"
-                                        >
-                                          20
-                                        </Text>
-                                      </div>
-                                      <div className="flex sm:flex-col flex-row gap-2 h-[17px] md:h-auto items-center justify-start w-full">
-                                        <Text
-                                          className="text-blue_gray-900_01 text-right text-xs w-auto"
-                                          size="txtLatoRegular12"
-                                        >
-                                          0
-                                        </Text>
-                                        <Img
-                                          className="flex-1 h-px max-h-px sm:w-[]"
-                                          src="images/img_divider.svg"
-                                          alt="divider_One"
-                                        />
-                                      </div>
-                                    </div>
-                                  </div> */}
-                                  <div className="absolute border-blue_gray-900_99 border-l border-solid flex flex-col h-max inset-y-[0] items-center justify-start my-auto right-[0] w-[95%] md:w-full">
-                                    <div className="flex flex-col items-center justify-start px-0.5 w-full">
-                                      <div className="flex flex-row items-start justify-between pr-[18px] w-[99%] md:w-full">
-                                        <Img
-                                          className="h-[210px]"
-                                          src="images/img_group99.svg"
-                                          alt="groupNinetyNine"
-                                        />
-                                        <Img
-                                          className="h-[210px]"
-                                          src="images/img_group100.svg"
-                                          alt="group100"
-                                        />
-                                        <Img
-                                          className="h-[210px]"
-                                          src="images/img_group100.svg"
-                                          alt="group101"
-                                        />
-                                        <Img
-                                          className="h-[210px]"
-                                          src="images/img_group100.svg"
-                                          alt="group102"
-                                        />
-                                        <Img
-                                          className="h-[210px]"
-                                          src="images/img_group100.svg"
-                                          alt="group103"
-                                        />
-                                        <Img
-                                          className="h-[210px]"
-                                          src="images/img_group100.svg"
-                                          alt="group105"
-                                        />
-                                        <Img
-                                          className="h-[210px]"
-                                          src="images/img_group100.svg"
-                                          alt="group104"
-                                        />
-                                        <Img
-                                          className="h-[210px]"
-                                          src="images/img_group100.svg"
-                                          alt="group106"
-                                        />
-                                        <Img
-                                          className="h-[210px]"
-                                          src="images/img_group99.svg"
-                                          alt="group107"
-                                        />
-                                        <Img
-                                          className="h-[177px] mt-[33px]"
-                                          src="images/img_group100.svg"
-                                          alt="group108"
-                                        />
-                                        <Img
-                                          className="h-[210px]"
-                                          src="images/img_group100.svg"
-                                          alt="group109"
-                                        />
-                                        <div className="h-[210px] relative w-[6%]">
-                                          <Img
-                                            className="absolute h-[210px] inset-y-[0] my-auto right-[14%]"
-                                            src="images/img_group100.svg"
-                                            alt="group110"
-                                          />
-                                          <div className="absolute bg-green-50 border border-dashed border-green-600_d9 flex flex-col inset-x-[0] items-center justify-start mx-auto p-1 rounded-lg top-[20%] w-full">
-                                            <Text
-                                              className="text-center text-green-600 text-xs"
-                                              size="txtLatoRegular12Green600"
-                                            >
-                                              +$2500
-                                            </Text>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="flex flex-col items-end justify-start pl-10 sm:pl-5 w-full">
-                                  <div className="flex flex-row gap-6 items-center justify-between max-w-[918px] sm:px-5 px-6 w-full">
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Jan
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Feb
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Mar
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Apr
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      May
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Jun
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Jul
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Aug
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Sep
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Oct
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Nov
-                                    </Text>
-                                    <Text
-                                      className="text-blue_gray-900_01 text-center text-xs w-auto"
-                                      size="txtLatoRegular12"
-                                    >
-                                      Dec
-                                    </Text>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <Text
-                            className="ml-auto mr-[436px] pt-5 text-blue_gray-900_01 text-center text-sm z-[1]"
-                            size="txtPlusJakartaSansRomanSemiBold14"
-                          >
-                            Month
-                          </Text>
-                        </div>
-                        <div className="flex flex-row font-lato gap-1 items-center justify-center w-auto">
-                          <div className="bg-red-700 h-4 rounded w-4"></div>
-                          <Text
-                            className="text-blue_gray-900_01 text-center text-xs w-auto pr-4"
-                            size="txtLatoRegular12"
-                          >
-                            Affiliate
-                          </Text>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="bg-white-A700 border p-5 md:p-3 md:overflow-x-auto border-gray-500_7f border-solid flex flex-col font-lato gap-[25px] items-start justify-start pb-2.5 rounded-[12px] shadow-bs2 w-full">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: `
+        <canvas id="revenueChart" width="1000" height="400"></canvas>
+    `,
+                    }}
+                  />
                 </div>
 
                 {/* chart end */}
@@ -653,14 +525,14 @@ const DashboardPage = () => {
                     } justify-between w-full`}
                   >
                     <Text
-                      className="text-[22px] text-blue_gray-900_01 sm:text-lg md:text-xl"
+                      className="text-[22px] text-blue_gray-900_01 sm:text-lg sx:whitespace-nowrap  sx:text-sm md:text-xl"
                       size="txtLatoSemiBold22"
                     >
                       Recent Activities
                     </Text>
 
                     <Button
-                      className="flex justify-center  items-center gap-2 mr-3 text-blue_gray-900_01 text-base  font-bold"
+                      className="flex justify-center items-center gap-2 mr-3 sx:text-sm text-blue_gray-900_01 text-base  font-bold"
                       onClick={handleButtonClick}
                     >
                       {isExpanded ? "Expand" : "Collapse"}
@@ -716,19 +588,20 @@ const DashboardPage = () => {
                       )}
                     </Button>
                   </div>
+
                   <div
                     className={`bg-white-A700 border  border-gray-500_7f border-solid  ${
                       isExpanded ? "flex" : "hidden"
-                    } flex-col items-center justify-end mb-10 py-[21px] shadow-bs3 w-full`}
+                    } flex-col items-center justify-end mb-10 py-[21px] shadow-bs3 w-full overflow-x-auto`}
                   >
-                    <div className="flex flex-col gap-[29px] items-center justify-start mt-3 w-full">
+                    <div className="flex flex-col gap-[29px] items-center justify-start mt-3 md:mt-0 w-full">
                       <List
-                        className="flex flex-col gap-[31.5px] items-center  pt-[30px] sm:px-5 px-[34px] w-full"
+                        className="flex flex-col gap-[31.5px] md:gap-5 items-center md:overflow-x-auto justify-center pt-[30px] md:pt-0 sm:px-5 px-[34px] w-full"
                         orientation="vertical"
                       >
-                        {data?.map((item, i) => (
-                          <div className="w-full ">
-                            <div className="grid grid-cols-4 md:flex-1 md:flex-col flex-row md:gap-5 gap-4 w-[99%] md:w-full">
+                        {data?.map((item) => (
+                          <div className="w-full " key={item?._id}>
+                            <div className="grid grid-cols-5 md:grid-cols-1 md:flex-1 md:flex-col justify-items-center flex-row md:gap-2 gap-4 w-[99%] md:w-full">
                               <Text
                                 className="text-base items-start text-left  text-blue_gray-900_01"
                                 size="txtLatoRegular16Bluegray90001"
@@ -739,34 +612,41 @@ const DashboardPage = () => {
                                 className="text-base items-start text-left  text-blue_gray-900_01"
                                 size="txtLatoRegular16Bluegray90001"
                               >
-                                {item.email}
+                                {item?.email?.length > 21
+                                  ? item?.email?.slice(0, 22) + "..."
+                                  : item.email}
                               </Text>
-                              <div className="flex ">
+                              <Text
+                                className="md:ml-[0]  text-base text-blue_gray-900_01"
+                                size="txtLatoBold16"
+                              >
+                                {item.requestType}
+                              </Text>{" "}
+                              <Text
+                                className="md:ml-[0] text-base text-blue_gray-900_01"
+                                size="txtLatoBold16"
+                              >
+                                {formatTimestampWithAMPM(item.createdAt)}
+                              </Text>
+                              <Link
+                                to={
+                                  item.requestType === "Partner"
+                                    ? `/reviewrequesttwo?id=${item._id}`
+                                    : item.requestType ===
+                                      "Subscription Request"
+                                    ? `/subscription?id=${item._id}`
+                                    : `/payment-information?id=${item._id}`
+                                }
+                              >
                                 <Text
-                                  className="md:ml-[0]  text-base text-blue_gray-900_01"
-                                  size="txtLatoBold16"
-                                >
-                                  {item.requesttype}
-                                </Text>
-                              </div>
-
-                              <div className="flex gap-14 mr-5">
-                                {" "}
-                                <Text
-                                  className="md:ml-[0] text-base text-blue_gray-900_01"
-                                  size="txtLatoBold16"
-                                >
-                                  {item.time}
-                                </Text>
-                                <Text
-                                  className="md:ml-[0]  text-base text-blue-700 underline"
+                                  className="md:ml-[0]  text-base text-blue-700 underline cursor-pointer"
                                   size="txtLatoBold16Blue700"
                                 >
-                                  View
+                                  View Details
                                 </Text>
-                              </div>
+                              </Link>
                             </div>
-                            <Line className="self-center h-px mt-8 bg-blue_gray-100_01 w-full" />
+                            <Line className="self-center h-px mt-8 md:mt-5 bg-blue_gray-100_01 w-full" />
                           </div>
                         ))}
                       </List>
